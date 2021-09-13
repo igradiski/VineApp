@@ -1,5 +1,10 @@
-import React from 'react';
+import 'antd/dist/antd.css';
+import './index.css';
+import './index.css';
 import './App.css';
+
+
+
 
 function App() {
   return (
