@@ -1,0 +1,18 @@
+.main-layout{
+
+    min-height: 100vh;
+}
+
+.ant-layout-sider {
+    background-color:#7cb305;
+}
+
+.ant-menu.ant-menu-dark{
+    background-color:#7cb305;
+}
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected{
+    background-color:black;
+}
+.ant-layout-sider-trigger{
+    background-color:#3f6600;
+}
