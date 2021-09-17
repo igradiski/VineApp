@@ -8,7 +8,13 @@ import 'antd/dist/antd.css'
 import '../layout/layoutCSS.css'
 import { Content } from "antd/lib/layout/layout";
 
-const MasterLayout : FunctionComponent = () => {
+
+type Props = {
+  component: FunctionComponent;
+  path: string;
+};
+
+const MasterLayout : FunctionComponent<Props> = ({ component, path }: Props) => {
 
   return (
     <Layout className="main-layout">
@@ -16,7 +22,7 @@ const MasterLayout : FunctionComponent = () => {
         <Layout className="site-layout">
             <HeaderCustom></HeaderCustom>
             <Content className="content-layout">
-              <Login></Login>
+            {component}
             </Content>
             <FooterCustom></FooterCustom>
         </Layout>

@@ -16,13 +16,13 @@ const SiderCustom: FunctionComponent = () => {
         <Sider collapsible collapsed={collapsed} onCollapse={toggleCollapsed}>
             <Menu theme="dark" mode="inline">
                 <Menu.Item key="1" icon={<HomeOutlined />}>
-                    <Link className="left-menu-link" to="/pocetna">Test</Link>
+                    <Link className="left-menu-link" to="/login">Login</Link>
                 </Menu.Item>
                 <Menu.Item key="2" icon={<HomeOutlined />}>
-                    <Link className="left-menu-link" to="/pocetna">Test</Link>
+                    <Link className="left-menu-link" to="/register">Register</Link>
                 </Menu.Item>
                 <Menu.Item key="3" icon={<HomeOutlined />}>
-                    <Link className="left-menu-link" to="/pocetna">Test</Link>
+                    <Link className="left-menu-link" to="/main">Main</Link>
                 </Menu.Item>
             </Menu>
         </Sider>

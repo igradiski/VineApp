@@ -2,6 +2,7 @@ import React, { Component, FunctionComponent } from "react";
 import { Route, Redirect } from "react-router-dom";
 import MasterLayout from "../components/layout/MainLayout";
 
+
 type Props = {
   component: FunctionComponent;
   path: string;
@@ -9,13 +10,11 @@ type Props = {
 };
 
 
-const ProtectedRoutes: FunctionComponent<Props> = ({ component, path, isAuthenticated }: Props) => {
+const PublicRoutes: FunctionComponent<Props> = ({ component, path, isAuthenticated }: Props) => {
   return (
     <MasterLayout>
-      {isAuthenticated ? 
-      <Route exact path={path} component={component}/>:
-      <Redirect to="/error" />}
+      <Route exact path={path} component={component}/>
     </MasterLayout>
   );
 };
-export default ProtectedRoutes;
+export default PublicRoutes;

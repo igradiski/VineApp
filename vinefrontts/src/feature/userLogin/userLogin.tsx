@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
 import { RootState, AppThunk } from '../../store';
 
 export interface loginState {
-    isAuthentificated : Boolean;
+    isAuthentificated : boolean;
     myAccessToken: string;
-    error : Boolean;
+    error : boolean;
     user : String;
     myUserRole : [];
     myRefreshToken:string;
@@ -25,17 +26,14 @@ export const userSlice = createSlice({
   reducers:{
     logUser : (state) =>{
       state.isAuthentificated = true;
-      console.log("User logged: "+state.isAuthentificated);
     },
     logOffUser : (state) => {
       state.isAuthentificated = false;
     },
     isUserLogged : (state) =>{
-      console.log("Korisnik logiran:"+state.isAuthentificated)
     }
   }
 })
-
-export const {logUser,isUserLogged} = userSlice.actions;
+export const {logUser,isUserLogged,logOffUser} = userSlice.actions;
 
 export default userSlice.reducer;

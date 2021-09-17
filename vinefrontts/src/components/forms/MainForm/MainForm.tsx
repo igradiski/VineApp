@@ -1,7 +1,6 @@
 import React, { useState, FunctionComponent } from "react";
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
-import "./LoginCSS.css"
 import { Form, Input, Button, Checkbox } from 'antd';
 import constant from "../../../constantsUI/constantsUI";
 
@@ -9,13 +8,13 @@ import { useAppSelector, useAppDispatch } from '../../../hooks';
 import { logUser,logOffUser } from "../../../feature/userLogin/userLogin";
 
 
-const Login: FunctionComponent = () => {
+const MainForm: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     return (
         <Form
             name="basic"
         >
-            <h1 className="form-title">Prijava</h1>
+            <h1 className="form-title">GLAVNA FROMA</h1>
             <Form.Item
                 label={constant.LABEL_USERNAME}
                 name={constant.PLACEHOLDER_USERNAME}
@@ -70,4 +69,4 @@ const Login: FunctionComponent = () => {
         </Form>
     );
 }
-export default Login;
+export default MainForm;
