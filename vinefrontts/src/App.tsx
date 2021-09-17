@@ -1,8 +1,9 @@
 import React from "react";
 import { BrowserRouter, Redirect, Switch } from "react-router-dom";
 import ProtectedRoutes from "./route/protectedRoute";
-import HomePage from "./components/forms/homePage";
+import Login from './components/forms/LoginForm/Login';
 import 'antd/dist/antd.less';
+import '../src/App.css';
 
 
 const App = () => {
@@ -11,7 +12,7 @@ const App = () => {
       <BrowserRouter basename="DOZ">
         <Switch>
           <ProtectedRoutes
-            component={HomePage}
+            component={Login}
             path="/pocetna"
             isAuthenticated={true}
           />

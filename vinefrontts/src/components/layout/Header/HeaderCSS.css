@@ -1,9 +1,58 @@
 .header-main{
-  height: 10vh;
+  height: 8vh;
   background-color: #7cb305;
+  padding: 0;
 }
 
 .site-page-header {
-    height: 10vh;
     width: auto;
   }
+
+.ant-col{
+  text-align: right;
+}
+.user-drop{
+  padding-right: 10px;
+}
+.ant-btn-group{
+  padding-top: 3vh;
+}
+.ant-btn{
+  background-color: #7cb305;
+  font-weight: bold;
+  border-color: black;
+}
+
+.ant-btn:hover{
+  background-color: #bae637;
+  font-weight: bold;
+  color: black;
+  border-color: black;
+}
+.ant-dropdown-menu-item{
+  font-weight: bold;
+  color: black;
+  border-color: black;
+}
+
+.ant-dropdown-menu-item:hover{
+  background-color: #bae637;
+  font-weight: bold;
+  color: black;
+  border-color: black;
+}
+.ant-dropdown-menu{
+  background-color: #7cb305;
+  font-weight: bold;
+  color: black;
+  border-color: black;
+}
+
+.ant-page-header-heading{
+  padding-top: 1vh;
+  
+}
+.ant-page-header-heading-title{
+  font-size: 24px;
+  font-weight: bold;
+}

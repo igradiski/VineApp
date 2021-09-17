@@ -1,18 +1,28 @@
 .main-layout{
-
-    min-height: 100vh;
+    height: 100vh;
 }
 
 .ant-layout-sider {
     background-color:#7cb305;
+    height: 95vh;
+}
+
+.content-layout{
+    background-color: #fcffe6;
 }
 
 .ant-menu.ant-menu-dark{
     background-color:#7cb305;
 }
 .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected{
-    background-color:black;
+    background-color:#3f6600;
 }
 .ant-layout-sider-trigger{
     background-color:#3f6600;
+    height: 5vh;
+}
+.ant-menu-dark .ant-menu-item, .ant-menu-dark .ant-menu-item-group-title, .ant-menu-dark .ant-menu-item > a, .ant-menu-dark .ant-menu-item > span > a{
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
 }

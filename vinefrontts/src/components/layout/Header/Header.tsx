@@ -1,24 +1,27 @@
 import { FunctionComponent } from "react";
-import { Layout, Row, Col,PageHeader } from 'antd';
+import { Layout, Row, Col, PageHeader,Button } from 'antd';
 import 'antd/dist/antd.less';
 import './HeaderCSS.css';
 import UserDropDown from './UserDropDown'
+import { ArrowDownOutlined, ArrowUpOutlined ,EyeInvisibleOutlined, BoldOutlined} from '@ant-design/icons';
 
 const { Header } = Layout;
 const HeaderCustom: FunctionComponent = () => {
 
     return (
         <Header className="header-main">
-            <Row>
-                <Col xs={2} sm={4} md={6} lg={10} xl={8}>
+            <Row >
+                <Col span={12}>
                     <PageHeader
                         className="site-page-header"
-                        onBack={() => null}
-                        title="Title"
+                        title="VineApp"
                     />
                 </Col>
-                <Col xs={2} sm={4} md={6} lg={10} xl={16}>
+                <Col className="user-drop" span={12}>
                     <UserDropDown></UserDropDown>
+                    <Button type="primary" >Font<ArrowUpOutlined></ArrowUpOutlined><ArrowDownOutlined></ArrowDownOutlined></Button>
+                    <Button type="primary" ><EyeInvisibleOutlined /></Button>
+                    <Button type="primary" ><BoldOutlined /></Button>
                 </Col>
             </Row>
 

@@ -3,13 +3,13 @@ import { FunctionComponent } from "react";
 import 'antd/dist/antd.less';
 import './HeaderCSS.css';
 import { Menu, Dropdown, Button, message, Space, Tooltip } from 'antd';
-import { DownOutlined, UserOutlined } from '@ant-design/icons';
+import { ArrowDownOutlined,ArrowUpOutlined, UserOutlined ,LineHeightOutlined} from '@ant-design/icons';
 
 
 const menuData = (
     <Menu >
-        <Menu.Item key="1" icon={<UserOutlined />}>
-            1st menu item
+        <Menu.Item key="1" icon={<LineHeightOutlined />}>
+        
         </Menu.Item>
         <Menu.Item key="2" icon={<UserOutlined />}>
             2nd menu item

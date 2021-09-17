@@ -18,6 +18,12 @@ const SiderCustom: FunctionComponent = () => {
                 <Menu.Item key="1" icon={<HomeOutlined />}>
                     <Link className="left-menu-link" to="/pocetna">Test</Link>
                 </Menu.Item>
+                <Menu.Item key="2" icon={<HomeOutlined />}>
+                    <Link className="left-menu-link" to="/pocetna">Test</Link>
+                </Menu.Item>
+                <Menu.Item key="3" icon={<HomeOutlined />}>
+                    <Link className="left-menu-link" to="/pocetna">Test</Link>
+                </Menu.Item>
             </Menu>
         </Sider>
     )

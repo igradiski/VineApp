@@ -1,0 +1,21 @@
+.ant-form{
+    width: 49vh;
+    text-align: center;
+    display: inline-block;
+    padding-top: 10vh;
+}
+.ant-form-item-control-input{
+    text-align: center;
+}
+.form-title{
+    font-size: 24px;
+    font-weight: bold;
+}
+.input-login{
+    width: 25vh;
+    
+}
+.ant-form-item-required{
+    width: 15vh;
+    font-weight: bold;
+}
