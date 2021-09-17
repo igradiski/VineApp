@@ -5,8 +5,12 @@ import "./LoginCSS.css"
 import { Form, Input, Button, Checkbox } from 'antd';
 import constant from "../../../constantsUI/constantsUI";
 
+import { useAppSelector, useAppDispatch } from '../../../hooks';
+import { logUser,isUserLogged } from "../../../feature/userLogin/userLogin";
+
 
 const Login: FunctionComponent = () => {
+    const dispatch = useAppDispatch();
     return (
         <Form
             name="basic"
@@ -17,7 +21,7 @@ const Login: FunctionComponent = () => {
                 name={constant.PLACEHOLDER_USERNAME}
                 rules={[
                     {
-                        required: true,
+                        //required: true,
                         message: constant.MESSAGE_USERNAME,
                     },
                 ]}
@@ -30,7 +34,7 @@ const Login: FunctionComponent = () => {
                 name={constant.PLACEHOLDER_PASSWORD}
                 rules={[
                     {
-                        required: true,
+                       // required: true,
                         message: constant.MESSAGE_PASSWORD,
                     },
                 ]}
@@ -45,13 +49,21 @@ const Login: FunctionComponent = () => {
 
             <Form.Item
             >
-                <Button type="primary" htmlType="submit">
+                <Button 
+                type="primary" 
+                htmlType="submit"
+                onClick={() => dispatch(logUser())}
+                >
                     {constant.PRIJAVA_BUTTON}
                 </Button>
             </Form.Item>
             <Form.Item
             >
-                <Button type="primary" htmlType="submit">
+                <Button 
+                type="primary"
+                htmlType="submit"
+                onClick={() => dispatch(isUserLogged())}
+                 >
                     {constant.REGISTRACIJA_BUTTON}
                 </Button>
             </Form.Item>
