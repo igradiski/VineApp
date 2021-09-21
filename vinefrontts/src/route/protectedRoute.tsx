@@ -1,21 +1,25 @@
-import React, { Component, FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import { Route, Redirect } from "react-router-dom";
 import MasterLayout from "../components/layout/MainLayout";
+import { useAppSelector } from "../hooks";
 
 type Props = {
   component: FunctionComponent;
   path: string;
-  isAuthenticated: boolean;
 };
 
 
-const ProtectedRoutes: FunctionComponent<Props> = ({ component, path, isAuthenticated }: Props) => {
+const PrivateRoute: FunctionComponent<Props> = (prop: Props) => {
+  var userLogged = useAppSelector(state => state.login.isAuthentificated)
   return (
     <MasterLayout>
-      {isAuthenticated ? 
-      <Route exact path={path} component={component}/>:
-      <Redirect to="/error" />}
+      {userLogged ? 
+        <Route
+        {...prop}
+        />
+      : <Redirect to="/"/>}
+      
     </MasterLayout>
   );
 };
-export default ProtectedRoutes;
+export default PrivateRoute;

@@ -1,9 +1,10 @@
-import React, { FunctionComponent, useState } from "react";
+import { FunctionComponent, useState } from "react";
 import { Link } from "react-router-dom";
 import 'antd/dist/antd.css'
 import { Menu } from 'antd';
 import { Layout } from 'antd';
-import { FileTextOutlined, ReadOutlined, ProfileOutlined, TeamOutlined, HomeOutlined } from '@ant-design/icons';
+import {  HomeOutlined } from '@ant-design/icons';
+
 
 const SiderCustom: FunctionComponent = () => {
 
@@ -22,7 +23,11 @@ const SiderCustom: FunctionComponent = () => {
                     <Link className="left-menu-link" to="/register">Register</Link>
                 </Menu.Item>
                 <Menu.Item key="3" icon={<HomeOutlined />}>
-                    <Link className="left-menu-link" to="/main">Main</Link>
+                    <Link className="left-menu-link" to="/">Pocetna</Link>
+                </Menu.Item>
+
+                <Menu.Item key="4" icon={<HomeOutlined />}>
+                    <Link className="left-menu-link" to="/pregled">Pregled</Link>
                 </Menu.Item>
             </Menu>
         </Sider>

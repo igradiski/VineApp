@@ -1,68 +1,44 @@
-import React, { useState, FunctionComponent } from "react";
-import ReactDOM from 'react-dom';
+import  { FunctionComponent } from "react";
 import 'antd/dist/antd.css';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form,Button } from 'antd';
 import constant from "../../../constantsUI/constantsUI";
-
-import { useAppSelector, useAppDispatch } from '../../../hooks';
-import { logUser,logOffUser } from "../../../feature/userLogin/userLogin";
+import { useHistory } from 'react-router-dom';
 
 
 const MainForm: FunctionComponent = () => {
-    const dispatch = useAppDispatch();
+
+    const history = useHistory();
+
+    const handleOnSubmit = (action : String) => {
+        if(action.match("prijava")){
+            history.push(`/login`);
+        }else{
+            history.push(`/register`);
+        }
+        
+    };
     return (
         <Form
             name="basic"
         >
-            <h1 className="form-title">GLAVNA FROMA</h1>
-            <Form.Item
-                label={constant.LABEL_USERNAME}
-                name={constant.PLACEHOLDER_USERNAME}
-                rules={[
-                    {
-                        //required: true,
-                        message: constant.MESSAGE_USERNAME,
-                    },
-                ]}
-            >
-                <Input className="input-login" />
-            </Form.Item>
-
-            <Form.Item
-                label={constant.LABEL_PASSWORD}
-                name={constant.PLACEHOLDER_PASSWORD}
-                rules={[
-                    {
-                       // required: true,
-                        message: constant.MESSAGE_PASSWORD,
-                    },
-                ]}
-            >
-                <Input.Password className="input-login" />
-            </Form.Item>
-
+            <h1 className="form-title">Dobro dosli u App</h1>
             <Form.Item
             >
-                <Checkbox>{constant.ZAPAMTI_ME}</Checkbox>
-            </Form.Item>
-
-            <Form.Item
-            >
-                <Button 
-                type="primary" 
-                htmlType="submit"
-                onClick={() => dispatch(logUser())}
+                <Button
+                    type="primary"
+                    htmlType="submit"
+                    onClick={ () => handleOnSubmit("prijava")}
                 >
                     {constant.PRIJAVA_BUTTON}
                 </Button>
             </Form.Item>
             <Form.Item
             >
-                <Button 
-                type="primary"
-                htmlType="submit"
-                onClick={() => dispatch(logOffUser())}
-                 >
+                <Button
+                    type="primary"
+                    htmlType="submit"
+                    onClick={ () => handleOnSubmit("registracija")}
+                >
                     {constant.REGISTRACIJA_BUTTON}
                 </Button>
             </Form.Item>

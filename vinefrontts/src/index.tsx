@@ -1,9 +1,6 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import locale from "antd/es/locale/hr_HR";
-import { ConfigProvider } from "antd";
 import './index.css';
 import { store } from './store';
 import { Provider } from 'react-redux';

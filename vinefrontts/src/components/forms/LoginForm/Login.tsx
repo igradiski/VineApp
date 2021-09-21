@@ -1,11 +1,10 @@
-import React, { useState, FunctionComponent } from "react";
-import ReactDOM from 'react-dom';
+import  {  FunctionComponent } from "react";
 import 'antd/dist/antd.css';
 import "./LoginCSS.css"
 import { Form, Input, Button, Checkbox } from 'antd';
 import constant from "../../../constantsUI/constantsUI";
 
-import { useAppSelector, useAppDispatch } from '../../../hooks';
+import { useAppDispatch } from '../../../hooks';
 import { logUser,logOffUser } from "../../../feature/userLogin/userLogin";
 
 

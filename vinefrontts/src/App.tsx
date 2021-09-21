@@ -1,44 +1,42 @@
-import React from "react";
-import {useSelector} from 'react-redux'
-import { BrowserRouter, Redirect, Switch } from "react-router-dom";
-import ProtectedRoutes from "./route/protectedRoute";
-import Login from './components/forms/LoginForm/Login';
 
+import { BrowserRouter, Switch } from "react-router-dom";
+import PrivateRoute from "./route/protectedRoute";
+import Login from './components/forms/LoginForm/Login';
+import RegisterForm from "./components/forms/RegisterForm/RegisterForm";
 import 'antd/dist/antd.less';
 import '../src/App.css';
-import { useAppSelector } from "./hooks";
 import PublicRoutes from "./route/publicRoute";
-import Homepage from "./views/Homepage";
 import MainForm from "./components/forms/MainForm/MainForm";
+import GlavniPregled from "./components/forms/Kalendar/Kalendar";
 
 
 const App = () => {
-  const userLogged = useAppSelector(state => state.login.isAuthentificated)
   return (
     <div className="App">
-      <BrowserRouter basename="DOZ">
+      <BrowserRouter basename="VineApp">
         <Switch>
-          <PublicRoutes
-            component={Homepage}
-            path="/homepage"
-            isAuthenticated={userLogged}
+        <PrivateRoute
+            component={GlavniPregled}
+            path="/pregled"
           />
+
           <PublicRoutes
             component={Login}
             path="/login"
-            isAuthenticated={userLogged}
+          /> 
+          <PublicRoutes
+            component={RegisterForm}
+            path="/register"
+          /> 
+          
+          <PublicRoutes
+            component={MainForm}
+            path="/home"
           />
           <PublicRoutes
-            component={Login}
-            path="/register"
-            isAuthenticated={userLogged}
-          />
-          <ProtectedRoutes
             component={MainForm}
-            path="/main"
-            isAuthenticated={userLogged}
+            path="/"
           />
-          <Redirect from="/" to="/homepage" />
         </Switch>
       </BrowserRouter>
     </div>

@@ -1,5 +1,4 @@
-import React, { useState, FunctionComponent } from "react";
-import ReactDOM from 'react-dom';
+import  {FunctionComponent } from "react";
 import 'antd/dist/antd.css';
 import "./RegisterFormCSS.css"
 import { Form, Input, Button, Checkbox } from 'antd';

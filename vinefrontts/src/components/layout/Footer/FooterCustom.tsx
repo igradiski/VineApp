@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { Layout, Row, Col, PageHeader} from 'antd';
+import { Layout} from 'antd';
 import 'antd/dist/antd.less';
 import './FooterCSS.css';
 

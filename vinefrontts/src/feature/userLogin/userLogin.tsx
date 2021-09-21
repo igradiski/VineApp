@@ -1,6 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { useSelector } from 'react-redux';
-import { RootState, AppThunk } from '../../store';
+import { createSlice } from '@reduxjs/toolkit';
 
 export interface loginState {
     isAuthentificated : boolean;
