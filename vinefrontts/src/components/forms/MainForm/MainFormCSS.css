@@ -1,0 +1,25 @@
+.picture-main{
+    text-align: center;
+    width: 75%;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.login-div{
+    text-align: center;
+}
+.buttons-class{
+    margin-top: 2vh;
+    width: 25%;
+    font-size: 1em;
+    position: relative;
+}
+
+.buttons-div{
+    margin-left: auto;
+    margin-right: auto;
+    width: 65%;
+    display: flex; 
+    justify-content: space-evenly;
+}

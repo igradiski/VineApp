@@ -1,48 +1,55 @@
-import  { FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import 'antd/dist/antd.css';
-import { Form,Button } from 'antd';
+import { Button} from 'antd';
 import constant from "../../../constantsUI/constantsUI";
 import { useHistory } from 'react-router-dom';
+import "./MainFormCSS.css"
+
+//picture
+import homePicture from "../../../images/pocetnaPicture.png";
 
 
 const MainForm: FunctionComponent = () => {
 
     const history = useHistory();
 
-    const handleOnSubmit = (action : String) => {
-        if(action.match("prijava")){
+    const handleOnSubmit = (action: String) => {
+        if (action.match("prijava")) {
             history.push(`/login`);
-        }else{
+        } else {
             history.push(`/register`);
         }
-        
+
     };
     return (
-        <Form
-            name="basic"
-        >
+        <div className="login-div">
             <h1 className="form-title">Dobro dosli u App</h1>
-            <Form.Item
+            <img src={homePicture} alt="s" className="picture-main" />
+            <div className="buttons-div">
+
+            
+            <Button
+                type="primary"
+                htmlType="submit"
+                className="buttons-class"
+                onClick={() => handleOnSubmit("prijava")}
             >
-                <Button
-                    type="primary"
-                    htmlType="submit"
-                    onClick={ () => handleOnSubmit("prijava")}
-                >
-                    {constant.PRIJAVA_BUTTON}
-                </Button>
-            </Form.Item>
-            <Form.Item
+                {constant.BUTTON_LOGIN}
+            </Button>
+
+            <Button
+                type="primary"
+                htmlType="submit"
+                className="buttons-class"
+                onClick={() => handleOnSubmit("registracija")}
             >
-                <Button
-                    type="primary"
-                    htmlType="submit"
-                    onClick={ () => handleOnSubmit("registracija")}
-                >
-                    {constant.REGISTRACIJA_BUTTON}
-                </Button>
-            </Form.Item>
-        </Form>
+                {constant.BUTTON_REGISTER}
+            </Button>
+            </div>
+
+
+
+        </div>
     );
 }
 export default MainForm;

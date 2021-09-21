@@ -1,7 +1,7 @@
 import  {FunctionComponent } from "react";
 import 'antd/dist/antd.css';
 import "./RegisterFormCSS.css"
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button } from 'antd';
 import constant from "../../../constantsUI/constantsUI";
 
 const RegisterForm: FunctionComponent = () => {
@@ -9,9 +9,9 @@ const RegisterForm: FunctionComponent = () => {
         <Form
             name="basic"
         >
-            <h1 className="form-title">{constant.LBL_REGISTRACIJA}</h1>
+            <h1 className="form-title">{constant.LBL_REGISTRATION}</h1>
             <Form.Item
-                label={constant.LBL_IME_KORISNIKA}
+                label={constant.LBL_USER_NAME}
                 name="name"
                 rules={[
                     {
@@ -24,7 +24,7 @@ const RegisterForm: FunctionComponent = () => {
             </Form.Item>
 
             <Form.Item
-                label={constant.LBL_PREZIME_KORISNIKA}
+                label={constant.LBL_USER_SURNAME}
                 name="surname"
                 rules={[
                     {
@@ -73,24 +73,16 @@ const RegisterForm: FunctionComponent = () => {
             >
                 <Input className="input-login" />
             </Form.Item>
-
-            
-
-            <Form.Item
-            >
-                <Checkbox>{constant.ZAPAMTI_ME}</Checkbox>
-            </Form.Item>
-
             <Form.Item
             >
                 <Button type="primary" htmlType="submit">
-                    {constant.PRIJAVA_BUTTON}
+                    {constant.BUTTON_LOGIN}
                 </Button>
             </Form.Item>
             <Form.Item
             >
                 <Button type="primary" htmlType="submit">
-                    {constant.REGISTRACIJA_BUTTON}
+                    {constant.BUTTON_REGISTER}
                 </Button>
             </Form.Item>
         </Form>

@@ -1,8 +1,17 @@
+login-div{
+    text-align: center;
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
 .ant-form{
-    width: 49vh;
+    width: 80vh;
+    height: auto;
     text-align: center;
     display: inline-block;
-    padding-top: 25vh;
+    padding-top: 10vh;
 }
 .ant-form-item-control-input{
     text-align: center;
@@ -17,5 +26,8 @@
 }
 .ant-form-item-required{
     width: 15vh;
-    
+    font-weight: bold;
+}
+.prijava-button{
+    width: 20vh;
 }
