@@ -18,7 +18,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hr.igz.VineApp.domain.Role;
+import com.hr.igz.VineApp.domain.User;
+import com.hr.igz.VineApp.domain.UserRole;
 import com.hr.igz.VineApp.domain.dto.UserDto;
+import com.hr.igz.VineApp.enums.ERole;
 import com.hr.igz.VineApp.repository.RoleRepository;
 import com.hr.igz.VineApp.repository.UserRepository;
 import com.hr.igz.VineApp.security.jwt.JwtResponse;
@@ -68,6 +72,63 @@ public class AuthController {
 				 userDetails.getUsername(), 
 				 userDetails.getEmail(), 
 				 roles));
+	}
+	
+	@PostMapping("/signup")
+	public ResponseEntity<?> registerUser(@RequestBody UserDto signUpRequest) {
+		log.info(signUpRequest.toString());
+		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+			return ResponseEntity
+					.badRequest()
+					.body("hoho");
+		}
+
+		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+			return ResponseEntity
+					.badRequest()
+					.body("hoho");
+		}
+
+		// Create new user's account
+		User user = new User();
+		user.setName(signUpRequest.getName());
+		user.setSurname(signUpRequest.getSurname());
+		user.setUsername(signUpRequest.getUsername());
+		user.setPassword(encoder.encode(signUpRequest.getPassword()));
+		user.setEmail(signUpRequest.getEmail());
+
+//		Set<String> strRoles = signUpRequest.getRole();
+//		Set<Role> roles = new HashSet<>();
+
+//		if (strRoles == null) {
+//			Role userRole = roleRepository.findByRoleName(ERole.ROLE_BASIC_USER.name())
+//					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//			roles.add(userRole);
+//		} else {
+//			strRoles.forEach(role -> {
+//				switch (role) {
+//				case "admin":
+//					Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//					roles.add(adminRole);
+//
+//					break;
+//				case "mod":
+//					Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
+//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//					roles.add(modRole);
+//
+//					break;
+//				default:
+//					Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//					roles.add(userRole);
+//				}
+//			});
+//		}
+		userRepository.save(user);
+
+		return ResponseEntity.ok().body("Dobar");
 	}
 
 }
