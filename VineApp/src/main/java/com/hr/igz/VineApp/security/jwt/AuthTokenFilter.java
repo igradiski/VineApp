@@ -17,6 +17,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.hr.igz.VineApp.security.services.UserDetailsSecurityServiceImpl;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class AuthTokenFilter extends OncePerRequestFilter {
 
 	@Autowired
@@ -28,6 +31,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
+		log.info("In filter");
 		try {
 			String jwt = parseJwt(request);
 			if (jwt != null && jwtUtils.validateJwtToken(jwt)) {

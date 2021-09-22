@@ -32,7 +32,6 @@ public class UserDetailsSecurityImpl implements UserDetails {
 
 	private String email;
 
-	@JsonIgnore
 	private String password;
 
 	private Collection<? extends GrantedAuthority> authorities;

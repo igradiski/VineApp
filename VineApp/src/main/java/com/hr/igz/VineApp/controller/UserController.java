@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hr.igz.VineApp.domain.dto.UserDTO;
+import com.hr.igz.VineApp.domain.dto.UserDto;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -16,7 +16,7 @@ import com.hr.igz.VineApp.domain.dto.UserDTO;
 public class UserController {
 
 	@GetMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> loginUser(UserDTO userDto) {
+	public ResponseEntity<Object> loginUser(UserDto userDto) {
 		return new ResponseEntity<>("User logged", HttpStatus.CREATED);
 	}
 }
