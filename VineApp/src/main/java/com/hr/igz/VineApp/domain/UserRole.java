@@ -2,7 +2,12 @@ package com.hr.igz.VineApp.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -11,6 +16,8 @@ import java.util.Date;
  */
 @Entity
 @Table(name="user_role")
+@Getter
+@Setter
 public class UserRole implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
