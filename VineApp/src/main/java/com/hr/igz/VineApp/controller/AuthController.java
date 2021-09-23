@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hr.igz.VineApp.domain.dto.UserDto;
+import com.hr.igz.VineApp.security.jwt.payload.request.TokenRefreshRequest;
 import com.hr.igz.VineApp.services.UserService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,15 @@ public class AuthController {
 		log.info("User login request: {}",loginRequest.toString());
 		return userService.userLogin(loginRequest);
 	}
+	
+	@PostMapping("/refreshToken")
+	  public ResponseEntity<?> refreshtoken( @RequestBody TokenRefreshRequest request) {
+		
+		log.info("Token refresh request{}",request.toString());
+		return userService.refreshToken(request);
+		
+	  }
+	
 	
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@RequestBody UserDto signUpRequest) {

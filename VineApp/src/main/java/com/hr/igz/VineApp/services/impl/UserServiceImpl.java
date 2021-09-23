@@ -1,8 +1,5 @@
 package com.hr.igz.VineApp.services.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +12,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.hr.igz.VineApp.domain.RefreshToken;
 import com.hr.igz.VineApp.domain.User;
 import com.hr.igz.VineApp.domain.dto.UserDto;
+import com.hr.igz.VineApp.exception.TokenRefreshException;
 import com.hr.igz.VineApp.exception.UserAlreadyExistException;
 import com.hr.igz.VineApp.repository.UserRepository;
-import com.hr.igz.VineApp.security.jwt.JwtResponse;
 import com.hr.igz.VineApp.security.jwt.JwtUtils;
-import com.hr.igz.VineApp.security.services.UserDetailsSecurityImpl;
+import com.hr.igz.VineApp.security.jwt.payload.request.TokenRefreshRequest;
+import com.hr.igz.VineApp.security.jwt.payload.response.JwtResponseToken;
+import com.hr.igz.VineApp.security.jwt.payload.response.TokenRefreshResponse;
+import com.hr.igz.VineApp.security.services.refreshTokenService;
+import com.hr.igz.VineApp.security.servicesImpl.UserDetailsSecurityImpl;
 import com.hr.igz.VineApp.services.UserService;
 
 @Service
@@ -36,12 +38,16 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	PasswordEncoder encoder;
 	
+	@Autowired 
+	refreshTokenService refreshTokenService;
+	
 	@Autowired
 	JwtUtils jwtUtils;
 
 	@Override
 	@Transactional
 	public User loadUserByUsername(String username) throws UsernameNotFoundException {
+		
 		User user = userRepository.findByUsername(username)
 				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
@@ -55,17 +61,31 @@ public class UserServiceImpl implements UserService {
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 		
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = jwtUtils.generateJwtToken(authentication);
-		UserDetailsSecurityImpl userDetails = (UserDetailsSecurityImpl) authentication.getPrincipal();	
+		UserDetailsSecurityImpl userDetails = (UserDetailsSecurityImpl) authentication.getPrincipal();
+		String jwt = jwtUtils.generateJwtToken(userDetails);
+		RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
 		
-		List<String> roles = userDetails.getAuthorities().stream()
-				.map(item -> item.getAuthority())
-				.collect(Collectors.toList());
-		//TODO refresh token
-		return ResponseEntity.ok(new JwtResponse(jwt,jwt, 
+		return ResponseEntity.ok(new JwtResponseToken(jwt,refreshToken.getToken(), 
 				 userDetails.getUsername(), 
-				 userDetails.getEmail(), 
-				 roles));
+				 userDetails.getEmail()));
+	}
+	
+	
+	@Override
+	public ResponseEntity<?> refreshToken(TokenRefreshRequest request) {
+		
+		String requestRefreshToken = request.getRefreshToken();
+		
+		return refreshTokenService.findByToken(requestRefreshToken)
+		        .map(refreshTokenService::verifyExpiration)
+		        .map(RefreshToken::getUser)
+		        .map(user -> {
+		          String token = jwtUtils.generateTokenFromUsername(user.getUsername());
+		          return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
+		        })
+		        .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
+		            "Refresh token is not in database!"));
+		
 	}
 
 	@Override

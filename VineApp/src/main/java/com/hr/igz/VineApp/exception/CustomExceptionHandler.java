@@ -19,5 +19,12 @@ public class CustomExceptionHandler extends  ResponseEntityExceptionHandler {
 		var error = new JsonResponseError(HttpStatus.CONFLICT,ex.getLocalizedMessage());
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
+	
+	@ExceptionHandler(TokenRefreshException.class)
+    public final ResponseEntity<JsonResponseError> handleTokenRefreshException(TokenRefreshException ex, WebRequest request) {
+		
+		var error = new JsonResponseError(HttpStatus.FORBIDDEN,ex.getLocalizedMessage());
+        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+    }
 
 }

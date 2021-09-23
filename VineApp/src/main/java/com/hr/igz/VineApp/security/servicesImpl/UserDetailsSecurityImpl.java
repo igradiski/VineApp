@@ -1,4 +1,4 @@
-package com.hr.igz.VineApp.security.services;
+package com.hr.igz.VineApp.security.servicesImpl;
 
 import java.util.Collection;
 import java.util.List;
@@ -10,7 +10,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hr.igz.VineApp.domain.User;
 import com.hr.igz.VineApp.repository.UserRepository;
 

@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.hr.igz.VineApp.security.jwt.AuthEntryPointJwt;
 import com.hr.igz.VineApp.security.jwt.AuthTokenFilter;
-import com.hr.igz.VineApp.security.services.UserDetailsSecurityServiceImpl;
+import com.hr.igz.VineApp.security.servicesImpl.UserDetailsSecurityService;
 
 
 /**
@@ -33,7 +33,7 @@ import com.hr.igz.VineApp.security.services.UserDetailsSecurityServiceImpl;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
-	UserDetailsSecurityServiceImpl userServiceSecurity;
+	UserDetailsSecurityService userServiceSecurity;
 	
 	@Autowired
 	private AuthEntryPointJwt unauthorizedHandler;
@@ -65,6 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.authorizeRequests()
+			.antMatchers("/api/auth/userTry").authenticated()
 			.antMatchers("/api/auth/**").permitAll()
 			.antMatchers("/api/test/**").permitAll()
 			.anyRequest().authenticated();

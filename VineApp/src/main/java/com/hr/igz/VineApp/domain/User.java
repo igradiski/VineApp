@@ -10,13 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
 /**
@@ -25,8 +25,7 @@ import lombok.Setter;
  */
 @Entity
 @Table(name="USER")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class User implements Serializable {
 	
@@ -51,6 +50,9 @@ public class User implements Serializable {
 	private String surname;
 
 	private String username;
+	
+	@OneToOne(mappedBy = "user")
+	private RefreshToken refreshToken;
 
 	@OneToMany(mappedBy="user")
 	private List<UserRole> userRoles;

@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.hr.igz.VineApp.security.services.UserDetailsSecurityServiceImpl;
+import com.hr.igz.VineApp.security.servicesImpl.UserDetailsSecurityService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,7 +26,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 	private JwtUtils jwtUtils;
 
 	@Autowired
-	private UserDetailsSecurityServiceImpl userDetailsService;
+	private UserDetailsSecurityService userDetailsService;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

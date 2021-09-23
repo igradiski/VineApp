@@ -64,6 +64,22 @@ CREATE TABLE IF NOT EXISTS `VineAppDB`.`USER_ROLE` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `VineAppDB`.`REFRESH_TOKEN`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `VineAppDB`.`REFRESH_TOKEN` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `token` VARCHAR(250) NULL,
+  `expiryDate` DATETIME NULL,
+  `USER_ID` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_REFRESH_TOKEN_USER1`
+    FOREIGN KEY (`USER_ID`)
+    REFERENCES `VineAppDB`.`USER` (`ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

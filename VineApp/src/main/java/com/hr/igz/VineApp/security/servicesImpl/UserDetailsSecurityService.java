@@ -1,4 +1,4 @@
-package com.hr.igz.VineApp.security.services;
+package com.hr.igz.VineApp.security.servicesImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +11,7 @@ import com.hr.igz.VineApp.domain.User;
 import com.hr.igz.VineApp.repository.UserRepository;
 
 @Service
-public class UserDetailsSecurityServiceImpl implements UserDetailsService {
+public class UserDetailsSecurityService implements UserDetailsService {
 
 	@Autowired
 	UserRepository userRepository;

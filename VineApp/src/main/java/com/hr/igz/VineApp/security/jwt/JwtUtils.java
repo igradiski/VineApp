@@ -3,10 +3,9 @@ package com.hr.igz.VineApp.security.jwt;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import com.hr.igz.VineApp.security.services.UserDetailsSecurityImpl;
+import com.hr.igz.VineApp.security.servicesImpl.UserDetailsSecurityImpl;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -26,17 +25,15 @@ public class JwtUtils {
 	@Value("${Vine.app.jwtExpirationMs}")
 	private int jwtExpirationMs;
 
-	public String generateJwtToken(Authentication authentication) {
-
-		UserDetailsSecurityImpl userPrincipal = (UserDetailsSecurityImpl) authentication.getPrincipal();
-
-		return Jwts.builder()
-				.setSubject((userPrincipal.getUsername()))
-				.setIssuedAt(new Date())
-				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-				.signWith(SignatureAlgorithm.HS512, jwtSecret)
-				.compact();
-	}
+	public String generateJwtToken(UserDetailsSecurityImpl userPrincipal) {
+	    return generateTokenFromUsername(userPrincipal.getUsername());
+	  }
+	
+	public String generateTokenFromUsername(String username) {
+	    return Jwts.builder().setSubject(username).setIssuedAt(new Date())
+	        .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).signWith(SignatureAlgorithm.HS512, jwtSecret)
+	        .compact();
+	  }
 
 	public String getUserNameFromJwtToken(String token) {
 		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
