@@ -32,6 +32,9 @@
     LEFT_MENU_REGISTER : "Registracija",
     LEFT_MENU_CALENDAR : "Kalendar",
 
+    API_BASE_URL: process.env.REACT_APP_BASE_URL
+
+
 }) 
 
 export default constantsUI;

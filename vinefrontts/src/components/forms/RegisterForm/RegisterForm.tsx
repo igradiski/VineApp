@@ -1,10 +1,28 @@
-import  {FunctionComponent } from "react";
+import  {FunctionComponent,useState } from "react";
 import 'antd/dist/antd.css';
 import "./RegisterFormCSS.css"
 import { Form, Input, Button } from 'antd';
 import constant from "../../../constantsUI/constantsUI";
+import IUserRegisterData from "../../../types/userTypes";
+import UserService from "../../../services/userService";
 
 const RegisterForm: FunctionComponent = () => {
+
+    const [name, setName] = useState("") 
+
+
+
+    const registerUser = () => {
+        const data: IUserRegisterData ={
+            name:name,
+            surname:"",
+            email:"",
+            password:"",
+            username:""
+        }
+        let usrSrc : UserService = new UserService();
+        usrSrc.registerUser(data)
+    }
     return (
         <Form
             name="basic"
@@ -20,7 +38,11 @@ const RegisterForm: FunctionComponent = () => {
                     },
                 ]}
             >
-                <Input className="input-login" />
+                <Input 
+                className="input-login"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                 />
             </Form.Item>
 
             <Form.Item
@@ -75,17 +97,16 @@ const RegisterForm: FunctionComponent = () => {
             </Form.Item>
             <Form.Item
             >
-                <Button type="primary" htmlType="submit">
-                    {constant.BUTTON_LOGIN}
-                </Button>
-            </Form.Item>
-            <Form.Item
-            >
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" 
+                htmlType="submit"
+                onClick={registerUser}
+                >
                     {constant.BUTTON_REGISTER}
                 </Button>
             </Form.Item>
         </Form>
     );
 }
+
+
 export default RegisterForm;
