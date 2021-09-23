@@ -13,8 +13,8 @@ import com.hr.igz.VineApp.utils.JsonResponseError;
 @RestControllerAdvice
 public class CustomExceptionHandler extends  ResponseEntityExceptionHandler {
 	
-	@ExceptionHandler(InvalidLoginException.class)
-    public final ResponseEntity<JsonResponseError> handleNevalidnaRola(InvalidLoginException ex, WebRequest request) {
+	@ExceptionHandler(UserAlreadyExistException.class)
+    public final ResponseEntity<JsonResponseError> handleNevalidnaRola(UserAlreadyExistException ex, WebRequest request) {
 		
 		var error = new JsonResponseError(HttpStatus.CONFLICT,ex.getLocalizedMessage());
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
