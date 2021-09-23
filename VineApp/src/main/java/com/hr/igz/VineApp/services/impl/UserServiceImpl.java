@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.hr.igz.VineApp.domain.User;
 import com.hr.igz.VineApp.domain.dto.UserDto;
+import com.hr.igz.VineApp.exception.InvalidLoginException;
 import com.hr.igz.VineApp.repository.UserRepository;
 import com.hr.igz.VineApp.security.jwt.JwtResponse;
 import com.hr.igz.VineApp.security.jwt.JwtUtils;
@@ -70,15 +71,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ResponseEntity<Object> registerUser(UserDto signUpRequest) {
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-			return ResponseEntity
-					.badRequest()
-					.body("hoho");
+			throw new InvalidLoginException("Korisnik vec postoji u bazi!");
 		}
 
 		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-			return ResponseEntity
-					.badRequest()
-					.body("hoho");
+			throw new InvalidLoginException("Korisnik vec postoji u bazi!");
 		}
 		User user = new User();
 		user.setName(signUpRequest.getName());
