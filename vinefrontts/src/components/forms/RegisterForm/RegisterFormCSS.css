@@ -3,6 +3,8 @@
     text-align: center;
     display: inline-block;
     padding-top: 10vh;
+    overflow: auto;
+    height: 80%;
 }
 .ant-form-item-control-input{
     text-align: center;

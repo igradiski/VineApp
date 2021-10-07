@@ -19,9 +19,9 @@ const HeaderCustom: FunctionComponent = () => {
                 </Col>
                 <Col className="user-drop" span={12}>
                     <UserDropDown></UserDropDown>
-                    <Button type="primary" >Font<ArrowUpOutlined></ArrowUpOutlined><ArrowDownOutlined></ArrowDownOutlined></Button>
-                    <Button type="primary" ><EyeInvisibleOutlined /></Button>
-                    <Button type="primary" ><BoldOutlined /></Button>
+                    <Button type="primary" className="hide-tight">Font<ArrowUpOutlined></ArrowUpOutlined><ArrowDownOutlined></ArrowDownOutlined></Button>
+                    <Button type="primary" className="hide-tight"><EyeInvisibleOutlined /></Button>
+                    <Button type="primary" className="hide-tight"><BoldOutlined /></Button>
                 </Col>
             </Row>
 

@@ -7,6 +7,7 @@ import { UserOutlined ,UserDeleteOutlined} from '@ant-design/icons';
 import { useAppDispatch } from '../../../hooks';
 import { logOffUser } from "../../../feature/userLogin/userLogin";
 import { useAppSelector } from "../../../hooks";
+import { ArrowDownOutlined, ArrowUpOutlined ,EyeInvisibleOutlined, BoldOutlined} from '@ant-design/icons';
 
 
 
@@ -17,8 +18,17 @@ const UserDropDown: FunctionComponent = () => {
         <Menu>
              {userLogged ? 
              <Menu.Item key="1">
-                <Button onClick={() => dispatch(logOffUser())}>Log Off {<UserDeleteOutlined />}</Button>
-            </Menu.Item> : null}
+                <Button type="primary" onClick={() => dispatch(logOffUser())}>Log Off {<UserDeleteOutlined />}</Button>
+            </Menu.Item> :  null}
+            <Menu.Item key="2" className="visible-FullWidth">
+            <Button type="primary" >Font<ArrowUpOutlined></ArrowUpOutlined><ArrowDownOutlined></ArrowDownOutlined></Button>
+            </Menu.Item>
+            <Menu.Item key="3" className="visible-FullWidth">
+            <Button type="primary" ><EyeInvisibleOutlined /></Button>
+            </Menu.Item>
+            <Menu.Item key="4" className="visible-FullWidth">
+            <Button type="primary" ><BoldOutlined /></Button>
+            </Menu.Item>
         </Menu>
     
     );

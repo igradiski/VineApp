@@ -2,9 +2,14 @@
     height: 100vh;
 }
 
+
 .ant-layout-sider {
     background-color:#7cb305;
-    height: 95vh;
+    height: 95%;
+}
+
+.ant-layout-sider-trigger{
+    top: 95%;
 }
 
 .content-layout{
@@ -20,9 +25,20 @@
 .ant-layout-sider-trigger{
     background-color:#3f6600;
     height: 5vh;
+    
 }
 .ant-menu-dark .ant-menu-item, .ant-menu-dark .ant-menu-item-group-title, .ant-menu-dark .ant-menu-item > a, .ant-menu-dark .ant-menu-item > span > a{
     color: white;
     font-size: 16px;
     font-weight: bold;
+}
+
+@media only screen and (max-width: 600px) {
+    .ant-layout-sider-trigger{
+        visibility: hidden;
+    }
+    .ant-layout-sider {
+        background-color:#7cb305;
+        height: 100%;
+    }
 }

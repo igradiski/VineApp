@@ -1,4 +1,4 @@
-login-div{
+.login-div{
     text-align: center;
     width: 100%;
     height: auto;
@@ -7,11 +7,12 @@ login-div{
     margin-right: auto;
 }
 .ant-form{
-    width: 80vh;
+    width: 80%;
     height: auto;
     text-align: center;
     display: inline-block;
-    padding-top: 10vh;
+    padding-top: 10%;
+    overflow: scroll;
 }
 .ant-form-item-control-input{
     text-align: center;
@@ -21,8 +22,7 @@ login-div{
     font-weight: bold;
 }
 .input-login{
-    width: 25vh;
-    
+    width: 25%;
 }
 .ant-form-item-required{
     width: 15vh;
@@ -30,4 +30,36 @@ login-div{
 }
 .prijava-button{
     width: 20vh;
+}
+@media only screen and (max-width: 600px) {
+
+    .login-div{
+        text-align: center;
+        width: 100%;
+        height: auto;
+        display: inline-grid;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .ant-form{
+        width: 80%;
+        height: auto;
+        text-align: center;
+        display: inline-grid;
+        padding-top: 10%;
+    }
+
+    .input-login{
+        width: 25vh;  
+    }
+    .ant-form-item .ant-form-item-label {
+        text-align: center;
+    }
+    .ant-form-item-required{
+        width: 15vh;
+        text-align: center;
+        font-weight: bold;
+    }
+
 }

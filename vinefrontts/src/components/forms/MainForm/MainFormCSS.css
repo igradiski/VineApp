@@ -12,14 +12,29 @@
 .buttons-class{
     margin-top: 2vh;
     width: 25%;
-    font-size: 1em;
+    font-size: 90%;
     position: relative;
 }
 
 .buttons-div{
     margin-left: auto;
     margin-right: auto;
-    width: 65%;
+    width: 400px;
     display: flex; 
     justify-content: space-evenly;
 }
+
+@media only screen and (max-width: 600px) {
+    .buttons-div{
+        margin-left: auto;
+        margin-right: auto;
+        display: inline-grid; 
+        justify-content: space-evenly;
+    }
+    .buttons-class{
+        margin-top: 2vh;
+        width: 200px;
+        font-size: 1em;
+        position: relative;
+    }
+  }

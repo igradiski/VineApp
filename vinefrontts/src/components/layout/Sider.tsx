@@ -40,13 +40,13 @@ const GuestMenu = () => {
 const SiderCustom: FunctionComponent = () => {
 
     const { Sider } = Layout;
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
     const toggleCollapsed = () => {
         collapsed ? setCollapsed(false) : setCollapsed(true);
     };
     var userLogged = useAppSelector(state => state.login.isAuthentificated);
     return (
-        <Sider collapsible collapsed={collapsed} onCollapse={toggleCollapsed}>
+        <Sider className="left-sider" collapsible collapsed={collapsed} onCollapse={toggleCollapsed}>
             {userLogged ? <LoggedUserMenu/> : <GuestMenu/> }
         </Sider>
     )
