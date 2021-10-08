@@ -16,7 +16,7 @@ import com.hr.igz.VineApp.domain.RefreshToken;
 import com.hr.igz.VineApp.domain.User;
 import com.hr.igz.VineApp.domain.dto.UserDto;
 import com.hr.igz.VineApp.exception.TokenRefreshException;
-import com.hr.igz.VineApp.exception.UserAlreadyExistException;
+import com.hr.igz.VineApp.exception.ObjectAlreadyExists;
 import com.hr.igz.VineApp.repository.UserRepository;
 import com.hr.igz.VineApp.security.jwt.JwtUtils;
 import com.hr.igz.VineApp.security.jwt.payload.request.TokenRefreshRequest;
@@ -91,11 +91,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ResponseEntity<Object> registerUser(UserDto signUpRequest) {
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-			throw new UserAlreadyExistException("Korisnik vec postoji u bazi!");
+			throw new ObjectAlreadyExists("Korisnik vec postoji u bazi!");
 		}
 
 		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-			throw new UserAlreadyExistException("Korisnik vec postoji u bazi!");
+			throw new ObjectAlreadyExists("Korisnik vec postoji u bazi!");
 		}
 		User user = new User();
 		user.setName(signUpRequest.getName());

@@ -31,9 +31,18 @@
     LEFT_MENU_LOGIN : "Prijava",
     LEFT_MENU_REGISTER : "Registracija",
     LEFT_MENU_CALENDAR : "Kalendar",
+    LEFT_MENU_SREDSTVA : "Sredstva",
+    LEFT_MENU_TIP_SREDSTVA : "Tip sredstva",
+    API_BASE_URL: process.env.REACT_APP_BASE_URL,
 
-    API_BASE_URL: process.env.REACT_APP_BASE_URL
-
+    //TIP SREDSTVA
+    TIP_SREDSTVA_NASLOV : "Tip sredstva",
+    TIP_SREDSTVA_NAZIV : "Naziv tipa:",
+    TIP_SREDSTVA_NAZIV_REQ: "Unesite naziv tipa sredstva",
+    TIP_SREDSTVA_BUTTON_DODAJ: "Dodaj",
+    TIP_SREDSTVA_NASLOV_SIFRARNIK: "Popis tipova sredstava",
+    TIP_SREDSTVA_TBL_NAZIV: "Naziv tipa",
+    TIP_SREDSTVA_TBL_DATUM: "Datum unosa",
 
 }) 
 

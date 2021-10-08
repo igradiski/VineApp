@@ -8,6 +8,7 @@ import '../src/App.css';
 import PublicRoutes from "./route/publicRoute";
 import MainForm from "./components/forms/MainForm/MainForm";
 import GlavniPregled from "./components/forms/Kalendar/Kalendar";
+import TipSredstva from "./components/forms/TipSredstvaForm/TipSredstvaForm";
 
 
 const App = () => {
@@ -28,7 +29,14 @@ const App = () => {
             component={RegisterForm}
             path="/register"
           /> 
-          
+          <PublicRoutes
+            component={TipSredstva}
+            path="/tipSredstva"
+          />
+          <PublicRoutes
+            component={TipSredstva}
+            path="/sredstva"
+          />
           <PublicRoutes
             component={MainForm}
             path="/home"

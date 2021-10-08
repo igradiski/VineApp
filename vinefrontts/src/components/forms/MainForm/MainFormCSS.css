@@ -1,6 +1,6 @@
 .picture-main{
     text-align: center;
-    width: 75%;
+    width: 60%;
     height: auto;
     display: block;
     margin-left: auto;
@@ -10,7 +10,7 @@
     text-align: center;
 }
 .buttons-class{
-    margin-top: 2vh;
+    margin-top: 2%;
     width: 25%;
     font-size: 90%;
     position: relative;

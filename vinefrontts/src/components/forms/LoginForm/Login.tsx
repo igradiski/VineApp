@@ -11,11 +11,10 @@ import { logUser } from "../../../feature/userLogin/userLogin";
 const Login: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     return (
-        <div className="login-div">
-        <h1 className="form-title">Prijava</h1>
         <Form
             name="basic"
         >
+            <h1 className="form-title">Prijava</h1>
             <Form.Item
                 label={constant.LABEL_USERNAME}
                 name={constant.PLACEHOLDER_USERNAME}
@@ -54,7 +53,6 @@ const Login: FunctionComponent = () => {
                 </Button>
             </Form.Item>
         </Form>
-        </div>
     );
 }
 export default Login;

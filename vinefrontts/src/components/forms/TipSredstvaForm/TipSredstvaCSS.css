@@ -1,0 +1,24 @@
+.tip-sredstva-main-div{
+    height: 100%;
+    overflow: scroll;
+    display: inline-block;
+    width: 100%;
+}
+.tablica-tip-sredstva{
+    padding-left: 10%;
+    padding-right: 10%;
+    text-align: center;
+}
+.tip-sredstva-forma{
+    height: 40%;
+}
+.ant-table-cell{
+    text-align: center;
+}
+.ant-table-thead > tr > th{
+    text-align: center;
+    background-color: #7cb305;
+}
+.ant-form-item-explain{
+    text-align: center;
+}

@@ -24,7 +24,6 @@ public class EchoServiceImpl implements EchoService{
 	@Override
 	public ResponseEntity<Object> sendEcho() {
 		log.info("Saljem da servis radi!");
-		log.info(roleRepos.findAll().get(0).getRoleName());
 		return new ResponseEntity<>("Web service is up and running!", HttpStatus.OK);
 	}
 

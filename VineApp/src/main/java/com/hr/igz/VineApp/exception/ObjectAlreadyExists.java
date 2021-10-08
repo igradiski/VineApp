@@ -1,10 +1,10 @@
 package com.hr.igz.VineApp.exception;
 
-public class UserAlreadyExistException extends RuntimeException {
+public class ObjectAlreadyExists extends RuntimeException {
 	
 	private static final long serialVersionUID = 1L;
 
-	public UserAlreadyExistException(String exception) {
+	public ObjectAlreadyExists(String exception) {
         super(exception);
     }
 

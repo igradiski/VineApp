@@ -1,5 +1,5 @@
 .ant-form{
-    width: 49vh;
+    width: 100%;
     text-align: center;
     display: inline-block;
     padding-top: 10vh;
@@ -14,7 +14,7 @@
     font-weight: bold;
 }
 .input-login{
-    width: 25vh;
+    width: 25%;
     
 }
 .ant-form-item-required{

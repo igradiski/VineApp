@@ -1,14 +1,6 @@
-.login-div{
-    text-align: center;
-    width: 100%;
-    height: auto;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
 .ant-form{
-    width: 80%;
-    height: auto;
+    width: 100%;
+    height: 80%;
     text-align: center;
     display: inline-block;
     padding-top: 10%;
@@ -22,7 +14,10 @@
     font-weight: bold;
 }
 .input-login{
-    width: 25%;
+    margin-right: 10%;
+}
+.ant-form-item-label{
+    left: 15%;
 }
 .ant-form-item-required{
     width: 15vh;
@@ -36,22 +31,29 @@
     .login-div{
         text-align: center;
         width: 100%;
-        height: auto;
+        height: 80%;
         display: inline-grid;
         margin-left: auto;
         margin-right: auto;
     }
 
     .ant-form{
-        width: 80%;
-        height: auto;
+        width: 100%;
+        height: 100%;
         text-align: center;
         display: inline-grid;
-        padding-top: 10%;
+        left: 5%;
+    }
+    .input-login{
+        margin-right: 0%;
+    }
+
+    .ant-form-item-label{
+        left: 0%;
     }
 
     .input-login{
-        width: 25vh;  
+        width: 25%;  
     }
     .ant-form-item .ant-form-item-label {
         text-align: center;
