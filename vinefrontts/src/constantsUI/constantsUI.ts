@@ -44,6 +44,8 @@
     TIP_SREDSTVA_TBL_NAZIV: "Naziv tipa",
     TIP_SREDSTVA_TBL_DATUM: "Datum unosa",
 
+    //SREDSTVA
+    SREDSTVA_NASLOV : "Unos i pregled sredstava",
 }) 
 
 export default constantsUI;

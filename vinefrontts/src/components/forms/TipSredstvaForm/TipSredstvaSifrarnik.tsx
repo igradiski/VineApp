@@ -1,17 +1,44 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useState, useEffect } from "react";
 import { Table,Pagination } from 'antd';
 
 import constant from "../../../constantsUI/constantsUI";
+import TipSredstvaService from "../../../services/TipSredstvaService";
+import ITipSredstvaPaging from "../../../types/TipSredstvaPaging";
 import 'antd/dist/antd.css';
 import "./TipSredstvaCSS.css"
 
 
 const TipSredstvaSifrarnik: FunctionComponent = () => {
 
+    const [pageSize, setPageSize] = useState(2);
+    const [pageNo, setPageNo] = useState(0);
+    const [totalItems,setTotalItems] = useState(0);
+    const [tableData,setTableData] = useState([])
 
     const promijeniStranicu = (page : number ,pageSize: number | undefined)=>{
-        console.log("promjena"+page+" "+pageSize)
+       setPageNo(page-1);
     }
+
+    useEffect(() => {
+
+        const getInitialData = async () =>{
+            const data : ITipSredstvaPaging ={
+                pageNo:pageNo,
+                pageSize:pageSize
+            }
+            let tipSredstvaSrc = new TipSredstvaService();
+            tipSredstvaSrc.getAllTipSredstva(data)
+            .then(response =>{
+                setTableData(response.data.tipovi);
+                setTotalItems(response.data.totalItems);
+                setPageNo(response.data.currentPage);
+            }).catch((error)=>{
+                //TODO handle error
+                console.log(console.error());
+            })
+        }
+        getInitialData();
+      },[pageNo]);
 
     const columns = [
         {
@@ -21,32 +48,20 @@ const TipSredstvaSifrarnik: FunctionComponent = () => {
         },
         {
             title: constant.TIP_SREDSTVA_TBL_DATUM,
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'date',
+            key: 'date',
         },
     ]
-
-    const data = [
-        {
-            key: '1',
-            name: 'John Brown',
-          },
-          {
-            key: '2',
-            name: 'Jim Green',
-          },
-    ]
-
     return (
         <div>
             <h1 className="form-title">{constant.TIP_SREDSTVA_NASLOV_SIFRARNIK}</h1>
             <Table 
             className="tablica-tip-sredstva" 
             columns={columns}
-            dataSource={data} 
+            dataSource={tableData} 
             pagination={false}
             />
-            <Pagination pageSize={1} total={5} onChange={promijeniStranicu}/>
+            <Pagination pageSize={pageSize} total={totalItems} onChange={promijeniStranicu}/>
         </div>
     );
 }

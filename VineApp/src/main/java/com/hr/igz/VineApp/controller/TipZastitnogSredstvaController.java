@@ -40,11 +40,11 @@ public class TipZastitnogSredstvaController {
 	
 	@GetMapping("/tipoviSredstava")
 	public ResponseEntity<Map<String, Object>> getAllTipoviSredstava(
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "2") int size){
+			@RequestParam(defaultValue = "0") int pageNo,
+			@RequestParam(defaultValue = "10") int pageSize){
 		
-		
-		return tipSredstvaService.findAllPagable(page,size);
+		log.info("Page:{} +  {}",pageNo,pageSize);
+		return tipSredstvaService.findAllPagable(pageNo,pageSize);
 	}
 
 }

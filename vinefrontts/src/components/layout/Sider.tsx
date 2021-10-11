@@ -10,10 +10,10 @@ import constantsUI from "../../constantsUI/constantsUI";
 const LoggedUserMenu = () => {
     return (
         <Menu theme="dark" mode="inline">
-            <Menu.Item key="3" icon={<HomeOutlined />}>
+            <Menu.Item key="30" icon={<HomeOutlined />}>
                 <Link className="left-menu-link" to="/">{constantsUI.LEFT_MENU_HOME}</Link>
             </Menu.Item>
-            <Menu.Item key="4" icon={<CalendarOutlined />}>
+            <Menu.Item key="40" icon={<CalendarOutlined />}>
                 <Link className="left-menu-link" to="/pregled">{constantsUI.LEFT_MENU_CALENDAR}</Link>
             </Menu.Item>
         </Menu>
@@ -34,7 +34,7 @@ const GuestMenu = () => {
             <Menu.Item key="4" icon={<UsergroupAddOutlined />}>
                 <Link className="left-menu-link" to="/sredstva">{constantsUI.LEFT_MENU_SREDSTVA}</Link>
             </Menu.Item>
-            <Menu.Item key="4" icon={<UsergroupAddOutlined />}>
+            <Menu.Item key="5" icon={<UsergroupAddOutlined />}>
                 <Link className="left-menu-link" to="/tipSredstva">{constantsUI.LEFT_MENU_TIP_SREDSTVA}</Link>
             </Menu.Item>
             
