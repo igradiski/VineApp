@@ -46,6 +46,21 @@
 
     //SREDSTVA
     SREDSTVA_NASLOV : "Unos i pregled sredstava",
+    SREDSTVA_NAME : "Naziv:",
+    SREDSTVA_NAME_REQUIRED : "Potreno je unijeti naziv sredstva!",
+    SREDSTVA_OPIS : "Opis: ",
+    SREDSTVA_SASTAV: "Sastav: ",
+    SREDSTVA_GRUPA : "Grupa: ",
+    SREDSTVA_FORMULACIJA: "Formulacija: ",
+    SREDSTVA_NACIN_DJELOVANJA: "Način djelovanja: ",
+    SREDSTVA_UPORABA : "Uporaba: ",
+    SREDSTVA_KONCENTRACIJA : "Koncentracija: ",
+    SREDSTVA_DOZIRANJE : "Doza(100L):",
+    SREDSTVA_KARENCA : "Karenca: ",
+    SREDSTVA_UNOS_BUTTON: "Unesi sredstvo",
+    SREDSTVA_TIP_SREDSTVA: "Tip sredstva: ",
+    SREDSTVA_TIP_SREDSTVA_PLACEHOLDER: "Odaberite tip sredstva"
+
 }) 
 
 export default constantsUI;

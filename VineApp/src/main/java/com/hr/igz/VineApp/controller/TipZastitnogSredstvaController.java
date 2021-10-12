@@ -1,6 +1,7 @@
 package com.hr.igz.VineApp.controller;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -32,19 +33,26 @@ public class TipZastitnogSredstvaController {
 		this.tipSredstvaService = tipSredstvaService;
 	}
 	
-	@PostMapping(value = "/noviTipSredstva",produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/tipSredstva",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> dodajTipSredstva(@Validated @RequestBody TipSredstvaDto tipSredstva){
 		log.info("Ime:{}",tipSredstva.getName());
 		return tipSredstvaService.dodajTipSredstva(tipSredstva);
 	}
 	
 	@GetMapping("/tipoviSredstava")
-	public ResponseEntity<Map<String, Object>> getAllTipoviSredstava(
+	public ResponseEntity<Map<String, Object>> getAllTipoviSredstavaPage(
 			@RequestParam(defaultValue = "0") int pageNo,
 			@RequestParam(defaultValue = "10") int pageSize){
 		
-		log.info("Page:{} +  {}",pageNo,pageSize);
+		log.info("Pokrenuto dohvacanje tipa sredstava na stranici : {}",pageNo);
 		return tipSredstvaService.findAllPagable(pageNo,pageSize);
+	}
+	
+	@GetMapping("/tipoviSredstavaAll")
+	public ResponseEntity<Set<Object>> getAllTipoviSredstava (){
+		log.info("Pokrenuto dohvacanje svih sredstava");
+		return tipSredstvaService.findAll();
+		
 	}
 
 }

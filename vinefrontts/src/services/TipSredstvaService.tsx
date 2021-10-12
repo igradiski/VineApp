@@ -10,10 +10,14 @@ class TipSredstvaService{
     }
 
      addTipSredstva(data: ITipSredstvaData):void{
-        axiosInstance.post("vineApp/api/noviTipSredstva",data)
+        axiosInstance.post("vineApp/api/tipSredstva",data)
         .then(response =>{
             console.log(response)
         });
+    }
+    async getAll(){
+        var promise = await axiosInstance.get("vineApp/api/tipoviSredstavaAll");
+        return promise;
     }
     
     async getAllTipSredstva(data: ITipSredstvaPagingData){

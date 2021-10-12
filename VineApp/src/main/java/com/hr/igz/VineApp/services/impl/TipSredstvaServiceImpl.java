@@ -1,8 +1,11 @@
 package com.hr.igz.VineApp.services.impl;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,10 +16,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.hr.igz.VineApp.domain.TipZastitnogSredstva;
+import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
 import com.hr.igz.VineApp.domain.dto.TipSredstvaDto;
 import com.hr.igz.VineApp.exception.ObjectAlreadyExists;
 import com.hr.igz.VineApp.repository.TipSredstvaRepository;
 import com.hr.igz.VineApp.services.TipSredstvaService;
+
 
 @Service
 public class TipSredstvaServiceImpl implements TipSredstvaService {
@@ -52,6 +57,24 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 		response.put("totalItems", pageTipovi.getTotalElements());
 		response.put("currentPage", pageTipovi.getNumber());
 		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Set<Object>> findAll() {
+		
+		ArrayList<TipZastitnogSredstva> tipovi = new ArrayList<>();
+		Set<Object> tipoviSredstva = new HashSet<Object>();
+		
+		tipSredstvaRepository.findAll().forEach(tipovi::add);
+		tipovi.stream().forEach(tip ->{
+			AntDCascaderDto dto = new  AntDCascaderDto();
+			dto.setKey(tip.getId().toString());
+			dto.setValue(tip.getId().toString());
+			dto.setLabel(tip.getName());
+			tipoviSredstva.add(dto);
+		});
+		
+		return new ResponseEntity<>(tipoviSredstva, HttpStatus.OK);
 	}
 
 }

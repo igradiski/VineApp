@@ -17,7 +17,10 @@
     width: 25%;
     
 }
+.ant-form-item-label{
+    width: 10%;
+}
 .ant-form-item-required{
-    width: 15vh;
+    width: 100%;
     font-weight: bold;
 }

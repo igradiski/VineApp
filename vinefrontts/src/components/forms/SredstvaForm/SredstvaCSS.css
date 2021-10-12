@@ -1,17 +1,25 @@
-.tip-sredstva-main-div{
-    height: 100%;
-    overflow: scroll;
-    display: inline-block;
+
+.forma-sredstva{
     width: 100%;
+    text-align: center;
+    display: inline-block;
+    padding-top: 10vh;
+    overflow: auto;
+    height: 80%; 
 }
+
+
+.text-area-4row{
+    width: 25%;
+    left: -5%;
+}
+
 .tablica-tip-sredstva{
     padding-left: 10%;
     padding-right: 10%;
     text-align: center;
 }
-.tip-sredstva-forma{
-    height: 40%;
-}
+
 .ant-table-cell{
     text-align: center;
 }
@@ -21,4 +29,51 @@
 }
 .ant-form-item-explain{
     text-align: center;
+}
+.ant-form-item-label{
+    font-weight: bold;
+}
+.ant-form-item .ant-select, .ant-form-item .ant-cascader-picker {
+    left: -5%;
+    width: 25%;
+}
+@media only screen and (max-width: 650px) {
+    .text-area-4row{
+        width: 25%;
+        left: 0%;
+    }
+    .ant-form{
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        display: inline-grid;
+        left: 5%;
+    }
+    .input-login{
+        margin-right: 0%;
+    }
+
+    .ant-form-item-label{
+        left: 0%;
+    }
+    .ant-form-item .ant-select, .ant-form-item .ant-cascader-picker {
+        left: 0%;
+        width: 25%;
+    }
+
+    .input-login{
+        width: 25%;  
+    }
+    .ant-form-item .ant-form-item-label {
+        text-align: center;
+    }
+    .ant-form-item-required{
+        width: 10%;
+        text-align: center;
+        font-weight: bold;
+    }
+    .ant-form-item-label{
+        width: 50%;
+    }
+
 }
