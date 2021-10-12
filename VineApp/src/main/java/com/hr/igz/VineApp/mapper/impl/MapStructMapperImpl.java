@@ -1,5 +1,6 @@
 package com.hr.igz.VineApp.mapper.impl;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,8 @@ public class MapStructMapperImpl implements MapStructMapper {
 			zastSredstvo.setTypeOfAction(sredstvo.getTypeOfAction());
 			zastSredstvo.setUsage(sredstvo.getUsage());
 			zastSredstvo.setTipZastitnogSredstva(tipSredstvaRepository.getById(sredstvo.getTypeOfMedium()));
-			zastSredstvo.setConcentration(sredstvo.getConcentration());
-			zastSredstvo.setDosageOn100(sredstvo.getDosageOn100());
+			zastSredstvo.setConcentration(BigDecimal.valueOf(Double.valueOf(sredstvo.getConcentration())));
+			zastSredstvo.setDosageOn100(BigDecimal.valueOf(Double.valueOf(sredstvo.getDosageOn100())));
 			zastSredstvo.setWaiting(sredstvo.getWaiting());
 			zastSredstvo.setDate(Instant.now());
 			zastSredstvo.setApproved(1);
