@@ -2,9 +2,8 @@ package com.hr.igz.VineApp.domain;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Set;
+import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,13 +12,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-@Entity(name="TipZastitnogSredstva")
+import lombok.Data;
+
+@Entity
 @Table(name="TIP_ZASTITNOG_SREDSTVA")
 @Data
-@NoArgsConstructor
 public class TipZastitnogSredstva implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -33,9 +32,8 @@ public class TipZastitnogSredstva implements Serializable {
 	@Column(name="date")
 	private Instant date;
 	
-	@OneToMany(
-			mappedBy = "tipZastitnogSredstva",
-			cascade = CascadeType.ALL)
-	private Set<ZastitnoSredstvo> sredstva;
+	@OneToMany(mappedBy = "tipZastitnogSredstva")
+	@JsonManagedReference
+	private List<ZastitnoSredstvo> sredstva;
 
 }

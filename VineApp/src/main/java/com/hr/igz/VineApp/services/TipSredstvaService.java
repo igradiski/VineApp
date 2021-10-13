@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 
+import com.hr.igz.VineApp.domain.TipZastitnogSredstva;
 import com.hr.igz.VineApp.domain.dto.TipSredstvaDto;
 
 public interface TipSredstvaService {
@@ -14,5 +15,7 @@ public interface TipSredstvaService {
 	ResponseEntity<Map<String, Object>> findAllPagable(int page, int size);
 
 	ResponseEntity<Set<Object>> findAll();
+	
+	TipZastitnogSredstva findById(Long id);
 
 }

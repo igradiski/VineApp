@@ -1,9 +1,15 @@
+.ant-steps{
+    padding-top: 2%;
+    width: 80%;
+    padding-left: 15%;
+}
+
 
 .forma-sredstva{
     width: 100%;
     text-align: center;
     display: inline-block;
-    padding-top: 10vh;
+    padding-top: 1%;
     overflow: auto;
     height: 80%; 
 }
@@ -37,7 +43,63 @@
     left: -5%;
     width: 25%;
 }
+
+/*
+ crta izmedu stepova -hidden */
+.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title::after {
+    background-color: #f0f0f0;
+    visibility: hidden;
+}
+.ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title::after {
+    background-color: #1890ff;
+    visibility: hidden;
+}
+
+.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-icon {
+    background: #7cb305;
+    border-color: black;
+}
+/*okvir*/
+.ant-steps-item-finish .ant-steps-item-icon {
+    background-color: #fff;
+    border-color: black;
+}
+.ant-steps-item-title{
+    font-weight: bold;
+}
+.ant-steps-item {
+    padding: 0%;
+}
+.ant-steps-item-wait{
+    padding: 0%;
+}
+.ant-steps-horizontal:not(.ant-steps-label-vertical) .ant-steps-item {
+    padding-left: 0%;
+    white-space: nowrap;
+}
 @media only screen and (max-width: 650px) {
+    .ant-steps-item {
+        padding: 1%;
+    }
+    .ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title::after {
+        background-color: #1890ff;
+        visibility: hidden;
+    }
+    .ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title::after {
+        background-color: #f0f0f0;
+        visibility: hidden;
+    }
+
+    .ant-steps-horizontal:not(.ant-steps-label-vertical) .ant-steps-item {
+        padding-left: 0%;
+        white-space: nowrap;
+    }
+    .ant-steps{
+        padding-top: 2%;
+        width: 75%;
+        padding-left: 10%;
+        display: inline-block;
+    }
     .text-area-4row{
         width: 25%;
         left: 0%;

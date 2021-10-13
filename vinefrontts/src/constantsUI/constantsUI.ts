@@ -45,6 +45,8 @@
     TIP_SREDSTVA_TBL_DATUM: "Datum unosa",
 
     //SREDSTVA
+    SREDSTVA_FORMA_UNOS: "Unos sredstava",
+    SREDSTVA_SIFRARNIK: "Pregled sredstava",
     SREDSTVA_NASLOV : "Unos i pregled sredstava",
     SREDSTVA_NAME : "Naziv:",
     SREDSTVA_NAME_REQUIRED : "Potreno je unijeti naziv sredstva!",
@@ -59,7 +61,21 @@
     SREDSTVA_KARENCA : "Karenca: ",
     SREDSTVA_UNOS_BUTTON: "Unesi sredstvo",
     SREDSTVA_TIP_SREDSTVA: "Tip sredstva: ",
-    SREDSTVA_TIP_SREDSTVA_PLACEHOLDER: "Odaberite tip sredstva"
+    SREDSTVA_TIP_SREDSTVA_PLACEHOLDER: "Odaberite tip sredstva",
+
+    //SREDSTVA_SIFRARNIK
+    SREDSTVA_SIFRARNIK_NAZIV:"Naziv",
+    SREDSTVA_SIFRARNIK_OPIS:"Opis",
+    SREDSTVA_SIFRARNIK_SASTAV:"Sastav",
+    SREDSTVA_SIFRARNIK_GRUPA:"Grupa",
+    SREDSTVA_SIFRARNIK_FORMULACIJA:"Formulacija",
+    SREDSTVA_SIFRARNIK_PRIMJENA:"Primjena",
+    SREDSTVA_SIFRARNIK_KORISTENJE:"Koristenje",
+    SREDSTVA_SIFRARNIK_KONCENTRACIJA:"Koncentracija",
+    SREDSTVA_SIFRARNIK_DOZIRANJE:"Doziranje na 100l",
+    SREDSTVA_SIFRARNIK_UNESEN:"Datum unosa",
+    SREDSTVA_SIFRARNIK_TIP:"Tip sredstva",
+
 
 }) 
 

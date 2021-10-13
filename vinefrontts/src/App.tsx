@@ -9,7 +9,7 @@ import PublicRoutes from "./route/publicRoute";
 import MainForm from "./components/forms/MainForm/MainForm";
 import GlavniPregled from "./components/forms/Kalendar/Kalendar";
 import TipSredstva from "./components/forms/TipSredstvaForm/TipSredstvaForm";
-import SredstvaForm from "./components/forms/SredstvaForm/SredstvaForm";
+import SredstvaSteps from "./components/forms/SredstvaForm/SredstvaSteps";
 
 
 const App = () => {
@@ -35,7 +35,7 @@ const App = () => {
             path="/tipSredstva"
           />
           <PublicRoutes
-            component={SredstvaForm}
+            component={SredstvaSteps}
             path="/sredstva"
           />
           <PublicRoutes

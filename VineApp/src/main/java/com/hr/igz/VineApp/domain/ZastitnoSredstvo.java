@@ -14,13 +14,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "ZASTITNO_SREDSTVO")
 @Data
-@NoArgsConstructor
 public class ZastitnoSredstvo implements Serializable {
 	/**
 	* 
@@ -36,6 +36,7 @@ public class ZastitnoSredstvo implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="TIP_ZASTITNOG_SREDSTVA_id")
+	@JsonBackReference
 	private TipZastitnogSredstva tipZastitnogSredstva;
 
 	private String description;
@@ -61,6 +62,7 @@ public class ZastitnoSredstvo implements Serializable {
 	private Integer waiting;
 	
 	private Integer approved;
+	
 	
 	private Instant date;
 

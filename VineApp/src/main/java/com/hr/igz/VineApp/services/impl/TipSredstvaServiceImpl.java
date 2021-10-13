@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,6 +20,7 @@ import com.hr.igz.VineApp.domain.TipZastitnogSredstva;
 import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
 import com.hr.igz.VineApp.domain.dto.TipSredstvaDto;
 import com.hr.igz.VineApp.exception.ObjectAlreadyExists;
+import com.hr.igz.VineApp.mapper.TipSredstvaMapper;
 import com.hr.igz.VineApp.repository.TipSredstvaRepository;
 import com.hr.igz.VineApp.services.TipSredstvaService;
 
@@ -28,9 +30,12 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 	
 	private TipSredstvaRepository tipSredstvaRepository;
 	
+	private final TipSredstvaMapper mapper;
+	
 	@Autowired
-	public TipSredstvaServiceImpl(TipSredstvaRepository tipSredstvaRepository) {
+	public TipSredstvaServiceImpl(TipSredstvaRepository tipSredstvaRepository,TipSredstvaMapper mapper) {
 		this.tipSredstvaRepository= tipSredstvaRepository;
+		this.mapper= mapper;
 	}
 
 	@Override
@@ -52,13 +57,14 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 		Pageable paging = PageRequest.of(page, size);
 		Page<TipZastitnogSredstva> pageTipovi = tipSredstvaRepository.findAll(paging);
 		Map<String, Object> response = new HashMap<>();
-		response.put("tipovi", pageTipovi.getContent());
+		response.put("tipovi", mapAllTipovi(pageTipovi.getContent()));
 		response.put("totalPages", pageTipovi.getTotalPages());
 		response.put("totalItems", pageTipovi.getTotalElements());
 		response.put("currentPage", pageTipovi.getNumber());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-
+	
+	
 	@Override
 	public ResponseEntity<Set<Object>> findAll() {
 		
@@ -75,6 +81,19 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 		});
 		
 		return new ResponseEntity<>(tipoviSredstva, HttpStatus.OK);
+	}
+
+	@Override
+	public TipZastitnogSredstva findById(Long id) {
+		return tipSredstvaRepository.findById(id).get();
+	}
+	
+	private Set<TipSredstvaDto> mapAllTipovi(List<TipZastitnogSredstva> list) {
+		Set<TipSredstvaDto> set = new HashSet<TipSredstvaDto>();
+		list.stream().forEach(tip ->{
+			set.add(mapper.TipSredstvaToTipSredstvaDto(tip));
+		});
+		return set;
 	}
 
 }

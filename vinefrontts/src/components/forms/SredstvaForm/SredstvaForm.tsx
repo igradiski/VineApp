@@ -60,7 +60,6 @@ const SredstvaForm: FunctionComponent = () => {
       },[]);
 
     return (
-        <div className="tip-sredstva-main-div">
             <Form
                 name="basic"
                 className="forma-sredstva"
@@ -192,8 +191,6 @@ const SredstvaForm: FunctionComponent = () => {
                 </Button>
             </Form.Item>
             </Form>
-
-        </div>
     );
 }
 export default SredstvaForm;

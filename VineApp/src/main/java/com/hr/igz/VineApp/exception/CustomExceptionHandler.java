@@ -26,5 +26,12 @@ public class CustomExceptionHandler extends  ResponseEntityExceptionHandler {
 		var error = new JsonResponseError(HttpStatus.FORBIDDEN,ex.getLocalizedMessage());
         return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
     }
+	
+	@ExceptionHandler(PostFailureException.class)
+    public final ResponseEntity<JsonResponseError> handlePostFailureException(PostFailureException ex, WebRequest request) {
+		
+		var error = new JsonResponseError(HttpStatus.CONFLICT,ex.getLocalizedMessage());
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
 
 }
