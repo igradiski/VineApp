@@ -26,5 +26,21 @@ public abstract class SredstvoMapper {
 	@Mapping(source = "sredstvo.waiting",target = "waiting")
 	@Mapping(target = "tipZastitnogSredstva",expression = "java(sredstvoRepos.findById(sredstvo.getTypeOfMedium()).get())")
 	public abstract ZastitnoSredstvo sredstvoDtoToZastitnoSredstvo(SredstvoDto sredstvo, TipSredstvaRepository sredstvoRepos);
+	
+	
+	@Mapping(source = "name",target = "name")
+	@Mapping(source = "description",target = "description")
+	@Mapping(source = "composition",target = "composition")
+	@Mapping(source = "group",target = "group")
+	@Mapping(source = "formulation",target = "formulation")
+	@Mapping(source = "typeOfAction",target = "typeOfAction")
+	@Mapping(source = "usage",target = "usage")
+	@Mapping(source = "concentration",target = "concentration")
+	@Mapping(source = "dosageOn100",target = "dosageOn100")
+	@Mapping(source = "waiting",target = "waiting")
+	@Mapping(source = "date",target = "date")
+	@Mapping(target = "nameOfTipSredstva",expression = "java(sredstvo.getTipZastitnogSredstva().getName())")
+	public abstract SredstvoDto ZastitnoSredstvoToZastitnoSredstvoDto(ZastitnoSredstvo sredstvo);
+	
 
 }

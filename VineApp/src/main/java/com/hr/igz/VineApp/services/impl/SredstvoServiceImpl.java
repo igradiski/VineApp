@@ -3,8 +3,10 @@ package com.hr.igz.VineApp.services.impl;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -87,11 +89,19 @@ public class SredstvoServiceImpl implements SredstvoService {
 		Map<String, Object> response = new HashMap<>();
 		Pageable paging = PageRequest.of(pageNo, pageSize);
 		Page<ZastitnoSredstvo> page = repos.findAll(paging);
-		response.put("sredstva", page.getContent());
+		response.put("sredstva", mapAllSredstva(page.getContent()));
 		response.put("totalPages", page.getTotalPages());
 		response.put("totalItems", page.getTotalElements());
 		response.put("currentPage", page.getNumber());
 		return new ResponseEntity<>(response,HttpStatus.OK);
+	}
+	
+	private Set<SredstvoDto> mapAllSredstva(List<ZastitnoSredstvo> list){
+		Set<SredstvoDto> set = new HashSet<SredstvoDto>();
+		list.stream().forEach(sredstvo ->{
+			set.add(mapper.ZastitnoSredstvoToZastitnoSredstvoDto(sredstvo));
+		});
+		return set;
 	}
 	
 	

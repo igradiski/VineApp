@@ -1,6 +1,6 @@
 import axiosInstance from "../axios/axiosInstance";
 import ITipSredstvaData from "../types/TipSredstvaType";
-import ITipSredstvaPagingData from  "../types/TipSredstvaPaging";
+import IDefaultPagingData from  "../types/IDefaultPagingData";
 
 
 
@@ -12,6 +12,7 @@ class TipSredstvaService{
      addTipSredstva(data: ITipSredstvaData):void{
         axiosInstance.post("vineApp/api/tipSredstva",data)
         .then(response =>{
+            //TODO 
             console.log(response)
         });
     }
@@ -20,7 +21,7 @@ class TipSredstvaService{
         return promise;
     }
     
-    async getAllTipSredstva(data: ITipSredstvaPagingData){
+    async getAllTipSredstva(data: IDefaultPagingData){
         console.log(data.pageNo,data.pageSize)
         var promise = await axiosInstance.get("vineApp/api/tipoviSredstava",{params :data});
         return promise;

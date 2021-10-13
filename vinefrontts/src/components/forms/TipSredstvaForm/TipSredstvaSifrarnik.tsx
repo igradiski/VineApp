@@ -3,7 +3,7 @@ import { Table,Pagination } from 'antd';
 
 import constant from "../../../constantsUI/constantsUI";
 import TipSredstvaService from "../../../services/TipSredstvaService";
-import ITipSredstvaPaging from "../../../types/TipSredstvaPaging";
+import IDefaultPagingData from "../../../types/IDefaultPagingData";
 import 'antd/dist/antd.css';
 import "./TipSredstvaCSS.css"
 
@@ -22,9 +22,10 @@ const TipSredstvaSifrarnik: FunctionComponent = () => {
     useEffect(() => {
 
         const getInitialData = async () =>{
-            const data : ITipSredstvaPaging ={
+            const data : IDefaultPagingData ={
                 pageNo:pageNo,
-                pageSize:pageSize
+                pageSize:pageSize,
+                sort:[]
             }
             let tipSredstvaSrc = new TipSredstvaService();
             tipSredstvaSrc.getAllTipSredstva(data)

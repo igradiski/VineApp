@@ -21,9 +21,10 @@
 }
 
 .tablica-tip-sredstva{
-    padding-left: 10%;
-    padding-right: 10%;
+    padding-left: 2%;
+    padding-right: 2%;
     text-align: center;
+    width: 50%;
 }
 
 .ant-table-cell{

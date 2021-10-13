@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.hr.igz.VineApp.domain.TipZastitnogSredstva;
-import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
 import com.hr.igz.VineApp.domain.dto.TipSredstvaDto;
 import com.hr.igz.VineApp.exception.ObjectAlreadyExists;
 import com.hr.igz.VineApp.mapper.TipSredstvaMapper;
@@ -73,13 +72,8 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 		
 		tipSredstvaRepository.findAll().forEach(tipovi::add);
 		tipovi.stream().forEach(tip ->{
-			AntDCascaderDto dto = new  AntDCascaderDto();
-			dto.setKey(tip.getId().toString());
-			dto.setValue(tip.getId().toString());
-			dto.setLabel(tip.getName());
-			tipoviSredstva.add(dto);
+			tipoviSredstva.add(mapper.AntTipSredstvaToAntDCascaderDto(tip));
 		});
-		
 		return new ResponseEntity<>(tipoviSredstva, HttpStatus.OK);
 	}
 
@@ -89,6 +83,7 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 	}
 	
 	private Set<TipSredstvaDto> mapAllTipovi(List<TipZastitnogSredstva> list) {
+		
 		Set<TipSredstvaDto> set = new HashSet<TipSredstvaDto>();
 		list.stream().forEach(tip ->{
 			set.add(mapper.TipSredstvaToTipSredstvaDto(tip));

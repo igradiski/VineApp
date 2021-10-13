@@ -1,11 +1,51 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent,useState, useEffect } from "react";
 import { Table,Pagination } from 'antd';
+import { EditOutlined,DeleteOutlined} from '@ant-design/icons';
 import constant from "../../../constantsUI/constantsUI";
 import 'antd/dist/antd.css';
 import "./SredstvaCSS.css"
+import DefaultPagingData from "../../../types/IDefaultPagingData";
+import SredstvaService from "../../../services/SredstvaService";
 
 
 const SredstvaSifrarnik: FunctionComponent = () => {
+
+    const [pageSize, setPageSize] = useState(2);
+    const [pageNo, setPageNo] = useState(0);
+    const [totalItems,setTotalItems] = useState(0);
+    const [tableData,setTableData] = useState([])
+    
+    const promijeniStranicu = (page : number ,pageSize: number | undefined)=>{
+        setPageNo(page-1);
+    }
+    const renderButtons = () =>{
+        return (<div>
+            <EditOutlined />
+            <DeleteOutlined />
+            </div>)
+        
+    }
+
+    useEffect(()=>{
+        const getInitialData = async () =>{
+            const data : DefaultPagingData ={
+                pageNo:pageNo,
+                pageSize:pageSize,
+                sort:[]
+            }
+            let sredstvaService = new SredstvaService();
+            sredstvaService.getAllSredstva(data)
+            .then(response =>{
+                setTableData(response.data.sredstva);
+                setTotalItems(response.data.totalItems);
+                setPageNo(response.data.currentPage);
+            }).catch((error)=>{
+                //TODO error
+                console.log(console.error());
+            })
+        }
+        getInitialData();
+    },[pageNo]);
 
     const columns = [
         {
@@ -50,7 +90,16 @@ const SredstvaSifrarnik: FunctionComponent = () => {
         },
         {
             title: constant.SREDSTVA_SIFRARNIK_TIP,
-            dataIndex: 'typeOfMedium',
+            dataIndex: 'nameOfTipSredstva',
+        },
+        {
+            title: "Date",
+            dataIndex: 'date',
+        },
+        {
+            title: "",
+            dataIndex: 'buttons',
+            render : renderButtons
         },
     ]
 
@@ -60,8 +109,11 @@ const SredstvaSifrarnik: FunctionComponent = () => {
             <Table 
             className="tablica-tip-sredstva" 
             columns={columns}
+            dataSource={tableData}
             pagination={false}
+            rowKey="name" 
             />
+            <Pagination pageSize={pageSize} total={totalItems} onChange={promijeniStranicu}/>
         </div>
     );
 }
