@@ -1,5 +1,5 @@
 import { FunctionComponent, useState ,useEffect} from "react";
-import { Form, Input, Button,Cascader } from 'antd';
+import { Form, Input, Button,Cascader,Modal } from 'antd';
 
 import constant from "../../../constantsUI/constantsUI";
 import 'antd/dist/antd.css';
@@ -24,6 +24,19 @@ const SredstvaForm: FunctionComponent = () => {
     const [waiting, setWaiting] = useState("2");
     const [typeOfMedium,setTypeOfMedium] = useState("");
     
+    function successModal() {
+        Modal.success({
+            title: constant.UNOS_SREDSTVA_SUCCESS_TITLE,
+            content: constant.UNOS_SREDSTVA_SUCCESS
+        });
+    }
+    function errorModal() {
+        Modal.error({
+          title: constant.UNOS_SREDSTVA_ERROR_TITLE,
+          content: constant.UNOS_SREDSTVA_ERROR,
+
+        });
+      }
 
     const unesiSredstvo = () =>{
         const data : ISredstvoData ={
@@ -40,8 +53,12 @@ const SredstvaForm: FunctionComponent = () => {
             typeOfMedium:typeOfMedium
         }
         let sredstvaSrc = new SredstvaService();
-        sredstvaSrc.addSredstvo(data);
-
+        sredstvaSrc.addSredstvo(data)
+        .then(response =>{
+            successModal();
+        }).catch((error) =>{
+            errorModal();
+        })
     }
 
     useEffect(() => {
@@ -51,9 +68,6 @@ const SredstvaForm: FunctionComponent = () => {
             tipSredstvaSrc.getAll()
             .then(response=>{
                 setTipSredstvaData(response.data)
-            }).catch((error)=>{
-                //TODO handle error
-                console.log(console.error());
             })
         }
         getInitialData();

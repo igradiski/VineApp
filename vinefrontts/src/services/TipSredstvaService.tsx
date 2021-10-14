@@ -9,12 +9,9 @@ class TipSredstvaService{
     constructor() {
     }
 
-     addTipSredstva(data: ITipSredstvaData):void{
-        axiosInstance.post("vineApp/api/tipSredstva",data)
-        .then(response =>{
-            //TODO 
-            console.log(response)
-        });
+     async addTipSredstva(data: ITipSredstvaData){
+        var promise = await axiosInstance.post("vineApp/api/tipSredstva",data);
+        return promise;
     }
     async getAll(){
         var promise = await axiosInstance.get("vineApp/api/tipoviSredstavaAll");

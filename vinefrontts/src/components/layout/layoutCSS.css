@@ -2,7 +2,6 @@
     height: 100vh;
 }
 
-
 .ant-layout-sider {
     background-color:#7cb305;
     height: 95%;
@@ -31,6 +30,19 @@
     color: white;
     font-size: 16px;
     font-weight: bold;
+}
+.ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark .ant-menu-sub {
+    background-color:#7cb305;
+}
+
+.ant-menu-title-content{
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+ant-menu-sub {
+    background-color:#7cb305;
 }
 
 @media only screen and (max-width: 650px) {

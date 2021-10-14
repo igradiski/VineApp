@@ -1,7 +1,6 @@
 package com.hr.igz.VineApp.services.impl;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,17 +77,9 @@ public class SredstvoServiceImpl implements SredstvoService {
 	@Override
 	public ResponseEntity<Map<String, Object>> getAllSredstvaPagable(int pageNo, int pageSize, String[] sort) {
 		
-		List<Order> orders = new ArrayList<Order>();
-		if (sort[0].contains(",")) {
-	        for (String sortOrder : sort) {
-	          String[] _sort = sortOrder.split(",");
-	          orders.add(new Order(sortHelper.getSortDirection(_sort[1]), _sort[0]));
-	        }
-	      } else {
-	        orders.add(new Order(sortHelper.getSortDirection(sort[1]), sort[0]));
-	      }
+		List<Order> orders = sortHelper.getOrdersFromArray(sort);
 		Map<String, Object> response = new HashMap<>();
-		Pageable paging = PageRequest.of(pageNo, pageSize);
+		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(orders));
 		Page<ZastitnoSredstvo> page = repos.findAll(paging);
 		response.put("sredstva", mapAllSredstva(page.getContent()));
 		response.put("totalPages", page.getTotalPages());

@@ -10,6 +10,7 @@ import MainForm from "./components/forms/MainForm/MainForm";
 import GlavniPregled from "./components/forms/Kalendar/Kalendar";
 import TipSredstva from "./components/forms/TipSredstvaForm/TipSredstvaForm";
 import SredstvaSteps from "./components/forms/SredstvaForm/SredstvaSteps";
+import BolestSteps from "./components/forms/BolestForm/BolestSteps";
 
 
 const App = () => {
@@ -30,6 +31,10 @@ const App = () => {
             component={RegisterForm}
             path="/register"
           /> 
+          <PublicRoutes
+            component={BolestSteps}
+            path="/bolest"
+          />
           <PublicRoutes
             component={TipSredstva}
             path="/tipSredstva"

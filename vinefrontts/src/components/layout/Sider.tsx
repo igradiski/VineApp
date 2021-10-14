@@ -7,6 +7,8 @@ import { HomeOutlined,UserOutlined ,UsergroupAddOutlined,CalendarOutlined} from 
 import { useAppSelector } from "../../hooks";
 import constantsUI from "../../constantsUI/constantsUI";
 
+const { SubMenu } = Menu;
+
 const LoggedUserMenu = () => {
     return (
         <Menu theme="dark" mode="inline">
@@ -31,13 +33,27 @@ const GuestMenu = () => {
             <Menu.Item key="3" icon={<UsergroupAddOutlined />}>
                 <Link className="left-menu-link" to="/register">{constantsUI.LEFT_MENU_REGISTER}</Link>
             </Menu.Item>
+
+
+            <SubMenu key="g1" title="Bolesti">
             <Menu.Item key="4" icon={<UsergroupAddOutlined />}>
-                <Link className="left-menu-link" to="/sredstva">{constantsUI.LEFT_MENU_SREDSTVA}</Link>
+                <Link className="left-menu-link" to="/bolest">Bolest</Link>
             </Menu.Item>
             <Menu.Item key="5" icon={<UsergroupAddOutlined />}>
+                <Link className="left-menu-link" to="/tipSredstva">Fenofaza razvoja</Link>
+            </Menu.Item>
+            </SubMenu>
+
+
+            <SubMenu key="g2" title="Sredstva">
+            <Menu.Item key="7" icon={<UsergroupAddOutlined />}>
+                <Link className="left-menu-link" to="/sredstva">{constantsUI.LEFT_MENU_SREDSTVA}</Link>
+            </Menu.Item>
+            <Menu.Item key="8" icon={<UsergroupAddOutlined />}>
                 <Link className="left-menu-link" to="/tipSredstva">{constantsUI.LEFT_MENU_TIP_SREDSTVA}</Link>
             </Menu.Item>
-            
+            </SubMenu>
+
         </Menu>
     )
 }

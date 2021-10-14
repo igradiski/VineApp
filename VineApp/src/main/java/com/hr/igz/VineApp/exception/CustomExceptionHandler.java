@@ -33,5 +33,12 @@ public class CustomExceptionHandler extends  ResponseEntityExceptionHandler {
 		var error = new JsonResponseError(HttpStatus.CONFLICT,ex.getLocalizedMessage());
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
+	
+	@ExceptionHandler(DeleteFailureException.class)
+    public final ResponseEntity<JsonResponseError> handleDeleteFailureException(DeleteFailureException ex, WebRequest request) {
+		
+		var error = new JsonResponseError(HttpStatus.CONFLICT,ex.getLocalizedMessage());
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
 
 }

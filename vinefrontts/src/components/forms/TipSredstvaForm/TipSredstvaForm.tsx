@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from "react";
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button,Modal } from 'antd';
 
 import constant from "../../../constantsUI/constantsUI";
 import 'antd/dist/antd.css';
@@ -8,17 +8,35 @@ import TipSredstvaSifrarnik from "./TipSredstvaSifrarnik";
 import ITipSredstvaData from "../../../types/TipSredstvaType";
 import TipSredstvaService from "../../../services/TipSredstvaService";
 
-
 const TipSredstva: FunctionComponent = () => {
 
     const [name, setName] = useState("");
+
+    function successModal() {
+        Modal.success({
+            title: constant.UNOS_TIP_SREDSTVA_SUCCESS_TITLE,
+            content: constant.UNOS_TIP_SREDSTVA_SUCCESS
+        });
+    }
+    function errorModal() {
+        Modal.error({
+          title: constant.UNOS_TIP_SREDSTVA_ERROR_TITLE,
+          content: constant.UNOS_TIP_SREDSTVA_ERROR,
+
+        });
+      }
 
     const addTipSredstva = () => {
         const data: ITipSredstvaData ={
             name:name,
         }
         let tipSredstvaSrc : TipSredstvaService = new TipSredstvaService();
-        tipSredstvaSrc.addTipSredstva(data);
+        tipSredstvaSrc.addTipSredstva(data)
+        .then(response =>{
+            successModal();
+        }).catch((error) =>{
+            errorModal();
+        })
     }
 
     return (

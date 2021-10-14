@@ -33,9 +33,6 @@ const TipSredstvaSifrarnik: FunctionComponent = () => {
                 setTableData(response.data.tipovi);
                 setTotalItems(response.data.totalItems);
                 setPageNo(response.data.currentPage);
-            }).catch((error)=>{
-                //TODO handle error
-                console.log(console.error());
             })
         }
         getInitialData();

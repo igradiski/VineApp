@@ -9,11 +9,9 @@ class SredstvaService{
     constructor() {
     }
 
-    addSredstvo(data : ISredstvoData):void{
-        axiosInstance.post("vineApp/api/addSredstvo",data).then(response =>{
-            //TODO
-            console.log(response)
-        });
+    async addSredstvo(data : ISredstvoData){
+        var promise = await axiosInstance.post("vineApp/api/addSredstvo",data);
+        return promise;
     }
 
     async getAllSredstva(data : IDefaultPagingData){

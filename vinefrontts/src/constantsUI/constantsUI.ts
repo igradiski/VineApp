@@ -43,6 +43,10 @@
     TIP_SREDSTVA_NASLOV_SIFRARNIK: "Popis tipova sredstava",
     TIP_SREDSTVA_TBL_NAZIV: "Naziv tipa",
     TIP_SREDSTVA_TBL_DATUM: "Datum unosa",
+    UNOS_TIP_SREDSTVA_SUCCESS_TITLE : "Unos uspješan",
+    UNOS_TIP_SREDSTVA_SUCCESS : "Podatak je uspješno unesen u bazu",
+    UNOS_TIP_SREDSTVA_ERROR_TITLE : "Greška kod unosa",
+    UNOS_TIP_SREDSTVA_ERROR : "Dogodila se greška kod unosa, provjerite podatke!",
 
     //SREDSTVA
     SREDSTVA_FORMA_UNOS: "Unos sredstava",
@@ -62,6 +66,10 @@
     SREDSTVA_UNOS_BUTTON: "Unesi sredstvo",
     SREDSTVA_TIP_SREDSTVA: "Tip sredstva: ",
     SREDSTVA_TIP_SREDSTVA_PLACEHOLDER: "Odaberite tip sredstva",
+    UNOS_SREDSTVA_SUCCESS_TITLE : "Unos uspješan",
+    UNOS_SREDSTVA_SUCCESS : "Podatak je uspješno unesen u bazu",
+    UNOS_SREDSTVA_ERROR_TITLE : "Greška kod unosa",
+    UNOS_SREDSTVA_ERROR : "Dogodila se greška kod unosa, provjerite podatke!",
 
     //SREDSTVA_SIFRARNIK
     SREDSTVA_SIFRARNIK_NAZIV:"Naziv",
@@ -76,7 +84,26 @@
     SREDSTVA_SIFRARNIK_UNESEN:"Datum unosa",
     SREDSTVA_SIFRARNIK_TIP:"Tip sredstva",
 
-
+    //BOLEST
+    BOLEST_FORMA_UNOS: "Unos bolesti",
+    BOLEST_SIFRARNIK: "Pregled bolesti",
+    BOLEST_NASLOV:"Unos bolesti",
+    BOLEST_NAZIV:"Naziv bolesti",
+    BOLEST_NAZIV_MESSAGE_REQUIRED:"Unesite naziv bolesti!",
+    BOLEST_OPIS_MESSAGE_REQUIRED:"Unesite opis bolesti!",
+    BOLEST_OPIS:"Opis bolesti",
+    UNOS_BOLEST_SUCCESS_TITLE:"Unos bolesti uspješan",
+    UNOS_BOLEST_SUCCESS:"Bolest je uspješno unesena u bazu!",
+    UNOS_BOLEST_ERROR:"Dogodila se greška kod upisa bolesti!",
+    UNOS_BOLEST_ERROR_TITLE:"Greška kod unosa bolesti!",
+    BOLEST_SIFRARNIK_NAZIV:"Naziv",
+    BOLEST_SIFRARNIK_OPIS:"Opis",
+    BOLEST_SIFRARNIK_DATUM:"Datum unosa",
+    BOLEST_BRISANJE_USPJELO_NASLOV:"Uspješno obrisan zapis",
+    BOLEST_BRISANJE_USPJELO:"Zapis je uspješno izbrisan",
+    BOLEST_BRISANJE_FAIL_NASLOV:"Brisanje nije uspjelo!",
+    BOLEST_BRISANJE_FAIL:"Brisanje nije moguće!",
+    BOLEST_BRISANJE_PITANJE:"Želite li obrisati zapis?",
 }) 
 
 export default constantsUI;

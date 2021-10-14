@@ -4,7 +4,7 @@ import { EditOutlined,DeleteOutlined} from '@ant-design/icons';
 import constant from "../../../constantsUI/constantsUI";
 import 'antd/dist/antd.css';
 import "./SredstvaCSS.css"
-import DefaultPagingData from "../../../types/IDefaultPagingData";
+import IDefaultPagingData from "../../../types/IDefaultPagingData";
 import SredstvaService from "../../../services/SredstvaService";
 
 
@@ -20,7 +20,8 @@ const SredstvaSifrarnik: FunctionComponent = () => {
     }
     const renderButtons = () =>{
         return (<div>
-            <EditOutlined />
+             <EditOutlined />
+            <br></br>
             <DeleteOutlined />
             </div>)
         
@@ -28,7 +29,7 @@ const SredstvaSifrarnik: FunctionComponent = () => {
 
     useEffect(()=>{
         const getInitialData = async () =>{
-            const data : DefaultPagingData ={
+            const data : IDefaultPagingData ={
                 pageNo:pageNo,
                 pageSize:pageSize,
                 sort:[]
@@ -39,9 +40,6 @@ const SredstvaSifrarnik: FunctionComponent = () => {
                 setTableData(response.data.sredstva);
                 setTotalItems(response.data.totalItems);
                 setPageNo(response.data.currentPage);
-            }).catch((error)=>{
-                //TODO error
-                console.log(console.error());
             })
         }
         getInitialData();
