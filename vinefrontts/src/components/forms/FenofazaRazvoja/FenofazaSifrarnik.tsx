@@ -1,17 +1,12 @@
 import { FunctionComponent,useState, useEffect } from "react";
 import { Table,Pagination,Modal,Popconfirm} from 'antd';
-import { EditOutlined,DeleteOutlined} from '@ant-design/icons';
 import constant from "../../../constantsUI/constantsUI";
 import 'antd/dist/antd.css';
-import "./BolestCSS.css"
-import DefaultPagingData from "../../../types/IDefaultPagingData";
-import BolestService from "../../../services/BolestService";
-import IBolestdata from "../../../types/IBolestData";
-import PopConfirmCustom from "../CustomJSX/PopConfirmCustom";
+import "./FenofazaCSS.css"
 import TableUpdateDelete from "../CustomJSX/TableUpdateDelete";
 
 
-const BolestSifrarnik: FunctionComponent = () => {
+const FenofazaSifrarnik: FunctionComponent = () => {
 
     const [pageSize, setPageSize] = useState(2);
     const [pageNo, setPageNo] = useState(0);
@@ -21,49 +16,19 @@ const BolestSifrarnik: FunctionComponent = () => {
     const promijeniStranicu = (page : number ,pageSize: number | undefined)=>{
         setPageNo(page-1);
     }
+    //BOLEST_BRISANJE_PITANJE
+    const renderButtons = (text:any) =>{
+        {TableUpdateDelete(() =>editClick(text),()=>deleteClick(text),constant.BOLEST_BRISANJE_PITANJE)}
+    }
     const editClick = (text:any) =>{
+        //TODO
         console.log(text);
     }
 
     const deleteClick = (text:any) =>{
-        let bolestService = new BolestService();
-        const data:IBolestdata ={
-            name:text,
-            description:"",
-            date:""
-        }
-        bolestService.deleteBolestByName(data)
-        .then(()=>{
-            Modal.success({
-                title: constant.BOLEST_BRISANJE_USPJELO_NASLOV,
-                content: constant.BOLEST_BRISANJE_USPJELO
-            });
-            getInitialData();
-        }).catch(()=>{
-            Modal.error({
-                title: constant.BOLEST_BRISANJE_FAIL_NASLOV,
-                content: constant.BOLEST_BRISANJE_FAIL,
-            });
-        })
+        //TODOa
+        console.log(text);
     }
-    const getInitialData = async () =>{
-        const data : DefaultPagingData ={
-            pageNo:pageNo,
-            pageSize:pageSize,
-            sort:[]
-        }
-        let bolestService = new BolestService();
-        bolestService.getAllBolesti(data)
-        .then(response =>{
-            setTableData(response.data.bolesti);
-            setTotalItems(response.data.totalItems);
-            setPageNo(response.data.currentPage);
-        })
-    }
-
-    useEffect(()=>{
-        getInitialData();
-    },[pageNo]);
 
     const columns = [
         {
@@ -99,4 +64,4 @@ const BolestSifrarnik: FunctionComponent = () => {
         </div>
     );
 }
-export default BolestSifrarnik;
+export default FenofazaSifrarnik;

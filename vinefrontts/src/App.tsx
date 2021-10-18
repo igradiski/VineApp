@@ -11,6 +11,7 @@ import GlavniPregled from "./components/forms/Kalendar/Kalendar";
 import TipSredstva from "./components/forms/TipSredstvaForm/TipSredstvaForm";
 import SredstvaSteps from "./components/forms/SredstvaForm/SredstvaSteps";
 import BolestSteps from "./components/forms/BolestForm/BolestSteps";
+import FenofazaSteps from "./components/forms/FenofazaRazvoja/FenofazaSteps";
 
 
 const App = () => {
@@ -34,6 +35,11 @@ const App = () => {
           <PublicRoutes
             component={BolestSteps}
             path="/bolest"
+          />
+          
+          <PublicRoutes
+            component={FenofazaSteps}
+            path="/fenofaza"
           />
           <PublicRoutes
             component={TipSredstva}

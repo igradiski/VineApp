@@ -40,7 +40,7 @@ const GuestMenu = () => {
                 <Link className="left-menu-link" to="/bolest">Bolest</Link>
             </Menu.Item>
             <Menu.Item key="5" icon={<UsergroupAddOutlined />}>
-                <Link className="left-menu-link" to="/tipSredstva">Fenofaza razvoja</Link>
+                <Link className="left-menu-link" to="/fenofaza">Fenofaza razvoja</Link>
             </Menu.Item>
             </SubMenu>
 

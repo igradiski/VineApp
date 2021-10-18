@@ -104,6 +104,19 @@
     BOLEST_BRISANJE_FAIL_NASLOV:"Brisanje nije uspjelo!",
     BOLEST_BRISANJE_FAIL:"Brisanje nije moguće!",
     BOLEST_BRISANJE_PITANJE:"Želite li obrisati zapis?",
+
+    //FENOZAFA RAZVOJA
+    FENOFAZA_NASLOV: "Fenofaza razvoja",
+    FENOFAZA_FORMA_UNOS: "Unos fenofaza",
+    FENOFAZA_SIFRARNIK:"Pregled fenofaza",
+    FENOFAZA_SUCCESS_TITLE:"Unos uspješan",
+    FENOFAZA_SUCCESS:"Fenofaza razvoja uspješno unesena!",
+    FENOFAZA_ERROR_TITLE:"Greška kod unosa",
+    FENOFAZA_ERROR:"Dogodila se greška kod unosa fenofaze!",
+    FENOFAZA_FORM_NAZIV: "Naziv fenofaze: ",
+    FENOFAZA_FORM_NAZIV_REQUIRED: "Potrebno je unijeti naziv!",
+    FENOFAZA_FORM_VRIJEME: "Vrijeme prskanja: ",
+    FENOFAZA_FORM_VRIJEME_REQUIRED : "Potrebno je unijeti vrijeme prskanja!",
 }) 
 
 export default constantsUI;
