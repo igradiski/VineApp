@@ -71,6 +71,7 @@
     UNOS_SREDSTVA_ERROR_TITLE : "Greška kod unosa",
     UNOS_SREDSTVA_ERROR : "Dogodila se greška kod unosa, provjerite podatke!",
 
+
     //SREDSTVA_SIFRARNIK
     SREDSTVA_SIFRARNIK_NAZIV:"Naziv",
     SREDSTVA_SIFRARNIK_OPIS:"Opis",
@@ -107,6 +108,7 @@
 
     //FENOZAFA RAZVOJA
     FENOFAZA_NASLOV: "Fenofaza razvoja",
+    FENOFAZA_AZURIRANJE_NASLOV: "Ažuriranje fenofaza razvoja",
     FENOFAZA_FORMA_UNOS: "Unos fenofaza",
     FENOFAZA_SIFRARNIK:"Pregled fenofaza",
     FENOFAZA_SUCCESS_TITLE:"Unos uspješan",
@@ -117,6 +119,18 @@
     FENOFAZA_FORM_NAZIV_REQUIRED: "Potrebno je unijeti naziv!",
     FENOFAZA_FORM_VRIJEME: "Vrijeme prskanja: ",
     FENOFAZA_FORM_VRIJEME_REQUIRED : "Potrebno je unijeti vrijeme prskanja!",
+    FENOFAZA_SIFRARNIK_NAZIV: "Naziv fenofaze",
+    FENOFAZA_SIFRARNIK_VRIJEME: "Vrijeme prskanja",
+    FENOFAZA_NASLOV_SIFRARNIK : "Popis fenofaza razvoja",
+    FENOFAZA_BUTTON_UNOS:"Unesi",
+    FENOFAZA_BUTTON_AZURIRAJ:"Ažuriraj",
+
+
+    //serach by CUSTOM
+    CUSTOM_SEARCH_BY_NASLOV : "Pretraga po imenu",
+    CUSTOM_SEARCH_BY_PLACEHOLDER: "Unesite naziv",
+    CUSTOM_SEARCH_BY_PRETRAGA_BUTTON: "Pretraži",
+    CUSTOM_SEARCH_BY_RESET_BUTTON : "Očisti",
 }) 
 
 export default constantsUI;

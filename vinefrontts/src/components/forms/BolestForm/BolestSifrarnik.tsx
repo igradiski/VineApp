@@ -1,13 +1,11 @@
 import { FunctionComponent,useState, useEffect } from "react";
-import { Table,Pagination,Modal,Popconfirm} from 'antd';
-import { EditOutlined,DeleteOutlined} from '@ant-design/icons';
+import { Table,Pagination,Modal} from 'antd';
 import constant from "../../../constantsUI/constantsUI";
 import 'antd/dist/antd.css';
 import "./BolestCSS.css"
 import DefaultPagingData from "../../../types/IDefaultPagingData";
 import BolestService from "../../../services/BolestService";
 import IBolestdata from "../../../types/IBolestData";
-import PopConfirmCustom from "../CustomJSX/PopConfirmCustom";
 import TableUpdateDelete from "../CustomJSX/TableUpdateDelete";
 
 

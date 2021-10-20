@@ -7,8 +7,12 @@ import "./FenofazaCSS.css"
 import IFenofazaData from "../../../types/IFenofazaData";
 import FenofazaService from "../../../services/FenofazaService";
 
+type Props = {
+    isUpdate: boolean,
+    updateData: IFenofazaData
+}
 
-const FenofazaForm: FunctionComponent = () => {
+const FenofazaForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
 
     const [name, setName] = useState("");
     const [timeOfUsage, setTimeOfUsage] = useState("");
@@ -28,26 +32,47 @@ const FenofazaForm: FunctionComponent = () => {
         });
     }
 
-    const unesiFenofazu = () =>{
-        const data : IFenofazaData = {
-             name:name,
-             timeOfUsage:timeOfUsage,
-             date :""
+    const unesiFenofazu = () => {
+        const data: IFenofazaData = {
+            name: name,
+            timeOfUsage: timeOfUsage,
+            date: ""
         }
         let service = new FenofazaService();
-        service.addFenofaza(data)
-        .then(response =>{
-            successModal()
-        }).catch((error)=>{
-            errorModal()
-        })
+        if (isUpdate) {
+            service.updateFenofaza(data,updateData.name)
+            .then(response => {
+                successModal()
+            }).catch((error) => {
+                errorModal()
+            })
+        } else {
+            service.addFenofaza(data)
+                .then(response => {
+                    successModal()
+                }).catch((error) => {
+                    errorModal()
+                })
+        }
+
     }
+
+    const initialValues = {
+        name: updateData.name,
+        timeOfUsage: updateData.timeOfUsage,
+    }
+    useEffect(() => {
+        setName(updateData.name);
+        setTimeOfUsage(updateData.timeOfUsage);
+    }, []);
+
     return (
         <Form
             name="basic"
             className="forma-sredstva"
+            initialValues={initialValues}
         >
-            <h1 className="form-title">{constant.FENOFAZA_NASLOV}</h1>
+            <h1 className="form-title">{isUpdate ? constant.FENOFAZA_AZURIRANJE_NASLOV : constant.FENOFAZA_NASLOV}</h1>
             <Form.Item
                 label={constant.FENOFAZA_FORM_NAZIV}
                 name="name"
@@ -66,14 +91,14 @@ const FenofazaForm: FunctionComponent = () => {
             </Form.Item>
             <Form.Item
                 label={constant.FENOFAZA_FORM_VRIJEME}
-                name="description"
+                name="timeOfUsage"
                 rules={[
                     {
                         required: true,
                         message: constant.FENOFAZA_FORM_VRIJEME_REQUIRED,
                     },
                 ]}>
-                <TextArea 
+                <TextArea
                     className="text-area-4row"
                     rows={5}
                     value={timeOfUsage}
@@ -88,7 +113,7 @@ const FenofazaForm: FunctionComponent = () => {
                     htmlType="submit"
                     onClick={unesiFenofazu}
                 >
-                    {constant.SREDSTVA_UNOS_BUTTON}
+                    {isUpdate ? constant.FENOFAZA_BUTTON_AZURIRAJ : constant.FENOFAZA_BUTTON_UNOS}
                 </Button>
             </Form.Item>
         </Form>

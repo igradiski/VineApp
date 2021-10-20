@@ -1,5 +1,7 @@
 package com.hr.igz.VineApp.services;
 
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 
 import com.hr.igz.VineApp.domain.dto.FenofazaDto;
@@ -7,5 +9,9 @@ import com.hr.igz.VineApp.domain.dto.FenofazaDto;
 public interface FenofazaService {
 
 	ResponseEntity<Object> addFenofaza(FenofazaDto fenofaza);
+
+	ResponseEntity<Map<String, Object>> getFenofazePaged(int pageSize, int pageNo, String[] sort);
+
+	ResponseEntity<Object> updateFenofaza(FenofazaDto fenofaza, String name);
 
 }

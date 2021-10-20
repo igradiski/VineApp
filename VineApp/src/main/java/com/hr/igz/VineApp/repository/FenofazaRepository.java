@@ -10,4 +10,6 @@ public interface FenofazaRepository extends JpaRepository<FenozafaRazvoja, Long>
 
 	boolean existsByName(String name);
 
+	FenozafaRazvoja findByName(String name);
+
 }

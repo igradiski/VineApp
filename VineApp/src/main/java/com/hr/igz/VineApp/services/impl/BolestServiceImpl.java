@@ -38,6 +38,7 @@ public class BolestServiceImpl implements BolestService {
 	
 	@Autowired
 	public BolestServiceImpl(BolestRepository repos,BolestMapper mapper) {
+		
 		this.mapper=mapper;
 		this.repos=repos;
 	}
@@ -65,6 +66,7 @@ public class BolestServiceImpl implements BolestService {
 
 	@Override
 	public ResponseEntity<Map<String, Object>> getBolestiPaged(int pageSize, int pageNo, String[] sort) {
+		
 		List<Order> orders = sortHelper.getOrdersFromArray(sort);
 		Map<String, Object> response = new HashMap<>();
 		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(orders));
@@ -77,6 +79,7 @@ public class BolestServiceImpl implements BolestService {
 	}
 	
 	private Set<BolestDto> mapAllBolesti(List<Bolest> list){
+		
 		Set<BolestDto> set = new HashSet<BolestDto>();
 		list.stream().forEach(bolest ->{
 			set.add(mapper.BolestToBolestDto(bolest));
@@ -86,6 +89,7 @@ public class BolestServiceImpl implements BolestService {
 
 	@Override
 	public ResponseEntity<Object> deleteBolestByName(String name) {
+		
 		Bolest bolest = repos.findByName(name).orElseThrow(()-> new DeleteFailureException("Ne postoji objekt za brisanje!"));
 		try {
 			repos.delete(bolest);
