@@ -6,6 +6,7 @@ import 'antd/dist/antd.css';
 import "./FenofazaCSS.css"
 import IFenofazaData from "../../../types/IFenofazaData";
 import FenofazaService from "../../../services/FenofazaService";
+import { format } from "path";
 
 type Props = {
     isUpdate: boolean,
@@ -17,6 +18,7 @@ const FenofazaForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
     const [name, setName] = useState("");
     const [timeOfUsage, setTimeOfUsage] = useState("");
 
+    const [form] = Form.useForm();
     const { TextArea } = Input;
 
     function successModal() {
@@ -31,25 +33,34 @@ const FenofazaForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
             content: constant.FENOFAZA_ERROR,
         });
     }
+    const ocistiFormu = () =>{
+        setName("");
+        setTimeOfUsage("");
+        form.resetFields();
+    }
 
     const unesiFenofazu = () => {
         const data: IFenofazaData = {
+            id:"",
             name: name,
             timeOfUsage: timeOfUsage,
             date: ""
         }
         let service = new FenofazaService();
         if (isUpdate) {
-            service.updateFenofaza(data,updateData.name)
+            service.updateFenofaza(data,updateData.id)
             .then(response => {
-                successModal()
+                isUpdate=false;
+                ocistiFormu();
+                successModal();
             }).catch((error) => {
                 errorModal()
             })
         } else {
             service.addFenofaza(data)
                 .then(response => {
-                    successModal()
+                    ocistiFormu();
+                    successModal();
                 }).catch((error) => {
                     errorModal()
                 })
@@ -57,20 +68,21 @@ const FenofazaForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
 
     }
 
-    const initialValues = {
-        name: updateData.name,
-        timeOfUsage: updateData.timeOfUsage,
-    }
     useEffect(() => {
         setName(updateData.name);
         setTimeOfUsage(updateData.timeOfUsage);
+        form.setFieldsValue({
+            name:updateData.name,
+            timeOfUsage:updateData.timeOfUsage
+        })
     }, []);
 
     return (
         <Form
+            form={form}
             name="basic"
             className="forma-sredstva"
-            initialValues={initialValues}
+            onFinish={() => form.resetFields()}
         >
             <h1 className="form-title">{isUpdate ? constant.FENOFAZA_AZURIRANJE_NASLOV : constant.FENOFAZA_NASLOV}</h1>
             <Form.Item
@@ -86,6 +98,7 @@ const FenofazaForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
                 <Input
                     className="input-login"
                     value={name}
+
                     onChange={e => setName(e.target.value)}
                 />
             </Form.Item>

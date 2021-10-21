@@ -16,11 +16,12 @@ const FenofazaSteps: FunctionComponent = () => {
 
     const [currentStep, setCurrentStep] = useState(0);
     const [isUpdate,setIsUpdate] = useState(false);
-    const [updateData,setUpdateData]= useState<IFenofazaData>({name:"",date:"",timeOfUsage:""});
+    const [updateData,setUpdateData]= useState<IFenofazaData>({name:"",date:"",timeOfUsage:"",id:""});
+    
     const changeStep = (step: number) => {
         setCurrentStep(step);
         setIsUpdate(false);
-        setUpdateData({name:"",date:"",timeOfUsage:""});
+        setUpdateData({name:"",date:"",timeOfUsage:"",id:""});
     }
 
     const changeStepForUpdate = (step: number,data:IFenofazaData) => {

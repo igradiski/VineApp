@@ -17,8 +17,18 @@ class FenofazaService {
         return promise;
     }
 
-    async updateFenofaza(data: IFenofazaData, name: any) {
-        var promise = await axiosInstance.put("vineApp/api/updateFenofaza",data,{params:{name}});
+    async updateFenofaza(data: IFenofazaData, id: any) {
+        var promise = await axiosInstance.put("vineApp/api/updateFenofaza",data,{params:{id}});
+        return promise;
+    }
+
+    async findByItemName(name: string) {
+        var promise = await axiosInstance.get("vineApp/api/findFenofazaByName",{params:{name}});
+        return promise;
+    }
+
+    async deleteItemById(id: string) {
+        var promise = await axiosInstance.delete("vineApp/api/deleteFenofaza",{params:{id}});
         return promise;
     }
 

@@ -93,10 +93,10 @@ public class BolestServiceImpl implements BolestService {
 		Bolest bolest = repos.findByName(name).orElseThrow(()-> new DeleteFailureException("Ne postoji objekt za brisanje!"));
 		try {
 			repos.delete(bolest);
+			return ResponseEntity.status(HttpStatus.CREATED).body("Bolest uspjesno obrisana");
 		}catch (Exception e) {
 			throw new DeleteFailureException(e.getMessage());
 		}
-		return null;
 	}
 
 }

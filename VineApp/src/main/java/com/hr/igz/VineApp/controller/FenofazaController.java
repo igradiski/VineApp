@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -44,6 +45,8 @@ public class FenofazaController {
 			@RequestParam(defaultValue = "2") int pageSize,
 			@RequestParam(defaultValue = "0") int pageNo,
 			@RequestParam(defaultValue = "id,desc") String [] sort){
+		
+		log.info("Pokrenuto dohvacanje fenofaza za sifrarnik!");
 		return fenofazaService.getFenofazePaged(pageSize,pageNo,sort);
 		
 	}
@@ -51,9 +54,25 @@ public class FenofazaController {
 	@PutMapping(value="/updateFenofaza")
 	public ResponseEntity<Object> updateFenofaza(
 			@Validated @RequestBody FenofazaDto fenofaza,
-			@RequestParam String name){
-		log.info("Pokrenuto azuriranje fenofaze! {},{}",fenofaza.toString(),name);
-		return fenofazaService.updateFenofaza(fenofaza,name);
+			@RequestParam Long id){
+		
+		log.info("Pokrenut update fenofaze ID: {}", id);
+		return fenofazaService.updateFenofaza(fenofaza,id);
+	}
+	
+	@GetMapping(value = "/findFenofazaByName")
+	public ResponseEntity <Map<String,Object>> findFenofazaByNamePaged(
+			@RequestParam String name,
+			@RequestParam(defaultValue = "2") int pageSize,
+			@RequestParam(defaultValue = "0") int pageNo,
+			@RequestParam(defaultValue = "id,desc") String [] sort){
+		return fenofazaService.findFenofazaByNamePaged(pageSize,pageNo,sort,name);
+		
+	}
+	
+	@DeleteMapping(value = "/deleteFenofaza")
+	public ResponseEntity<Object> deleteFenofaza(@RequestParam Long id){
+		return fenofazaService.deleteFenofazaById(id);
 	}
 
 }

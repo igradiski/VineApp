@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import com.hr.igz.VineApp.domain.FenozafaRazvoja;
 import com.hr.igz.VineApp.domain.dto.FenofazaDto;
+import com.hr.igz.VineApp.exception.DeleteFailureException;
 import com.hr.igz.VineApp.exception.ObjectAlreadyExists;
 import com.hr.igz.VineApp.exception.PostFailureException;
 import com.hr.igz.VineApp.mapper.FenofazaMapper;
@@ -70,25 +71,39 @@ public class FenofazaServiceImpl  implements FenofazaService{
 	public ResponseEntity<Map<String, Object>> getFenofazePaged(int pageSize, int pageNo, String[] sort) {
 		
 		List<Order> orders = sortHelper.getOrdersFromArray(sort);
-		Map<String, Object> response = new HashMap<>();
 		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(orders));
 		Page<FenozafaRazvoja> page = fenofazaRepository.findAll(paging);
+		return new ResponseEntity<>(createResponse(page),HttpStatus.OK);
+	}
+	
+	@Override
+	public ResponseEntity<Object> updateFenofaza(FenofazaDto fenofaza, Long id) {
+
+		FenozafaRazvoja oldFenofaza = fenofazaRepository.findById(id).get();
+		oldFenofaza = mapper.UpdateFenofazaFromDto(oldFenofaza,fenofaza);
+		oldFenofaza.setDate(Instant.now());
+		fenofazaRepository.save(oldFenofaza);
+		return ResponseEntity.status(HttpStatus.OK).body("Fenofaza je uspješno ažurirana");
+	}
+	
+	@Override
+	public ResponseEntity<Map<String, Object>> findFenofazaByNamePaged(int pageSize, int pageNo, String[] sort,
+			String name) {
+		
+		List<Order> orders = sortHelper.getOrdersFromArray(sort);
+		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(orders));
+		Page<FenozafaRazvoja> page = fenofazaRepository.findByNameContaining(name,paging);
+		return new ResponseEntity<>(createResponse(page),HttpStatus.OK);
+	}
+
+	private Map<String, Object> createResponse(Page<FenozafaRazvoja> page) {
+		
+		Map<String, Object> response = new HashMap<>();
 		response.put("fenofaze",mapAllFenofaze(page.getContent()));
 		response.put("totalPages", page.getTotalPages());
 		response.put("totalItems", page.getTotalElements());
 		response.put("currentPage", page.getNumber());
-		return new ResponseEntity<>(response,HttpStatus.OK);
-	}
-	
-	@Override
-	public ResponseEntity<Object> updateFenofaza(FenofazaDto fenofaza, String name) {
-		//TODO inserta novu,A NE UPDATE!!
-		FenozafaRazvoja oldFenofaza = fenofazaRepository.findByName(name);
-		oldFenofaza = mapper.UpdateFenofazaFromDto(oldFenofaza,fenofaza);
-		log.info(oldFenofaza.toString());
-		oldFenofaza.setDate(Instant.now());
-		fenofazaRepository.save(oldFenofaza);
-		return ResponseEntity.status(HttpStatus.OK).body("Fenofaza je uspješno ažurirana");
+		return response;
 	}
 
 	private Set<FenofazaDto> mapAllFenofaze(List<FenozafaRazvoja> list) {
@@ -100,6 +115,16 @@ public class FenofazaServiceImpl  implements FenofazaService{
 		return set;
 	}
 
-	
-
+	@Override
+	public ResponseEntity<Object> deleteFenofazaById(Long id) {
+		
+		FenozafaRazvoja fenofaza = fenofazaRepository.findById(id)
+				.orElseThrow(() -> new DeleteFailureException("Ne postoji objekt za brisanje!"));
+		try {
+			fenofazaRepository.delete(fenofaza);
+			return ResponseEntity.status(HttpStatus.CREATED).body("Fenofaza uspjesno obrisana"); 
+		}catch (Exception e) {
+			throw new DeleteFailureException("Ne postoji objekt za brisanje!");
+		}
+	}
 }

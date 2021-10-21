@@ -50,5 +50,11 @@ public class BolestController {
 	public ResponseEntity<Object> obrisiBolest(@RequestParam String name){
 		return bolestService.deleteBolestByName(name);
 	}
+	
+	@GetMapping(value = "/findBolestByName")
+	public ResponseEntity <Map<String,Object>> findBolestiByNamePaged(@RequestParam String name){
+		return null;
+		
+	}
 
 }

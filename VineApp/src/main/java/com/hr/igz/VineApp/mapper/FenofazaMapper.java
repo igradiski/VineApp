@@ -10,14 +10,17 @@ import com.hr.igz.VineApp.domain.dto.FenofazaDto;
 @Mapper(componentModel="spring")
 public abstract class FenofazaMapper {
 	
+	@Mapping(source = "id",target = "id")
 	@Mapping(source = "name",target = "name")
 	@Mapping(source = "timeOfUsage",target = "timeOfUsage")
 	public abstract FenozafaRazvoja FenofazaDtoToFenofaza(FenofazaDto fenofazaDto);
 	
+	@Mapping(source = "id",target = "id")
 	@Mapping(source = "name",target = "name")
 	@Mapping(source = "timeOfUsage",target = "timeOfUsage")
 	public abstract FenofazaDto FenofazaToFenofazaDto(FenozafaRazvoja fenofaza);
 	
+	@Mapping(target="fenofaza.id",ignore = true)
 	@Mapping(source = "fenofazaDto.name",target = "fenofaza.name")
 	@Mapping(source = "fenofazaDto.timeOfUsage",target = "fenofaza.timeOfUsage")
 	public abstract FenozafaRazvoja UpdateFenofazaFromDto(@MappingTarget FenozafaRazvoja fenofaza,FenofazaDto fenofazaDto);

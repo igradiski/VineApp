@@ -3,7 +3,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import constant from "../../../constantsUI/constantsUI";
 import { Button, Space, Popover, Input,Row,Col } from 'antd';
 
-const SearchByName = (nameOfColumn: string, action: (name: string) => void) => {
+const SearchByName = (nameOfColumn: string, action: (name: string) => void,actionRefresh: () => void) => {
 
     const SearchPopUp = () => {
 
@@ -28,7 +28,10 @@ const SearchByName = (nameOfColumn: string, action: (name: string) => void) => {
                     </Button>
                     <Button size="small"
                         style={{ width: 90 }}
-                        onClick={() => setName("")}
+                        onClick={() => {
+                            setName("")
+                            actionRefresh();
+                        }}
                     >
                         {constant.CUSTOM_SEARCH_BY_RESET_BUTTON}
                     </Button>

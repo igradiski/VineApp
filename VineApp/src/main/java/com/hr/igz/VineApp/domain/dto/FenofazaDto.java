@@ -9,6 +9,8 @@ import lombok.Data;
 @Data	
 public class FenofazaDto {
 	
+	private Long id;
+	
 	@NotBlank(message = "Name is mandatory!")
 	private String name;
 
