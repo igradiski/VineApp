@@ -1,16 +1,24 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useState,useEffect } from "react";
 import { Form, Input, Button,Modal } from 'antd';
 
 import constant from "../../../constantsUI/constantsUI";
 import 'antd/dist/antd.css';
 import "./TipSredstvaCSS.css"
 import TipSredstvaSifrarnik from "./TipSredstvaSifrarnik";
-import ITipSredstvaData from "../../../types/TipSredstvaType";
 import TipSredstvaService from "../../../services/TipSredstvaService";
+import ITipSredstvaData from "../../../types/ITipSredstvaData";
 
-const TipSredstva: FunctionComponent = () => {
+type Props = {
+    isUpdate: boolean,
+    updateData: ITipSredstvaData
+}
+
+const TipSredstva: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
 
     const [name, setName] = useState("");
+    const [form] = Form.useForm();
+    const tipSredstvaSrc =  new TipSredstvaService();
+
 
     function successModal() {
         Modal.success({
@@ -24,26 +32,51 @@ const TipSredstva: FunctionComponent = () => {
           content: constant.UNOS_TIP_SREDSTVA_ERROR,
 
         });
-      }
+    }
+    const ocistiFormu = () =>{
+        setName("");
+        form.resetFields();
+    }
 
     const addTipSredstva = () => {
         const data: ITipSredstvaData ={
             name:name,
+            date:"",
+            id:""
         }
-        let tipSredstvaSrc : TipSredstvaService = new TipSredstvaService();
-        tipSredstvaSrc.addTipSredstva(data)
-        .then(response =>{
-            successModal();
-        }).catch((error) =>{
-            errorModal();
-        })
+        if(isUpdate){
+            tipSredstvaSrc.updateTipSredstva(data,updateData.id)
+            .then(response => {
+                isUpdate=false;
+                ocistiFormu();
+                successModal();
+            }).catch((error) => {
+                errorModal()
+            })
+        }else{
+            tipSredstvaSrc.addTipSredstva(data)
+            .then(response =>{
+                successModal();
+            }).catch((error) =>{
+                errorModal();
+            })
+        }
     }
+
+    useEffect(() => {
+        setName(updateData.name);
+        form.setFieldsValue({
+            name:updateData.name,
+        })
+    }, []);
 
     return (
         <div className="tip-sredstva-main-div">
             <Form
                 name="basic"
                 className="tip-sredstva-forma"
+                form={form}
+                onFinish={() => form.resetFields()}
             >
                 <h1 className="form-title">{constant.TIP_SREDSTVA_NASLOV}</h1>
                 <Form.Item
@@ -72,8 +105,6 @@ const TipSredstva: FunctionComponent = () => {
                     </Button>
                 </Form.Item>
             </Form>
-            <TipSredstvaSifrarnik></TipSredstvaSifrarnik>
-
         </div>
     );
 }

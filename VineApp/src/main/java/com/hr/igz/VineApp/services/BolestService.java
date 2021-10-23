@@ -12,6 +12,10 @@ public interface BolestService {
 
 	ResponseEntity<Map<String, Object>> getBolestiPaged(int pageSize, int pageNo, String[] sort);
 
-	ResponseEntity<Object> deleteBolestByName(String name);
+	ResponseEntity<Object> deleteBolestByName(Long id);
+
+	ResponseEntity<Object> updateBolest(BolestDto bolestDto, Long id);
+
+	ResponseEntity<Map<String, Object>> findBolestByNamePaged(int pageSize, int pageNo, String[] sort, String name);
 
 }

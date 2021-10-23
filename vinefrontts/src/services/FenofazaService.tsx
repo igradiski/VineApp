@@ -8,27 +8,27 @@ class FenofazaService {
     constructor(){}
 
     async getAllFenofaze(data: any) {
-        var promise = await axiosInstance.get("vineApp/api/getFenofazePaged",{params:data});
+        var promise = await axiosInstance.get("vineApp/fenofaza/sve-fenofaze",{params:data});
         return promise;
     }
     
     async addFenofaza (data:IFenofazaData){
-        var promise = await axiosInstance.post("vineApp/api/addFenofaza",data);
+        var promise = await axiosInstance.post("vineApp/fenofaza/nova-fenofaza",data);
         return promise;
     }
 
     async updateFenofaza(data: IFenofazaData, id: any) {
-        var promise = await axiosInstance.put("vineApp/api/updateFenofaza",data,{params:{id}});
+        var promise = await axiosInstance.put("vineApp/fenofaza/auzirana-fenofaza",data,{params:{id}});
         return promise;
     }
 
     async findByItemName(name: string) {
-        var promise = await axiosInstance.get("vineApp/api/findFenofazaByName",{params:{name}});
+        var promise = await axiosInstance.get("vineApp/fenofaza/fenofaza-by-name",{params:{name}});
         return promise;
     }
 
     async deleteItemById(id: string) {
-        var promise = await axiosInstance.delete("vineApp/api/deleteFenofaza",{params:{id}});
+        var promise = await axiosInstance.delete("vineApp/fenofaza/",{params:{id}});
         return promise;
     }
 

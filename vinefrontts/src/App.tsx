@@ -12,6 +12,7 @@ import TipSredstva from "./components/forms/TipSredstvaForm/TipSredstvaForm";
 import SredstvaSteps from "./components/forms/SredstvaForm/SredstvaSteps";
 import BolestSteps from "./components/forms/BolestForm/BolestSteps";
 import FenofazaSteps from "./components/forms/FenofazaRazvoja/FenofazaSteps";
+import TipSredstvaSteps from "./components/forms/TipSredstvaForm/TipSredstvaSteps";
 
 
 const App = () => {
@@ -42,7 +43,7 @@ const App = () => {
             path="/fenofaza"
           />
           <PublicRoutes
-            component={TipSredstva}
+            component={TipSredstvaSteps}
             path="/tipSredstva"
           />
           <PublicRoutes

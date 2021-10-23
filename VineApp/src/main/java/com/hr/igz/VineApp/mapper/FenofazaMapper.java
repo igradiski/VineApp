@@ -18,6 +18,7 @@ public abstract class FenofazaMapper {
 	@Mapping(source = "id",target = "id")
 	@Mapping(source = "name",target = "name")
 	@Mapping(source = "timeOfUsage",target = "timeOfUsage")
+	@Mapping(source = "date",target = "date")
 	public abstract FenofazaDto FenofazaToFenofazaDto(FenozafaRazvoja fenofaza);
 	
 	@Mapping(target="fenofaza.id",ignore = true)

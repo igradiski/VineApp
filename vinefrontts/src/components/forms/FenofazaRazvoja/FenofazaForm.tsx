@@ -1,12 +1,11 @@
 import { FunctionComponent, useState, useEffect } from "react";
-import { Form, Input, Button, Cascader, Modal } from 'antd';
+import { Form, Input, Button, Modal } from 'antd';
 
 import constant from "../../../constantsUI/constantsUI";
 import 'antd/dist/antd.css';
 import "./FenofazaCSS.css"
 import IFenofazaData from "../../../types/IFenofazaData";
 import FenofazaService from "../../../services/FenofazaService";
-import { format } from "path";
 
 type Props = {
     isUpdate: boolean,
@@ -17,9 +16,9 @@ const FenofazaForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
 
     const [name, setName] = useState("");
     const [timeOfUsage, setTimeOfUsage] = useState("");
-
     const [form] = Form.useForm();
     const { TextArea } = Input;
+    const service = new FenofazaService();
 
     function successModal() {
         Modal.success({
@@ -46,7 +45,7 @@ const FenofazaForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
             timeOfUsage: timeOfUsage,
             date: ""
         }
-        let service = new FenofazaService();
+        
         if (isUpdate) {
             service.updateFenofaza(data,updateData.id)
             .then(response => {

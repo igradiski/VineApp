@@ -12,10 +12,16 @@ public interface TipSredstvaService {
 
 	ResponseEntity<Object> dodajTipSredstva(TipSredstvaDto tipSredstva);
 
-	ResponseEntity<Map<String, Object>> findAllPagable(int page, int size);
+	ResponseEntity<Map<String, Object>> findAllPagable(int page, int size, String[] sort);
 
 	ResponseEntity<Set<Object>> findAll();
 	
 	TipZastitnogSredstva findById(Long id);
+
+	ResponseEntity<Map<String, Object>> findTipSredstvaByName(int pageSize, int pageNo, String[] sort, String name);
+
+	ResponseEntity<Object> updateTipSredstva(TipSredstvaDto tipSredstva, Long id);
+
+	ResponseEntity<Object> deleteTipSredstvaById(Long id);
 
 }

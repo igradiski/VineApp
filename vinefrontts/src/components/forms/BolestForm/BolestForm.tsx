@@ -8,12 +8,16 @@ import IBolestdata from "../../../types/IBolestData";
 import BolestService from "../../../services/BolestService";
 
 
+type Props = {
+    isUpdate: boolean,
+    updateData: IBolestdata
+}
 
-const BolestForm: FunctionComponent = () => {
+const BolestForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-
+    const [form] = Form.useForm();
     const { TextArea } = Input;
 
     function successModal() {
@@ -28,26 +32,56 @@ const BolestForm: FunctionComponent = () => {
             content: constant.UNOS_BOLEST_ERROR,
         });
     }
+    const ocistiFormu = () => {
+        setName("");
+        setDescription("");
+        form.resetFields();
+    }
 
 
-    const unesiBolest = () =>{
-        let data : IBolestdata = {
-            name:name,
-            description:description,
-            date:""
+    const unesiBolest = () => {
+        let data: IBolestdata = {
+            id: "",
+            name: name,
+            description: description,
+            date: ""
         }
         let bolestService = new BolestService();
-        bolestService.addBolest(data)
-        .then(response =>{
-            successModal()
-        }).catch((error)=>{
-            errorModal()
-        })
+        if (isUpdate) {
+            bolestService.updateBolest(data, updateData.id)
+                .then(response => {
+                    isUpdate = false;
+                    ocistiFormu();
+                    successModal();
+                }).catch((error) => {
+                    errorModal()
+                })
+        } else {
+            bolestService.addBolest(data)
+                .then(response => {
+                    successModal()
+                }).catch((error) => {
+                    errorModal()
+                })
+        }
+
     }
+
+    useEffect(() => {
+        setName(updateData.name);
+        setDescription(updateData.description);
+        form.setFieldsValue({
+            name:updateData.name,
+            description:updateData.description
+        })
+    }, []);
+
     return (
         <Form
+            form ={form}
             name="basic"
             className="forma-sredstva"
+            onFinish={() => form.resetFields()}
         >
             <h1 className="form-title">{constant.BOLEST_NASLOV}</h1>
             <Form.Item
@@ -75,7 +109,7 @@ const BolestForm: FunctionComponent = () => {
                         message: constant.BOLEST_OPIS_MESSAGE_REQUIRED,
                     },
                 ]}>
-                <TextArea 
+                <TextArea
                     className="text-area-4row"
                     rows={5}
                     value={description}
@@ -89,7 +123,7 @@ const BolestForm: FunctionComponent = () => {
                     htmlType="submit"
                     onClick={unesiBolest}
                 >
-                    {constant.SREDSTVA_UNOS_BUTTON}
+                    { isUpdate ? constant.BOLEST_BUTTON_AZURIRAJ:constant.SREDSTVA_UNOS_BUTTON}
                 </Button>
             </Form.Item>
         </Form>

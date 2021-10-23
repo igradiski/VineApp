@@ -7,30 +7,37 @@ import DefaultPagingData from "../../../types/IDefaultPagingData";
 import BolestService from "../../../services/BolestService";
 import IBolestdata from "../../../types/IBolestData";
 import TableUpdateDelete from "../CustomJSX/TableUpdateDelete";
+import DateConverter from "../../../feature/dateConverter";
+import SearchByName from "../CustomJSX/SearchBy";
 
+type Props = {
+    onUpdate : (step: number,data:IBolestdata) =>void
+}
 
-const BolestSifrarnik: FunctionComponent = () => {
+const BolestSifrarnik: FunctionComponent<Props> = ({onUpdate}) => {
 
     const [pageSize, setPageSize] = useState(2);
     const [pageNo, setPageNo] = useState(0);
     const [totalItems,setTotalItems] = useState(0);
     const [tableData,setTableData] = useState([])
+    const bolestService = new BolestService();
+    const datumClass = new DateConverter();
     
     const promijeniStranicu = (page : number ,pageSize: number | undefined)=>{
         setPageNo(page-1);
     }
-    const editClick = (text:any) =>{
-        console.log(text);
-    }
-
-    const deleteClick = (text:any) =>{
-        let bolestService = new BolestService();
+    const editClick = (text:any,record:any) =>{
         const data:IBolestdata ={
-            name:text,
-            description:"",
+            id:record.id,
+            name:record.name,
+            description:record.description,
             date:""
         }
-        bolestService.deleteBolestByName(data)
+        onUpdate(0,data);
+    }
+
+    const deleteClick = (record:any) =>{
+        bolestService.deleteBolestById(record.id)
         .then(()=>{
             Modal.success({
                 title: constant.BOLEST_BRISANJE_USPJELO_NASLOV,
@@ -44,6 +51,16 @@ const BolestSifrarnik: FunctionComponent = () => {
             });
         })
     }
+
+    const findByItemName = (name: string) => {
+        bolestService.findByItemName(name)
+        .then(response => {
+            setTableData(response.data.bolesti);
+            setTotalItems(response.data.totalItems);
+            setPageNo(response.data.currentPage);
+        })
+    }
+
     const getInitialData = async () =>{
         const data : DefaultPagingData ={
             pageNo:pageNo,
@@ -65,7 +82,8 @@ const BolestSifrarnik: FunctionComponent = () => {
 
     const columns = [
         {
-            title: constant.SREDSTVA_SIFRARNIK_NAZIV,
+            
+            title: SearchByName(constant.SREDSTVA_SIFRARNIK_NAZIV, findByItemName,getInitialData),
             dataIndex: 'name',
         },
         {
@@ -79,7 +97,7 @@ const BolestSifrarnik: FunctionComponent = () => {
         {
             title: "",
             dataIndex: 'name',
-            render : (text:any) => TableUpdateDelete(() =>editClick(text),()=>deleteClick(text),constant.BOLEST_BRISANJE_PITANJE)
+            render : (text:any,record:any) => TableUpdateDelete(() =>editClick(text,record),()=>deleteClick(record),constant.BOLEST_BRISANJE_PITANJE)
         },
     ]
 

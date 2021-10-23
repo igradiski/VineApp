@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/bolest")
 @Slf4j
 public class BolestController {
 	
@@ -32,29 +33,51 @@ public class BolestController {
 		this.bolestService = bolestService;
 	}
 	
-	@PostMapping(value="/addBolest")
-	public ResponseEntity<Object> dodajBolest(@Validated @RequestBody BolestDto bolest){
-		log.info("Pokrenut insert bolesti!");
-		return bolestService.addBolest(bolest);
+	@GetMapping(value = "/bolest-by-name")
+	public ResponseEntity <Map<String,Object>> findBolestiByNamePaged(
+			@RequestParam String name,
+			@RequestParam(defaultValue = "2") int pageSize,
+			@RequestParam(defaultValue = "0") int pageNo,
+			@RequestParam(defaultValue = "id,desc") String [] sort){
+		
+		log.info("Pokrenuto dohvacanje svih bolesti prema imenu");
+		return bolestService.findBolestByNamePaged(pageSize,pageNo,sort,name);
 	}
 	
-	@GetMapping(value="/getBolestiPaged")
+	@GetMapping(value="/sve-bolesti")
 	public ResponseEntity <Map<String,Object>> dohvatiBolestiPaged(
 			@RequestParam(defaultValue = "2") int pageSize,
 			@RequestParam(defaultValue = "0") int pageNo,
 			@RequestParam(defaultValue = "id,desc") String [] sort){
+		
+		log.info("Pokrenuto dohvacanje svih bolesti paged");
 		return bolestService.getBolestiPaged(pageSize,pageNo,sort);	
 	}
 	
-	@DeleteMapping(value = "/deleteBolest")
-	public ResponseEntity<Object> obrisiBolest(@RequestParam String name){
-		return bolestService.deleteBolestByName(name);
+	@PostMapping(value="/nova-bolest")
+	public ResponseEntity<Object> dodajBolest(@Validated @RequestBody BolestDto bolest){
+		
+		log.info("Pokrenut insert bolesti!");
+		return bolestService.addBolest(bolest);
 	}
 	
-	@GetMapping(value = "/findBolestByName")
-	public ResponseEntity <Map<String,Object>> findBolestiByNamePaged(@RequestParam String name){
-		return null;
+	@PutMapping(value="/azurirana-bolest")
+	public ResponseEntity<Object> updateBolest(
+			@Validated @RequestBody BolestDto bolestDto,
+			@RequestParam Long id){
+		
+		log.info("Pokrenuto azuriranje bolesti!");
+		return bolestService.updateBolest(bolestDto,id);
 		
 	}
+	
+	@DeleteMapping(value = "/")
+	public ResponseEntity<Object> obrisiBolest(@RequestParam Long id){
+		
+		log.info("Pokrenuto brisanje bolesti!");
+		return bolestService.deleteBolestByName(id);
+	}
+	
+	
 
 }

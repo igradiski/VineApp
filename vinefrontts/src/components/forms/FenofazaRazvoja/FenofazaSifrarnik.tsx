@@ -8,7 +8,6 @@ import TableUpdateDelete from "../CustomJSX/TableUpdateDelete";
 import SearchByName from "../CustomJSX/SearchBy";
 import FenofazaService from "../../../services/FenofazaService";
 import IFenofazaData from "../../../types/IFenofazaData";
-import { useDispatch } from "react-redux";
 import DateConverter from "../../../feature/dateConverter";
 
 type Props = {
@@ -57,11 +56,6 @@ const FenofazaSifrarnik: FunctionComponent<Props> = ({onUpdate}) => {
     }
 
     const findByItemName = (name: string) => {
-        const data: DefaultPagingData = {
-            pageNo: 0,
-            pageSize: pageSize,
-            sort: []
-        }
         fenofazaService.findByItemName(name)
         .then(response => {
             setTableData(response.data.fenofaze);

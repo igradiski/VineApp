@@ -6,21 +6,33 @@ import 'antd/dist/antd.css';
 import "./BolestCSS.css"
 import BolestForm from "./BolestForm";
 import BolestSifrarnik from "./BolestSifrarnik";
+import IBolestdata from "../../../types/IBolestData";
 
 
 const { Step } = Steps;
 
 const BolestSteps: FunctionComponent = () => {
+
     const [currentStep,setCurrentStep] = useState(0);
+    const [isUpdate,setIsUpdate] = useState(false);
+    const [updateData,setUpdateData]= useState<IBolestdata>({name:"",date:"",description:"",id:""});
 
     const changeStep =(step:number) =>{
+        setCurrentStep(step);
+        setIsUpdate(false);
+        setUpdateData({name:"",date:"",description:"",id:""});
+    }
+
+    const changeStepForUpdate = (step: number,data:IBolestdata) => {
+        setUpdateData(data);
+        setIsUpdate(true);
         setCurrentStep(step);
     }
     const renderForStep = () =>{
         if(currentStep === 0){
-            return <BolestForm/>
+            return <BolestForm isUpdate={isUpdate} updateData={updateData}/>
         }else{
-           return <BolestSifrarnik/>
+           return <BolestSifrarnik onUpdate={changeStepForUpdate}/>
         }
     }
 

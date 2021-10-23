@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/fenofaza")
 @Slf4j
 public class FenofazaController {
 	
@@ -33,14 +33,18 @@ public class FenofazaController {
 		this.fenofazaService=fenofazaService;
 	}
 	
-	@PostMapping(value="/addFenofaza")
-	public ResponseEntity<Object> addFenofazu(@Validated @RequestBody FenofazaDto fenofaza){
+	@GetMapping(value = "/fenofaza-by-name")
+	public ResponseEntity <Map<String,Object>> findFenofazaByNamePaged(
+			@RequestParam String name,
+			@RequestParam(defaultValue = "2") int pageSize,
+			@RequestParam(defaultValue = "0") int pageNo,
+			@RequestParam(defaultValue = "id,desc") String [] sort){
 		
-		log.info("Pokrenuto dodavanje fenofaze!");
-		return fenofazaService.addFenofaza(fenofaza);
+		log.info("Pokrenuto dohvacanje fenofaza prema imenu!");
+		return fenofazaService.findFenofazaByNamePaged(pageSize,pageNo,sort,name);
 	}
 	
-	@GetMapping(value="/getFenofazePaged")
+	@GetMapping(value="/sve-fenofaze")
 	public ResponseEntity<Map<String,Object>> getFenofazePaged(
 			@RequestParam(defaultValue = "2") int pageSize,
 			@RequestParam(defaultValue = "0") int pageNo,
@@ -48,10 +52,16 @@ public class FenofazaController {
 		
 		log.info("Pokrenuto dohvacanje fenofaza za sifrarnik!");
 		return fenofazaService.getFenofazePaged(pageSize,pageNo,sort);
-		
 	}
 	
-	@PutMapping(value="/updateFenofaza")
+	@PostMapping(value="/nova-fenofaza")
+	public ResponseEntity<Object> addFenofazu(@Validated @RequestBody FenofazaDto fenofaza){
+		
+		log.info("Pokrenuto dodavanje fenofaze!");
+		return fenofazaService.addFenofaza(fenofaza);
+	}
+	
+	@PutMapping(value="/auzirana-fenofaza")
 	public ResponseEntity<Object> updateFenofaza(
 			@Validated @RequestBody FenofazaDto fenofaza,
 			@RequestParam Long id){
@@ -60,18 +70,10 @@ public class FenofazaController {
 		return fenofazaService.updateFenofaza(fenofaza,id);
 	}
 	
-	@GetMapping(value = "/findFenofazaByName")
-	public ResponseEntity <Map<String,Object>> findFenofazaByNamePaged(
-			@RequestParam String name,
-			@RequestParam(defaultValue = "2") int pageSize,
-			@RequestParam(defaultValue = "0") int pageNo,
-			@RequestParam(defaultValue = "id,desc") String [] sort){
-		return fenofazaService.findFenofazaByNamePaged(pageSize,pageNo,sort,name);
-		
-	}
-	
-	@DeleteMapping(value = "/deleteFenofaza")
+	@DeleteMapping(value = "/")
 	public ResponseEntity<Object> deleteFenofaza(@RequestParam Long id){
+		
+		log.info("Pokrenuto brisanje fenofaze s id: {}",id);
 		return fenofazaService.deleteFenofazaById(id);
 	}
 

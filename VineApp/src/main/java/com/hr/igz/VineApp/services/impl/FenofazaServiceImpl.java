@@ -55,13 +55,15 @@ public class FenofazaServiceImpl  implements FenofazaService{
 	public ResponseEntity<Object> addFenofaza(FenofazaDto fenofaza) {
 		
 		if(fenofazaRepository.existsByName(fenofaza.getName())) {
-			throw new ObjectAlreadyExists("Fenofaza tog imena vec postoji!");
+			log.error("Postoji fenofaza s imenom: {}",fenofaza.getName());
+			throw new ObjectAlreadyExists("Fenofaza imena vec postoji!");
 		}
 		FenozafaRazvoja fenofazaRazvoja = mapper.FenofazaDtoToFenofaza(fenofaza);
 		fenofazaRazvoja.setDate(Instant.now());
 		try {
 			fenofazaRepository.save(fenofazaRazvoja);
 		} catch (Exception e) {
+			log.error("Nije moguce unijeti fenofazu{}",fenofaza.toString());
 			throw new PostFailureException("Nije moguce unijeti zeljenu fenofazu!");
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body("Fenofaza je uspješno kreirana");
@@ -79,10 +81,19 @@ public class FenofazaServiceImpl  implements FenofazaService{
 	@Override
 	public ResponseEntity<Object> updateFenofaza(FenofazaDto fenofaza, Long id) {
 
-		FenozafaRazvoja oldFenofaza = fenofazaRepository.findById(id).get();
+		FenozafaRazvoja oldFenofaza = fenofazaRepository.findById(id)
+				.orElseThrow(()->{
+					log.error("Nije moguce pronaći fenofazu: {}",id);
+					throw new PostFailureException("Nije moguce pronaći željenu fenofazu!");
+				});
 		oldFenofaza = mapper.UpdateFenofazaFromDto(oldFenofaza,fenofaza);
 		oldFenofaza.setDate(Instant.now());
-		fenofazaRepository.save(oldFenofaza);
+		try {
+			fenofazaRepository.save(oldFenofaza);
+		}catch (Exception e) {
+			log.error("Nije moguce ažurirati fenofazu{}",fenofaza.toString());
+			throw new PostFailureException("Nije moguce ažurirati zeljenu fenofazu!");
+		}
 		return ResponseEntity.status(HttpStatus.OK).body("Fenofaza je uspješno ažurirana");
 	}
 	
@@ -95,36 +106,44 @@ public class FenofazaServiceImpl  implements FenofazaService{
 		Page<FenozafaRazvoja> page = fenofazaRepository.findByNameContaining(name,paging);
 		return new ResponseEntity<>(createResponse(page),HttpStatus.OK);
 	}
+	
+	@Override
+	public ResponseEntity<Object> deleteFenofazaById(Long id) {
+
+		FenozafaRazvoja fenofaza = fenofazaRepository.findById(id).orElseThrow(()->{
+			log.error("Nije moguce pronaći fenofazu s id: {}",id.toString());
+			throw new PostFailureException("Nije moguce pronaći željenu fenofazu!");
+		});
+		try {
+			fenofazaRepository.delete(fenofaza);
+			return ResponseEntity.status(HttpStatus.OK).body("Fenofaza uspjesno obrisana");
+		} catch (Exception e) {
+			log.error("Nije moguce obrisati fenofazu: {}",fenofaza.toString());
+			throw new DeleteFailureException("Ne postoji objekt za brisanje!");
+		}
+	}
 
 	private Map<String, Object> createResponse(Page<FenozafaRazvoja> page) {
 		
 		Map<String, Object> response = new HashMap<>();
-		response.put("fenofaze",mapAllFenofaze(page.getContent()));
-		response.put("totalPages", page.getTotalPages());
-		response.put("totalItems", page.getTotalElements());
-		response.put("currentPage", page.getNumber());
+		if(page != null) {
+			response.put("fenofaze",mapAllFenofaze(page.getContent()));
+			response.put("totalPages", page.getTotalPages());
+			response.put("totalItems", page.getTotalElements());
+			response.put("currentPage", page.getNumber());
+		}
 		return response;
 	}
 
 	private Set<FenofazaDto> mapAllFenofaze(List<FenozafaRazvoja> list) {
 		
 		Set<FenofazaDto> set = new HashSet<FenofazaDto>();
-		list.stream().forEach(fenofazaDomain ->{
-			set.add(mapper.FenofazaToFenofazaDto(fenofazaDomain));
-		});
+		if(!list.isEmpty()) {
+			list.stream().forEach(fenofazaDomain ->{
+				set.add(mapper.FenofazaToFenofazaDto(fenofazaDomain));
+			});
+		}
 		return set;
 	}
 
-	@Override
-	public ResponseEntity<Object> deleteFenofazaById(Long id) {
-		
-		FenozafaRazvoja fenofaza = fenofazaRepository.findById(id)
-				.orElseThrow(() -> new DeleteFailureException("Ne postoji objekt za brisanje!"));
-		try {
-			fenofazaRepository.delete(fenofaza);
-			return ResponseEntity.status(HttpStatus.CREATED).body("Fenofaza uspjesno obrisana"); 
-		}catch (Exception e) {
-			throw new DeleteFailureException("Ne postoji objekt za brisanje!");
-		}
-	}
 }

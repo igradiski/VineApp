@@ -47,6 +47,9 @@
     UNOS_TIP_SREDSTVA_SUCCESS : "Podatak je uspješno unesen u bazu",
     UNOS_TIP_SREDSTVA_ERROR_TITLE : "Greška kod unosa",
     UNOS_TIP_SREDSTVA_ERROR : "Dogodila se greška kod unosa, provjerite podatke!",
+    TIP_SREDSTVA_AZURIRANJE_NASLOV: "Ažuriranje tipa sredstva",
+    TIP_SREDSTVA_FORMA_UNOS:"Unos tipa sredstva",
+    TIP_SREDSTVA_SIFRARNIK:"Pregled tipova sredstava",
 
     //SREDSTVA
     SREDSTVA_FORMA_UNOS: "Unos sredstava",
@@ -105,6 +108,7 @@
     BOLEST_BRISANJE_FAIL_NASLOV:"Brisanje nije uspjelo!",
     BOLEST_BRISANJE_FAIL:"Brisanje nije moguće!",
     BOLEST_BRISANJE_PITANJE:"Želite li obrisati zapis?",
+    BOLEST_BUTTON_AZURIRAJ:"Ažuriraj",
 
     //FENOZAFA RAZVOJA
     FENOFAZA_NASLOV: "Fenofaza razvoja",
