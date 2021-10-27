@@ -85,25 +85,6 @@ const TipSredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
         getInitialData();
     }, [pageNo]);
 
-
-
-    useEffect(() => {
-        const getInitialData = async () => {
-            const data: IDefaultPagingData = {
-                pageNo: pageNo,
-                pageSize: pageSize,
-                sort: []
-            }
-            tipSredstvaSrc.getAllTipSredstva(data)
-                .then(response => {
-                    setTableData(response.data.tipovi);
-                    setTotalItems(response.data.totalItems);
-                    setPageNo(response.data.currentPage);
-                })
-        }
-        getInitialData();
-    }, [pageNo]);
-
     const columns = [
         {
             title: SearchByName(constant.TIP_SREDSTVA_TBL_NAZIV, findByItemName,getInitialData),

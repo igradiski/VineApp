@@ -6,7 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,30 +31,21 @@ import com.hr.igz.VineApp.services.FenofazaService;
 import com.hr.igz.VineApp.utils.SortingHelperUtil;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class FenofazaServiceImpl  implements FenofazaService{
 	
-	private FenofazaRepository fenofazaRepository;
+	private final FenofazaRepository fenofazaRepository;
 	
 	private final FenofazaMapper mapper;
 	
-	private SortingHelperUtil sortHelper;
-	
-	@Autowired
-	public FenofazaServiceImpl(FenofazaRepository fenofazaRepository,FenofazaMapper mapper) {
-		
-		this.fenofazaRepository = fenofazaRepository;
-		this.mapper = mapper;
-	}
-	
-	@Autowired
-	public void setSortHelper(SortingHelperUtil sortHelper) {
-		this.sortHelper = sortHelper;
-	}
+	private final SortingHelperUtil sortHelper;
 
 	@Override
+	@Transactional
 	public ResponseEntity<Object> addFenofaza(FenofazaDto fenofaza) {
 		
 		if(fenofazaRepository.existsByName(fenofaza.getName())) {
@@ -70,6 +64,7 @@ public class FenofazaServiceImpl  implements FenofazaService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ResponseEntity<Map<String, Object>> getFenofazePaged(int pageSize, int pageNo, String[] sort) {
 		
 		List<Order> orders = sortHelper.getOrdersFromArray(sort);
@@ -77,8 +72,29 @@ public class FenofazaServiceImpl  implements FenofazaService{
 		Page<FenozafaRazvoja> page = fenofazaRepository.findAll(paging);
 		return new ResponseEntity<>(createResponse(page),HttpStatus.OK);
 	}
+
 	
 	@Override
+	@Transactional(readOnly = true)
+	public ResponseEntity<Map<String, Object>> findFenofazaByNamePaged(int pageSize, int pageNo, String[] sort,
+			String name) {
+		
+		List<Order> orders = sortHelper.getOrdersFromArray(sort);
+		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(orders));
+		Page<FenozafaRazvoja> page = fenofazaRepository.findByNameContaining(name,paging);
+		return new ResponseEntity<>(createResponse(page),HttpStatus.OK);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ResponseEntity<Set<AntDCascaderDto>> getFenofazeZaCascader() {
+		Set<AntDCascaderDto> set = fenofazaRepository.findAll().stream()
+				.map(mapper::FenofazaToCascaderDto).collect(Collectors.toSet());
+		return new ResponseEntity<>(set,HttpStatus.OK);
+	}
+
+	@Override
+	@Transactional
 	public ResponseEntity<Object> updateFenofaza(FenofazaDto fenofaza, Long id) {
 
 		FenozafaRazvoja oldFenofaza = fenofazaRepository.findById(id)
@@ -98,21 +114,12 @@ public class FenofazaServiceImpl  implements FenofazaService{
 	}
 	
 	@Override
-	public ResponseEntity<Map<String, Object>> findFenofazaByNamePaged(int pageSize, int pageNo, String[] sort,
-			String name) {
-		
-		List<Order> orders = sortHelper.getOrdersFromArray(sort);
-		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(orders));
-		Page<FenozafaRazvoja> page = fenofazaRepository.findByNameContaining(name,paging);
-		return new ResponseEntity<>(createResponse(page),HttpStatus.OK);
-	}
-	
-	@Override
+	@Transactional
 	public ResponseEntity<Object> deleteFenofazaById(Long id) {
 
 		FenozafaRazvoja fenofaza = fenofazaRepository.findById(id).orElseThrow(()->{
 			log.error("Nije moguce pronaći fenofazu s id: {}",id.toString());
-			throw new PostFailureException("Nije moguce pronaći željenu fenofazu!");
+			throw new DeleteFailureException("Nije moguce pronaći željenu fenofazu!");
 		});
 		try {
 			fenofazaRepository.delete(fenofaza);

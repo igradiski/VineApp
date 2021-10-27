@@ -101,7 +101,7 @@ const TipSredstva: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
                         htmlType="submit"
                         onClick={addTipSredstva}
                     >
-                        {constant.TIP_SREDSTVA_BUTTON_DODAJ}
+                        {isUpdate ? constant.UNOS_SREDSTVA_BUTTON_UPDATE : constant.TIP_SREDSTVA_BUTTON_DODAJ}
                     </Button>
                 </Form.Item>
             </Form>

@@ -3,18 +3,12 @@ package com.hr.igz.VineApp.controller;
 import java.util.Map;
 import java.util.Set;
 
+import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.hr.igz.VineApp.domain.dto.TipSredstvaDto;
 import com.hr.igz.VineApp.services.TipSredstvaService;
@@ -25,66 +19,53 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/tip_sredstva")
 @Slf4j
+@RequiredArgsConstructor
 public class TipZastitnogSredstvaController {
 	
-	private TipSredstvaService tipSredstvaService;
-	
-	@Autowired
-	public TipZastitnogSredstvaController(TipSredstvaService tipSredstvaService) {
-		this.tipSredstvaService = tipSredstvaService;
-	}
-	
+	private final TipSredstvaService tipSredstvaService;
+
 	@GetMapping("/svi-tipovi-paged")
+	@Operation(summary= "Operacija dohvacanje svih tipova sredstava sa stranicenjem")
 	public ResponseEntity<Map<String, Object>> getAllTipoviSredstavaPage(
 			@RequestParam(defaultValue = "2") int pageSize,
 			@RequestParam(defaultValue = "0") int pageNo,
 			@RequestParam(defaultValue = "id,desc") String [] sort){
-		
-		log.info("Pokrenuto dohvacanje tipa sredstava na stranici : {}",pageNo);
 		return tipSredstvaService.findAllPagable(pageSize,pageNo,sort);
 	}
 	
 	@GetMapping("/svi-tipovi")
+	@Operation(summary= "Operacija za dohvacanje svih tipova sredstava")
 	public ResponseEntity<Set<Object>> getAllTipoviSredstava (){
-		
-		log.info("Pokrenuto dohvacanje svih sredstava");
 		return tipSredstvaService.findAll();
 	}
 	
 	@GetMapping(value = "/tip-by-name")
+	@Operation(summary= "Operacija za dohvacanje svih tipova sredstava prema imenu")
 	public ResponseEntity<Map<String,Object>> findTipSredstvaByNamePaged(
 			@RequestParam String name,
 			@RequestParam(defaultValue = "2") int pageSize,
 			@RequestParam(defaultValue = "0") int pageNo,
 			@RequestParam(defaultValue = "id,desc") String [] sort){
-		
-		log.info("Pokrenuto pretraživanje tipa sredstava prema imenu:{}",name);
 		return tipSredstvaService.findTipSredstvaByName(pageSize,pageNo,sort,name);
 	}
 	
 	@PostMapping(value = "/novi-tip")
+	@Operation(summary= "Operacija za unos tipa sredstva")
 	public ResponseEntity<Object> dodajTipSredstva(@Validated @RequestBody TipSredstvaDto tipSredstva){
-		
-		log.info("Pokrenuto dodavanje sredstva; {}",tipSredstva.toString());
 		return tipSredstvaService.dodajTipSredstva(tipSredstva);
 	}
 	
-	@PutMapping(value="azurirani-tip")
+	@PatchMapping(value="azurirani-tip")
+	@Operation(summary= "Operacija za azuriranje tipa sredstva")
 	public ResponseEntity<Object> updateTipSredstva(
 			@Validated @RequestBody TipSredstvaDto tipSredstva,
 			@RequestParam Long id){
-		
-		log.info("Pokrenuto ažuriranje tipa sredstva s id: {}",id);
 		return tipSredstvaService.updateTipSredstva(tipSredstva,id);
 	}
-	
-	
-	@DeleteMapping(value = "/")
-	public ResponseEntity<Object> deleteTipSredstva(@RequestParam Long id){
-		
-		log.info("Pokrenuto brisanje tipa sredstva s id: {}",id);
-		return tipSredstvaService.deleteTipSredstvaById(id);
-		
-	}
 
+	@DeleteMapping(value = "/")
+	@Operation(summary= "Operacija za brisanje tipa sredstva")
+	public ResponseEntity<Object> deleteTipSredstva(@RequestParam Long id){
+		return tipSredstvaService.deleteTipSredstvaById(id);
+	}
 }

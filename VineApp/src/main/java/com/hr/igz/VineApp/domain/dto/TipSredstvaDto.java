@@ -13,4 +13,6 @@ public class TipSredstvaDto {
 	private String name;
 	
 	private Instant date;
+
+	private Long id;
 }

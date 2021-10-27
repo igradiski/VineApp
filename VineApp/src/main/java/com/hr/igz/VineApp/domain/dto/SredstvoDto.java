@@ -2,6 +2,7 @@ package com.hr.igz.VineApp.domain.dto;
 
 import java.time.Instant;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 import com.sun.istack.NotNull;
@@ -11,25 +12,27 @@ import lombok.Data;
 @Data
 public class SredstvoDto {
 
-	@NotEmpty
+	private Long id;
+
+	@NotBlank(message = "Name is mandatory!")
 	private String name;
 
-	@NotEmpty
+	@NotBlank(message = "Name is mandatory!")
 	private String description;
 
-	@NotEmpty
+	@NotBlank(message = "Name is mandatory!")
 	private String composition;
 
-	@NotEmpty
+	@NotBlank(message = "Name is mandatory!")
 	private String group;
 
-	@NotEmpty
+	@NotBlank(message = "Name is mandatory!")
 	private String formulation;
 
-	@NotEmpty
+	@NotBlank(message = "Name is mandatory!")
 	private String typeOfAction;
 
-	@NotEmpty
+	@NotBlank(message = "Name is mandatory!")
 	private String usage;
 
 	@NotNull
@@ -47,5 +50,9 @@ public class SredstvoDto {
 	private Instant date;
 	
 	private String nameOfTipSredstva;
+
+	private Long tipSredstvaId;
+
+
 
 }

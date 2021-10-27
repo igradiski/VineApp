@@ -25,10 +25,9 @@ public class SredstvoHasBolest implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date date;
+	private Instant date;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Bolest bolest;

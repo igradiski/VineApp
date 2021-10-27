@@ -1,7 +1,9 @@
 package com.hr.igz.VineApp.services;
 
 import java.util.Map;
+import java.util.Set;
 
+import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
 import org.springframework.http.ResponseEntity;
 
 import com.hr.igz.VineApp.domain.dto.BolestDto;
@@ -18,4 +20,5 @@ public interface BolestService {
 
 	ResponseEntity<Map<String, Object>> findBolestByNamePaged(int pageSize, int pageNo, String[] sort, String name);
 
+    ResponseEntity<Set<AntDCascaderDto>> getBolestiZaCascader();
 }

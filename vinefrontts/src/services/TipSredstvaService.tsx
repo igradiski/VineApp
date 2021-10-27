@@ -10,33 +10,32 @@ class TipSredstvaService{
     }
 
     async getAll(){
-        var promise = await axiosInstance.get("vineApp/tipSredstva/svi-tipovi");
+        var promise = await axiosInstance.get("vineApp/tip_sredstva/svi-tipovi");
         return promise;
     }
 
     async getAllTipSredstva(data: IDefaultPagingData){
-        console.log(data.pageNo,data.pageSize)
-        var promise = await axiosInstance.get("vineApp/tipSredstva/svi-tipovi-paged",{params :data});
+        var promise = await axiosInstance.get("vineApp/tip_sredstva/svi-tipovi-paged",{params :data});
         return promise;
     }
 
     async addTipSredstva(data: ITipSredstvaData){
-        var promise = await axiosInstance.post("vineApp/tipSredstva/novi-tip",data);
+        var promise = await axiosInstance.post("vineApp/tip_sredstva/novi-tip",data);
         return promise;
     }
     
     async updateTipSredstva(data: ITipSredstvaData, id: any) {
-        var promise = await axiosInstance.post("vineApp/tip_sredstva/azurirani-tip",data,{params:{id}});
+        var promise = await axiosInstance.put("vineApp/tip_sredstva/azurirani-tip",data,{params:{id}});
         return promise;
     }
 
     async findByItemName(name:string){
-        var promise = await axiosInstance.post("vineApp/tip_sredstva/tip-by-name",{params:{name}});
+        var promise = await axiosInstance.get("vineApp/tip_sredstva/tip-by-name",{params:{name}});
         return promise;
     }
     
     async deleteItemById(id:string){
-        var promise = await axiosInstance.post("vineApp/tip_sredstva",{params:{id}});
+        var promise = await axiosInstance.delete("vineApp/tip_sredstva/",{params:{id}});
         return promise;
     }
 

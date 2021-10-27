@@ -33,6 +33,8 @@
     LEFT_MENU_CALENDAR : "Kalendar",
     LEFT_MENU_SREDSTVA : "Sredstva",
     LEFT_MENU_TIP_SREDSTVA : "Tip sredstva",
+    LEFT_MENU_PREGLED_BOLESTI: "Pregled bolesti",
+    LEFT_MENU_SVE:"Sredstva i bolesti",
     API_BASE_URL: process.env.REACT_APP_BASE_URL,
 
     //TIP SREDSTVA
@@ -55,6 +57,7 @@
     SREDSTVA_FORMA_UNOS: "Unos sredstava",
     SREDSTVA_SIFRARNIK: "Pregled sredstava",
     SREDSTVA_NASLOV : "Unos i pregled sredstava",
+    SREDSTVA_UPDATE_NASLOV: "Ažuriranje sredstva",
     SREDSTVA_NAME : "Naziv:",
     SREDSTVA_NAME_REQUIRED : "Potreno je unijeti naziv sredstva!",
     SREDSTVA_OPIS : "Opis: ",
@@ -73,6 +76,8 @@
     UNOS_SREDSTVA_SUCCESS : "Podatak je uspješno unesen u bazu",
     UNOS_SREDSTVA_ERROR_TITLE : "Greška kod unosa",
     UNOS_SREDSTVA_ERROR : "Dogodila se greška kod unosa, provjerite podatke!",
+    UNOS_SREDSTVA_BUTTON_UPDATE:"Ažuriraj",
+    UNOS_SREDSTVA_FORM_UDPATE:"Ažuriranje sredstva",
 
 
     //SREDSTVA_SIFRARNIK
@@ -135,6 +140,26 @@
     CUSTOM_SEARCH_BY_PLACEHOLDER: "Unesite naziv",
     CUSTOM_SEARCH_BY_PRETRAGA_BUTTON: "Pretraži",
     CUSTOM_SEARCH_BY_RESET_BUTTON : "Očisti",
+
+    //bolesti i sredstva
+    BOLESTI_SREDSTVA_FORM_STEP:"Unos bolesti, sredstava i fenofaza",
+    BOLESTI_SREDSTVA_SIFRARNIK_STEP:"Pregled bolesti,sredstava i fenofaza",
+    BOLESTI_SREDSTVA_BOLEST_SREDSTVO_TITLE:"Bolesti i sredstva",
+    BOLESTI_SREDSTVA_BOLEST_FENOFAZA_TITLE:"Bolesti i fenofaze",
+    BOLESTI_SREDSTVA_BOLEST_CASCADE:"Odaberite bolest",
+    BOLESTI_SREDSTVA_SREDSTV_CASCADE:"Odaberite sredstvo",
+    BOLESTI_SREDSTVA_FENOFAZA_CASCADE:"Odaberite fenofazu",
+    BOLESTI_SREDSTVA_BUTTON_UNOS:"Unesi",
+    BOLESTI_SREDSTVA_TABLICA_SREDSTVA_NASLOV:"Pregled bolesti, sredstva i fenofaza",
+    BOLESTI_SREDSTVA_SWITCH_SREDSTVA:"Tablica sredstva",
+    BOLESTI_SREDSTVA_SWITCH_FAZE:"Tablica fenofaza",
+    BOLESTI_SREDSTVA_MODAL_SUCCESS_TITLE:"Unos uspješan",
+    BOLESTI_SREDSTVA_MODAL_SUCCESS:"Unos u bazu je uspješan!",
+    BOLESTI_SREDSTVA_MODAL_ERROR_TITLE:"Unos nije uspio",
+    BOLESTI_SREDSTVA_MODAL_ERROR:"Unos u bazu nije izvršen",
+
+    //pregled bolesti
+    PREGLED_BOLESTI_NASLOV:"Pregled bolesti i sredstava",
 }) 
 
 export default constantsUI;

@@ -1,53 +1,102 @@
-import { FunctionComponent,useState, useEffect } from "react";
-import { Table,Pagination } from 'antd';
-import { EditOutlined,DeleteOutlined} from '@ant-design/icons';
+import { FunctionComponent, useState, useEffect } from "react";
+import { Table, Pagination, Modal } from 'antd';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import constant from "../../../constantsUI/constantsUI";
 import 'antd/dist/antd.css';
 import "./SredstvaCSS.css"
 import IDefaultPagingData from "../../../types/IDefaultPagingData";
 import SredstvaService from "../../../services/SredstvaService";
+import ISredstvoData from "../../../types/ISredstvoType";
+import DateConverter from "../../../feature/dateConverter";
+import SearchByName from "../CustomJSX/SearchBy";
+import TableUpdateDelete from "../CustomJSX/TableUpdateDelete";
 
+type Props = {
+    onUpdate: (step: number, data: ISredstvoData) => void
+}
 
-const SredstvaSifrarnik: FunctionComponent = () => {
+const SredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
 
     const [pageSize, setPageSize] = useState(2);
     const [pageNo, setPageNo] = useState(0);
-    const [totalItems,setTotalItems] = useState(0);
-    const [tableData,setTableData] = useState([])
-    
-    const promijeniStranicu = (page : number ,pageSize: number | undefined)=>{
-        setPageNo(page-1);
-    }
-    const renderButtons = () =>{
-        return (<div>
-             <EditOutlined />
-            <br></br>
-            <DeleteOutlined />
-            </div>)
-        
+    const [totalItems, setTotalItems] = useState(0);
+    const [tableData, setTableData] = useState([])
+    const sredstvaService = new SredstvaService();
+    const datumClass = new DateConverter();
+
+
+    const promijeniStranicu = (page: number, pageSize: number | undefined) => {
+        setPageNo(page - 1);
     }
 
-    useEffect(()=>{
-        const getInitialData = async () =>{
-            const data : IDefaultPagingData ={
-                pageNo:pageNo,
-                pageSize:pageSize,
-                sort:[]
-            }
-            let sredstvaService = new SredstvaService();
-            sredstvaService.getAllSredstva(data)
-            .then(response =>{
+    const editClick = (text: any, record: any) => {
+        console.log(record)
+        const data: ISredstvoData = {
+            tipSredstvaId:record.tipSredstvaId,
+            name: record.name,
+            description: record.description,
+            composition: record.composition,
+            group: record.group,
+            formulation: record.formulation,
+            typeOfAction: record.typeOfAction,
+            usage: record.usage,
+            concentration: record.concentration,
+            dosageOn100: record.dosageOn100,
+            waiting: record.waiting,
+            typeOfMedium: record.nameOfTipSredstva,
+            id: record.id,
+            date: ""
+        }
+        onUpdate(0, data);
+    }
+
+    const deleteClick = (record: any) => {
+
+        sredstvaService.deleteItemById(record.id)
+            .then(() => {
+                Modal.success({
+                    title: constant.BOLEST_BRISANJE_USPJELO_NASLOV,
+                    content: constant.BOLEST_BRISANJE_USPJELO
+                });
+                getInitialData();
+            }).catch(() => {
+                Modal.error({
+                    title: constant.BOLEST_BRISANJE_FAIL_NASLOV,
+                    content: constant.BOLEST_BRISANJE_FAIL,
+                });
+            })
+    }
+
+    const findByItemName = (name: string) => {
+        sredstvaService.findByItemName(name)
+        .then(response => {
+            setTableData(response.data.sredstva);
+            setTotalItems(response.data.totalItems);
+            setPageNo(response.data.currentPage);
+        })
+    }
+
+    const getInitialData = async () => {
+        const data: IDefaultPagingData = {
+            pageNo: pageNo,
+            pageSize: pageSize,
+            sort: []
+        }
+
+        sredstvaService.getAllSredstva(data)
+            .then(response => {
                 setTableData(response.data.sredstva);
                 setTotalItems(response.data.totalItems);
                 setPageNo(response.data.currentPage);
             })
-        }
+    }
+    useEffect(() => {
         getInitialData();
-    },[pageNo]);
+    }, [pageNo]);
 
     const columns = [
         {
-            title: constant.SREDSTVA_SIFRARNIK_NAZIV,
+            title:  SearchByName(constant.SREDSTVA_SIFRARNIK_NAZIV, findByItemName,getInitialData),
             dataIndex: 'name',
         },
         {
@@ -96,22 +145,22 @@ const SredstvaSifrarnik: FunctionComponent = () => {
         },
         {
             title: "",
-            dataIndex: 'buttons',
-            render : renderButtons
+            dataIndex: 'name',
+            render: (text: any, record: any) => TableUpdateDelete(() => editClick(text, record), () => deleteClick(record), constant.BOLEST_BRISANJE_PITANJE)
         },
     ]
 
     return (
         <div>
             <h1 className="form-title">{constant.TIP_SREDSTVA_NASLOV_SIFRARNIK}</h1>
-            <Table 
-            className="tablica-tip-sredstva" 
-            columns={columns}
-            dataSource={tableData}
-            pagination={false}
-            rowKey="name" 
+            <Table
+                className="tablica-tip-sredstva"
+                columns={columns}
+                dataSource={tableData}
+                pagination={false}
+                rowKey="name"
             />
-            <Pagination pageSize={pageSize} total={totalItems} onChange={promijeniStranicu}/>
+            <Pagination pageSize={pageSize} total={totalItems} onChange={promijeniStranicu} />
         </div>
     );
 }

@@ -1,7 +1,9 @@
 package com.hr.igz.VineApp.services;
 
 import java.util.Map;
+import java.util.Set;
 
+import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
 import org.springframework.http.ResponseEntity;
 
 import com.hr.igz.VineApp.domain.dto.FenofazaDto;
@@ -18,4 +20,5 @@ public interface FenofazaService {
 
 	ResponseEntity<Object> deleteFenofazaById(Long id);
 
+    ResponseEntity<Set<AntDCascaderDto>> getFenofazeZaCascader();
 }

@@ -6,6 +6,7 @@ import org.mapstruct.Mapping;
 import com.hr.igz.VineApp.domain.TipZastitnogSredstva;
 import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
 import com.hr.igz.VineApp.domain.dto.TipSredstvaDto;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel="spring")
 public abstract class TipSredstvaMapper {
@@ -14,7 +15,8 @@ public abstract class TipSredstvaMapper {
 	@Mapping(source="name",target="name")
 	@Mapping(source="date",target="date")
 	public abstract TipSredstvaDto TipSredstvaToTipSredstvaDto(TipZastitnogSredstva sredstvo);
-	
+
+	@Mapping(source="id",target="id")
 	@Mapping(source="name",target="name")
 	@Mapping(source="date",target="date")
 	public abstract TipZastitnogSredstva TipSredstvaDtoToTipSredstva(TipSredstvaDto sredstvoDto);
@@ -26,7 +28,7 @@ public abstract class TipSredstvaMapper {
 
 	@Mapping(target="oldTip.id",ignore = true)
 	@Mapping(source = "tipSredstva.name",target = "oldTip.name")
-	public abstract TipZastitnogSredstva UpdateTipZastitnogSredstvaFromDto(TipZastitnogSredstva oldTip,
+	public abstract TipZastitnogSredstva UpdateTipZastitnogSredstvaFromDto(@MappingTarget TipZastitnogSredstva oldTip,
 			TipSredstvaDto tipSredstva);
 	
 

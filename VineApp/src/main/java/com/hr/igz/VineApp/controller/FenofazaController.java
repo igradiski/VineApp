@@ -1,19 +1,15 @@
 package com.hr.igz.VineApp.controller;
 
 import java.util.Map;
+import java.util.Set;
 
+import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
+import io.swagger.v3.oas.annotations.Operation;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.hr.igz.VineApp.domain.dto.FenofazaDto;
 import com.hr.igz.VineApp.services.FenofazaService;
@@ -24,57 +20,54 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/fenofaza")
 @Slf4j
+@AllArgsConstructor
 public class FenofazaController {
 	
-	private FenofazaService fenofazaService;
-	
-	@Autowired
-	public FenofazaController(FenofazaService fenofazaService) {
-		this.fenofazaService=fenofazaService;
-	}
-	
-	@GetMapping(value = "/fenofaza-by-name")
+	private final FenofazaService fenofazaService;
+
+	@GetMapping(value = "/fenofaze-name")
+	@Operation(summary= "Operacija za dohvacanje fenofaza prema imenu sa stranicenjem")
 	public ResponseEntity <Map<String,Object>> findFenofazaByNamePaged(
 			@RequestParam String name,
 			@RequestParam(defaultValue = "2") int pageSize,
 			@RequestParam(defaultValue = "0") int pageNo,
 			@RequestParam(defaultValue = "id,desc") String [] sort){
-		
-		log.info("Pokrenuto dohvacanje fenofaza prema imenu!");
+
 		return fenofazaService.findFenofazaByNamePaged(pageSize,pageNo,sort,name);
 	}
 	
-	@GetMapping(value="/sve-fenofaze")
+	@GetMapping(value="/fenofaze")
+	@Operation(summary= "Operacija za dohvacanje fenofaza sa stranicenjem")
 	public ResponseEntity<Map<String,Object>> getFenofazePaged(
 			@RequestParam(defaultValue = "2") int pageSize,
 			@RequestParam(defaultValue = "0") int pageNo,
 			@RequestParam(defaultValue = "id,desc") String [] sort){
-		
-		log.info("Pokrenuto dohvacanje fenofaza za sifrarnik!");
 		return fenofazaService.getFenofazePaged(pageSize,pageNo,sort);
 	}
+
+	@GetMapping(value ="/sve-fenofaze-cascader")
+	@Operation(summary= "Operacija za dohvacanje fenofaza za ant d cascader")
+	public ResponseEntity<Set<AntDCascaderDto>> getFenofazeZaCascader(){
+		return fenofazaService.getFenofazeZaCascader();
+	}
 	
-	@PostMapping(value="/nova-fenofaza")
+	@PostMapping(value="/fenofaze")
+	@Operation(summary= "Operacija za unos fenofaze")
 	public ResponseEntity<Object> addFenofazu(@Validated @RequestBody FenofazaDto fenofaza){
-		
-		log.info("Pokrenuto dodavanje fenofaze!");
 		return fenofazaService.addFenofaza(fenofaza);
 	}
 	
-	@PutMapping(value="/auzirana-fenofaza")
+	@PatchMapping(value="/fenofaze")
+	@Operation(summary= "Operacija za azuriranje fenofaze")
 	public ResponseEntity<Object> updateFenofaza(
 			@Validated @RequestBody FenofazaDto fenofaza,
 			@RequestParam Long id){
-		
-		log.info("Pokrenut update fenofaze ID: {}", id);
 		return fenofazaService.updateFenofaza(fenofaza,id);
 	}
 	
-	@DeleteMapping(value = "/")
+	@DeleteMapping(value = "/fenofaze")
+	@Operation(summary= "Operacija za brisanje fenofaze")
 	public ResponseEntity<Object> deleteFenofaza(@RequestParam Long id){
-		
-		log.info("Pokrenuto brisanje fenofaze s id: {}",id);
 		return fenofazaService.deleteFenofazaById(id);
 	}
-
 }

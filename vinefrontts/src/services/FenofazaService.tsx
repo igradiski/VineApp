@@ -17,6 +17,11 @@ class FenofazaService {
         return promise;
     }
 
+    async getAllFazeForCascader() {
+        var promise = await axiosInstance.get("vineApp/fenofaza/sve-fenofaze-cascader");
+        return promise;
+    }
+
     async updateFenofaza(data: IFenofazaData, id: any) {
         var promise = await axiosInstance.put("vineApp/fenofaza/auzirana-fenofaza",data,{params:{id}});
         return promise;

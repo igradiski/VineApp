@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import 'antd/dist/antd.css'
 import { Menu } from 'antd';
 import { Layout } from 'antd';
-import { HomeOutlined,UserOutlined ,UsergroupAddOutlined,CalendarOutlined} from '@ant-design/icons';
+import { HomeOutlined, UserOutlined, UsergroupAddOutlined, CalendarOutlined } from '@ant-design/icons';
 import { useAppSelector } from "../../hooks";
 import constantsUI from "../../constantsUI/constantsUI";
 
@@ -34,26 +34,30 @@ const GuestMenu = () => {
                 <Link className="left-menu-link" to="/register">{constantsUI.LEFT_MENU_REGISTER}</Link>
             </Menu.Item>
 
-
-            <SubMenu key="g1" title="Bolesti">
-            <Menu.Item key="4" icon={<UsergroupAddOutlined />}>
-                <Link className="left-menu-link" to="/bolest">Bolest</Link>
-            </Menu.Item>
-            <Menu.Item key="5" icon={<UsergroupAddOutlined />}>
-                <Link className="left-menu-link" to="/fenofaza">Fenofaza razvoja</Link>
-            </Menu.Item>
+            <SubMenu key="g1" title="Sredstva i bolesti" icon={<UsergroupAddOutlined />}>
+                <Menu.Item key="10" icon={<UsergroupAddOutlined />}>
+                    <Link className="left-menu-link" to="/dodavanjeBolesti">{constantsUI.LEFT_MENU_PREGLED_BOLESTI}</Link>
+                </Menu.Item>
+                <Menu.Item key="9" icon={<UsergroupAddOutlined />}>
+                    <Link className="left-menu-link" to="/pregledBolesti">{constantsUI.LEFT_MENU_PREGLED_BOLESTI}</Link>
+                </Menu.Item>
             </SubMenu>
 
+            <SubMenu key="g2" title="CRUD" icon={<UsergroupAddOutlined />} >
 
-            <SubMenu key="g2" title="Sredstva">
-            <Menu.Item key="7" icon={<UsergroupAddOutlined />}>
-                <Link className="left-menu-link" to="/sredstva">{constantsUI.LEFT_MENU_SREDSTVA}</Link>
-            </Menu.Item>
-            <Menu.Item key="8" icon={<UsergroupAddOutlined />}>
-                <Link className="left-menu-link" to="/tipSredstva">{constantsUI.LEFT_MENU_TIP_SREDSTVA}</Link>
-            </Menu.Item>
+                <Menu.Item key="4" icon={<UsergroupAddOutlined />}>
+                    <Link className="left-menu-link" to="/bolest">Bolest</Link>
+                </Menu.Item>
+                <Menu.Item key="5" icon={<UsergroupAddOutlined />}>
+                    <Link className="left-menu-link" to="/fenofaza">Fenofaza razvoja</Link>
+                </Menu.Item>
+                <Menu.Item key="7" icon={<UsergroupAddOutlined />}>
+                    <Link className="left-menu-link" to="/sredstva">{constantsUI.LEFT_MENU_SREDSTVA}</Link>
+                </Menu.Item>
+                <Menu.Item key="8" icon={<UsergroupAddOutlined />}>
+                    <Link className="left-menu-link" to="/tipSredstva">{constantsUI.LEFT_MENU_TIP_SREDSTVA}</Link>
+                </Menu.Item>
             </SubMenu>
-
         </Menu>
     )
 }
@@ -69,7 +73,7 @@ const SiderCustom: FunctionComponent = () => {
     var userLogged = useAppSelector(state => state.login.isAuthentificated);
     return (
         <Sider className="left-sider" collapsible collapsed={collapsed} onCollapse={toggleCollapsed}>
-            {userLogged ? <LoggedUserMenu/> : <GuestMenu/> }
+            {userLogged ? <LoggedUserMenu /> : <GuestMenu />}
         </Sider>
     )
 }

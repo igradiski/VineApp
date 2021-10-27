@@ -1,19 +1,16 @@
 package com.hr.igz.VineApp.controller;
 
 import java.util.Map;
+import java.util.Set;
 
+import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
+import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.hr.igz.VineApp.domain.dto.BolestDto;
 import com.hr.igz.VineApp.services.BolestService;
@@ -24,60 +21,52 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/bolest")
 @Slf4j
+@RequiredArgsConstructor
 public class BolestController {
 	
-	private BolestService bolestService;
-	
-	@Autowired
-	public BolestController(BolestService bolestService) {
-		this.bolestService = bolestService;
-	}
-	
+	private final BolestService bolestService;
+
 	@GetMapping(value = "/bolest-by-name")
+	@Operation(summary= "Operacija za dohvacanje bolesti prema imenu sa stranicenjem")
 	public ResponseEntity <Map<String,Object>> findBolestiByNamePaged(
 			@RequestParam String name,
 			@RequestParam(defaultValue = "2") int pageSize,
 			@RequestParam(defaultValue = "0") int pageNo,
 			@RequestParam(defaultValue = "id,desc") String [] sort){
-		
-		log.info("Pokrenuto dohvacanje svih bolesti prema imenu");
 		return bolestService.findBolestByNamePaged(pageSize,pageNo,sort,name);
 	}
 	
 	@GetMapping(value="/sve-bolesti")
+	@Operation(summary= "Operacija za dohvacanje bolesti sa stranicenjem")
 	public ResponseEntity <Map<String,Object>> dohvatiBolestiPaged(
 			@RequestParam(defaultValue = "2") int pageSize,
 			@RequestParam(defaultValue = "0") int pageNo,
 			@RequestParam(defaultValue = "id,desc") String [] sort){
-		
-		log.info("Pokrenuto dohvacanje svih bolesti paged");
 		return bolestService.getBolestiPaged(pageSize,pageNo,sort);	
+	}
+	@GetMapping(value="/sve-bolesti-cascader")
+	@Operation(summary= "Operacija za dohvacanje bolesti za cascader u antd")
+	public ResponseEntity<Set<AntDCascaderDto>> dohvatiBolestiZaCascader(){
+		return bolestService.getBolestiZaCascader();
 	}
 	
 	@PostMapping(value="/nova-bolest")
+	@Operation(summary= "Operacija za unos nove bolesti")
 	public ResponseEntity<Object> dodajBolest(@Validated @RequestBody BolestDto bolest){
-		
-		log.info("Pokrenut insert bolesti!");
 		return bolestService.addBolest(bolest);
 	}
 	
-	@PutMapping(value="/azurirana-bolest")
+	@PatchMapping(value="/azurirana-bolest")
+	@Operation(summary= "Operacija za azuriranje bolesti")
 	public ResponseEntity<Object> updateBolest(
 			@Validated @RequestBody BolestDto bolestDto,
 			@RequestParam Long id){
-		
-		log.info("Pokrenuto azuriranje bolesti!");
 		return bolestService.updateBolest(bolestDto,id);
-		
 	}
 	
 	@DeleteMapping(value = "/")
+	@Operation(summary= "Operacija za brisanje bolesti")
 	public ResponseEntity<Object> obrisiBolest(@RequestParam Long id){
-		
-		log.info("Pokrenuto brisanje bolesti!");
 		return bolestService.deleteBolestByName(id);
 	}
-	
-	
-
 }

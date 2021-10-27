@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,30 +30,23 @@ import com.hr.igz.VineApp.services.TipSredstvaService;
 import com.hr.igz.VineApp.utils.SortingHelperUtil;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class TipSredstvaServiceImpl implements TipSredstvaService {
 	
-	private TipSredstvaRepository tipSredstvaRepository;
+	private final TipSredstvaRepository tipSredstvaRepository;
 	
 	private final TipSredstvaMapper mapper;
 	
-	private SortingHelperUtil sortHelper;
+	private final SortingHelperUtil sortHelper;
 	
-	@Autowired
-	public TipSredstvaServiceImpl(TipSredstvaRepository tipSredstvaRepository,TipSredstvaMapper mapper) {
-		this.tipSredstvaRepository= tipSredstvaRepository;
-		this.mapper= mapper;
-	}
 
-	@Autowired
-	public void setSortHelper(SortingHelperUtil sortHelper) {
-		this.sortHelper = sortHelper;
-	}
-	
 	@Override
+	@Transactional
 	public ResponseEntity<Object> dodajTipSredstva(TipSredstvaDto tipSredstva) {
 		
 		if(tipSredstvaRepository.existsByName(tipSredstva.getName())) {
@@ -71,9 +65,9 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ResponseEntity<Map<String, Object>> findAllPagable(int pageSize, int pageNo, String[] sort) {
-		
-		
+
 		List<Order> orders = sortHelper.getOrdersFromArray(sort);
 		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(orders));
 		Page<TipZastitnogSredstva> page = tipSredstvaRepository.findAll(paging);
@@ -82,6 +76,7 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 	
 	
 	@Override
+	@Transactional(readOnly = true)
 	public ResponseEntity<Set<Object>> findAll() {
 		
 		ArrayList<TipZastitnogSredstva> tipovi = new ArrayList<>();
@@ -95,11 +90,13 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public TipZastitnogSredstva findById(Long id) {
 		return tipSredstvaRepository.findById(id).get();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ResponseEntity<Map<String, Object>> findTipSredstvaByName(int pageSize, int pageNo, String[] sort,
 			String name) {
 		
@@ -110,6 +107,7 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 	}
 
 	@Override
+	@Transactional
 	public ResponseEntity<Object> updateTipSredstva(TipSredstvaDto tipSredstva, Long id) {
 		
 		TipZastitnogSredstva oldTip = tipSredstvaRepository.findById(id)
@@ -129,6 +127,7 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 	}
 
 	@Override
+	@Transactional
 	public ResponseEntity<Object> deleteTipSredstvaById(Long id) {
 		
 		TipZastitnogSredstva tipSredstva = tipSredstvaRepository.findById(id).orElseThrow(()->{

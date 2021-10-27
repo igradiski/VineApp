@@ -9,5 +9,8 @@ export default interface ISredstvoData{
     concentration:string,
     dosageOn100:string,
     waiting:string,
-    typeOfMedium:string
+    typeOfMedium:string,
+    id:string,
+    date:string,
+    tipSredstvaId:string
 }

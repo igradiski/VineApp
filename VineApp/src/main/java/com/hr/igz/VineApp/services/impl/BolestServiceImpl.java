@@ -1,12 +1,11 @@
 package com.hr.igz.VineApp.services.impl;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,30 +27,21 @@ import com.hr.igz.VineApp.services.BolestService;
 import com.hr.igz.VineApp.utils.SortingHelperUtil;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class BolestServiceImpl implements BolestService {
 
-	private BolestRepository bolestRepository;
+	private final BolestRepository bolestRepository;
 
 	private final BolestMapper mapper;
 
-	private SortingHelperUtil sortHelper;
-
-	@Autowired
-	public BolestServiceImpl(BolestRepository repos, BolestMapper mapper) {
-
-		this.mapper = mapper;
-		this.bolestRepository = repos;
-	}
-
-	@Autowired
-	public void setSortHelper(SortingHelperUtil sortHelper) {
-		this.sortHelper = sortHelper;
-	}
+	private final SortingHelperUtil sortHelper;
 
 	@Override
+	@Transactional
 	public ResponseEntity<Object> addBolest(BolestDto bolestDto) {
 
 		if (bolestRepository.existsByName(bolestDto.getName())) {
@@ -70,6 +60,7 @@ public class BolestServiceImpl implements BolestService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ResponseEntity<Map<String, Object>> getBolestiPaged(int pageSize, int pageNo, String[] sort) {
 
 		List<Order> orders = sortHelper.getOrdersFromArray(sort);
@@ -79,6 +70,7 @@ public class BolestServiceImpl implements BolestService {
 	}
 	
 	@Override
+	@Transactional(readOnly = true)
 	public ResponseEntity<Map<String, Object>> findBolestByNamePaged(int pageSize, int pageNo, String[] sort,
 			String name) {
 		
@@ -89,25 +81,18 @@ public class BolestServiceImpl implements BolestService {
 	}
 
 	@Override
-	public ResponseEntity<Object> deleteBolestByName(Long id) {
+	@Transactional(readOnly = true)
+	public ResponseEntity<Set<AntDCascaderDto>> getBolestiZaCascader() {
 
-		Bolest bolest = bolestRepository.findById(id)
-				.orElseThrow(()->{
-					log.error("Ne postoji bolest s id: {}",id.toString());
-					throw new DeleteFailureException("Ne postoji objekt za brisanje!");
-				});
-		try {
-			bolestRepository.delete(bolest);
-			return ResponseEntity.status(HttpStatus.CREATED).body("Bolest uspjesno obrisana");
-		} catch (Exception e) {
-			log.error("Nije moguce obrisati bolest: {}",bolest.toString());
-			throw new DeleteFailureException(e.getMessage());
-		}
+		Set<AntDCascaderDto> set = bolestRepository.findAll().stream()
+				.map(mapper::BolestToCascaderDto).collect(Collectors.toSet());
+		return new ResponseEntity<>(set, HttpStatus.OK);
 	}
 
 	@Override
+	@Transactional
 	public ResponseEntity<Object> updateBolest(BolestDto bolestDto,Long id) {
-		
+
 		Bolest oldBolest = bolestRepository.findById(id)
 				.orElseThrow(()->{
 					log.error("Ne postoji bolest za azuriranje s ID: {}",id.toString());
@@ -122,6 +107,24 @@ public class BolestServiceImpl implements BolestService {
 			throw new PostFailureException("Nije moguce ažurirati zeljenu bolest!");
 		}
 		return ResponseEntity.status(HttpStatus.OK).body("Bolest je uspješno ažurirana");
+	}
+
+	@Override
+	@Transactional
+	public ResponseEntity<Object> deleteBolestByName(Long id) {
+
+		Bolest bolest = bolestRepository.findById(id)
+				.orElseThrow(()->{
+					log.error("Ne postoji bolest s id: {}",id.toString());
+					throw new DeleteFailureException("Ne postoji objekt za brisanje!");
+				});
+		try {
+			bolestRepository.delete(bolest);
+			return ResponseEntity.status(HttpStatus.CREATED).body("Bolest uspjesno obrisana");
+		} catch (Exception e) {
+			log.error("Nije moguce obrisati bolest: {}",bolest.toString());
+			throw new DeleteFailureException(e.getMessage());
+		}
 	}
 
 	private Map<String, Object> createResponse(Page<Bolest> page) {

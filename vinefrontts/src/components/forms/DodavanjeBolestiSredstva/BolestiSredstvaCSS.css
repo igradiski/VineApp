@@ -1,0 +1,71 @@
+.bolesti-sredstva-main-div{
+    height: 100%;
+    overflow: scroll;
+    width: 100%;
+    display:inline-block;
+}
+
+.splitter-div{
+    display: flex;
+    justify-content: center
+}
+.forma-sredstva-bolest{
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    padding-top: 1%;
+    overflow: auto;
+    height: 80%; 
+}
+
+.left-div{
+    height: 100%;
+    text-align: center;
+    width: 45%;
+}
+.right-div{
+    height: 100%;
+    width: 45%;
+}
+
+.form-label{
+    font-weight: bold;
+    font-size: 100%;
+    padding: 2%;
+}
+
+.cascader-pad{
+    padding-bottom: 2%;
+}
+.ant-transfer{
+    padding-top: 2%;
+    width:100%;
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+}
+
+@media only screen and (max-width: 650px) {
+    
+    .splitter-div{
+        display:inline-grid;
+    }
+
+    .bolesti-sredstva-main-div{
+        height: 100%;
+        overflow: scroll;
+        display:inline-grid;
+    }
+    .left-div{
+        height: 100%;
+        background-color: red;
+        width: 100%;
+    
+    }
+    .right-div{
+        height: 100%;
+        background-color: blue;
+        width: 100%;
+    }
+}

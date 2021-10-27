@@ -7,18 +7,13 @@ class BolestService{
     
     constructor(){}
 
-    async addBolest(data : IBolestdata){
-        var promise = await axiosInstance.post("vineApp/bolest/nova-bolest",data);
-        return promise;
-    }
-
     async getAllBolesti(data : IDefaultPagingData){
         var promise = await axiosInstance.get("vineApp/bolest/sve-bolesti",{params :data});
         return promise;
     }
 
-    async deleteBolestById(id:string){
-        var promise = await axiosInstance.delete("vineApp/bolest/",{params :{id}});
+    async getAllBolestiForCascader(){
+        var promise = await axiosInstance.get("vineApp/bolest/sve-bolesti-cascader");
         return promise;
     }
 
@@ -27,8 +22,18 @@ class BolestService{
         return promise;
     }
 
+    async addBolest(data : IBolestdata){
+        var promise = await axiosInstance.post("vineApp/bolest/nova-bolest",data);
+        return promise;
+    }
+
+    async deleteBolestById(id:string){
+        var promise = await axiosInstance.delete("vineApp/bolest/",{params :{id}});
+        return promise;
+    }
+
     async updateBolest(data: IBolestdata, id: string) {
-        var promise = await axiosInstance.put("vineApp/bolest/azurirana-bolest",data,{params:{id}});
+        var promise = await axiosInstance.patch("vineApp/bolest/azurirana-bolest",data,{params:{id}});
         return promise;
     }
 

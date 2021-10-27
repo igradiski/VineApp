@@ -58,7 +58,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
+
+	private static final String[] AUTH_WHITELIST = {
+			// -- Swagger UI v2
+			"/v2/api-docs",
+			"/swagger-resources",
+			"/swagger-resources/**",
+			"/configuration/ui",
+			"/configuration/security",
+			"/swagger-ui.html",
+			"/swagger-ui",
+			"/webjars/**",
+			// -- Swagger UI v3 (OpenAPI)
+			"/v3/api-docs/**",
+			"/swagger-ui/**"
+			// other public endpoints of your API may be appended to this array
+	};
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable()
@@ -66,11 +83,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.authorizeRequests()
 			.antMatchers("/api/auth/userTry").authenticated()
-			.antMatchers("/api/echo").permitAll()
+			.antMatchers("/swagger-ui").permitAll()
+				.antMatchers(AUTH_WHITELIST).permitAll()
 			.antMatchers("/bolest/**").permitAll()
 			.antMatchers("/fenofaza/**").permitAll()
 			.antMatchers("/tip_sredstva/**").permitAll()
-			.antMatchers("/zastitno_sredstvo**").permitAll()
+				.antMatchers("/bolest-sredstvo/**").permitAll()
+			.antMatchers("/zastitno_sredstvo/**").permitAll()
 			.anyRequest().authenticated();
 		//http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}

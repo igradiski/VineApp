@@ -1,5 +1,6 @@
 package com.hr.igz.VineApp.mapper;
 
+import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -26,4 +27,8 @@ public abstract class FenofazaMapper {
 	@Mapping(source = "fenofazaDto.timeOfUsage",target = "fenofaza.timeOfUsage")
 	public abstract FenozafaRazvoja UpdateFenofazaFromDto(@MappingTarget FenozafaRazvoja fenofaza,FenofazaDto fenofazaDto);
 
+	@Mapping(source="id",target="key")
+	@Mapping(source="id",target="value")
+	@Mapping(source="name",target="label")
+	public abstract AntDCascaderDto FenofazaToCascaderDto(FenozafaRazvoja fenofaza);
 }

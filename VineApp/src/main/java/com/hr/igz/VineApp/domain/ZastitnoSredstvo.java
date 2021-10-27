@@ -62,8 +62,7 @@ public class ZastitnoSredstvo implements Serializable {
 	private Integer waiting;
 	
 	private Integer approved;
-	
-	
+
 	private Instant date;
 
 }
