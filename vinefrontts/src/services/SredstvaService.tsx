@@ -1,21 +1,21 @@
 import axiosInstance from "../axios/axiosInstance";
-import IDefaultPagingData from "../types/IDefaultPagingData";
 import ISredstvoData from "../types/ISredstvoType";
 
 
 
 class SredstvaService{
     
-
-    constructor() {
-    }
-
     async getAllSredstva(data: any) {
         var promise = await axiosInstance.get("vineApp/zastitno_sredstvo/sredstva",{params:data});
         return promise;
     }
 
     async findByItemName(name: string) {
+        var promise = await axiosInstance.get("vineApp/zastitno_sredstvo/sredstva-by-name",{params:{name}});
+        return promise;
+    }
+
+    async getSredstvoByName(name: string) {
         var promise = await axiosInstance.get("vineApp/zastitno_sredstvo/sredstva-name",{params:{name}});
         return promise;
     }

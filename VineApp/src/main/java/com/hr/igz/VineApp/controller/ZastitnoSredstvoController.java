@@ -1,21 +1,18 @@
 package com.hr.igz.VineApp.controller;
 
-import java.util.Map;
-import java.util.Set;
-
 import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
+import com.hr.igz.VineApp.domain.dto.SredstvoDto;
+import com.hr.igz.VineApp.services.SredstvoService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.hr.igz.VineApp.domain.dto.SredstvoDto;
-import com.hr.igz.VineApp.services.SredstvoService;
-
-import lombok.extern.slf4j.Slf4j;
+import java.util.Optional;
+import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -28,7 +25,7 @@ public class ZastitnoSredstvoController {
 
 	@GetMapping(value = "/sredstva")
 	@Operation(summary= "Dohvaca zastitna sredstva po stranicama")
-	public ResponseEntity<Map<String, Object>> getAllSredstvaPage(
+	public Page<SredstvoDto> getAllSredstvaPage(
 			@RequestParam(defaultValue = "0") int pageNo,
 			@RequestParam(defaultValue = "3") int pageSize, 
 			@RequestParam(defaultValue = "id,desc") String[] sort) {
@@ -36,14 +33,20 @@ public class ZastitnoSredstvoController {
 		return sredstvoService.getAllSredstvaPagable(pageNo,pageSize,sort);
 	}
 
-	@GetMapping(value= "/sredstva-name")
+	@GetMapping(value= "/sredstva-by-name")
 	@Operation(summary= "Dohvaca zastitna sredstva po upitu koji sadrzava ime")
-	public ResponseEntity<Map<String,Object>> getSredstvaByNamePaged(
+	public Page<SredstvoDto> getSredstvaByNamePaged(
 			@RequestParam String name,
 			@RequestParam(defaultValue = "2") int pageSize,
 			@RequestParam(defaultValue = "0") int pageNo,
 			@RequestParam(defaultValue = "id,desc") String [] sort){
 		return sredstvoService.findSredstvoByNamePaged(pageSize,pageNo,sort,name);
+	}
+
+	@GetMapping(value= "/sredstva-name")
+	@Operation(summary= "Dohvaca zastitno sredstvo prema imenu")
+	public Optional<SredstvoDto> getSredstvoByName(@RequestParam String name){
+		return sredstvoService.findSredstvoByName(name);
 	}
 
 	@GetMapping(value= "/sva-sredstva-cascader")

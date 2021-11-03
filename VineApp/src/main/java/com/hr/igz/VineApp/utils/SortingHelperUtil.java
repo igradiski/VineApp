@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class SortingHelperUtil {
 	
 	public List<Order> getOrdersFromArray(String[] sort){
-		List<Order> orders = new ArrayList<Order>();
+		List<Order> orders = new ArrayList<>();
 		if (sort[0].contains(",")) {
 	        for (String sortOrder : sort) {
 	          String[] _sort = sortOrder.split(",");

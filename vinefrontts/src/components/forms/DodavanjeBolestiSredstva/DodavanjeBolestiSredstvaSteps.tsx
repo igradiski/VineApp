@@ -1,14 +1,12 @@
 import { FunctionComponent, useState } from "react";
 import { Steps, Divider } from 'antd';
 import PregledBolestiISredstva from "./PregledBolestiISredstva";
-import PregledBolestiForm from "../PregledBolestiForm/PregledBolesti";
 import constant from "../../../constantsUI/constantsUI";
 import PregledBolestiISredstvaForm from "./BolestiISredstvaForm";
 
 const DodavanjeBolestiSredstvaSteps : FunctionComponent = () =>{
 
     const [currentStep,setCurrentStep] = useState(0);
-    const [isUpdate,setIsUpdate] = useState(false);
     const { Step } = Steps;
 
     const changeStep =(step:number) =>{

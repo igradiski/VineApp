@@ -1,6 +1,5 @@
-import { FunctionComponent, useState,useReducer } from "react";
+import { FunctionComponent, useState} from "react";
 import { Steps, Divider } from 'antd';
-
 import constant from "../../../constantsUI/constantsUI";
 import 'antd/dist/antd.css';
 import "./TipSredstvaCSS.css"

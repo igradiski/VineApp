@@ -1,5 +1,5 @@
 import { FunctionComponent, useState, useEffect } from "react";
-import { Form, Input, Button, Cascader, Modal } from 'antd';
+import { Form, Input, Button, Modal } from 'antd';
 
 import constant from "../../../constantsUI/constantsUI";
 import 'antd/dist/antd.css';
@@ -74,6 +74,7 @@ const BolestForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
             name:updateData.name,
             description:updateData.description
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

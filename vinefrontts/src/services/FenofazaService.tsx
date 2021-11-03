@@ -5,15 +5,8 @@ import IFenofazaData from "../types/IFenofazaData";
 
 class FenofazaService {
     
-    constructor(){}
-
     async getAllFenofaze(data: any) {
-        var promise = await axiosInstance.get("vineApp/fenofaza/sve-fenofaze",{params:data});
-        return promise;
-    }
-    
-    async addFenofaza (data:IFenofazaData){
-        var promise = await axiosInstance.post("vineApp/fenofaza/nova-fenofaza",data);
+        var promise = await axiosInstance.get("vineApp/fenofaza/fenofaze",{params:data});
         return promise;
     }
 
@@ -22,18 +15,28 @@ class FenofazaService {
         return promise;
     }
 
-    async updateFenofaza(data: IFenofazaData, id: any) {
-        var promise = await axiosInstance.put("vineApp/fenofaza/auzirana-fenofaza",data,{params:{id}});
+    async findByItemName(name: string) {
+        var promise = await axiosInstance.get("vineApp/fenofaza/fenofaze-by-name",{params:{name}});
         return promise;
     }
 
-    async findByItemName(name: string) {
-        var promise = await axiosInstance.get("vineApp/fenofaza/fenofaza-by-name",{params:{name}});
+    async findByName(faza: string) {
+        var promise = await axiosInstance.get("vineApp/fenofaza/fenofaze-name",{params:{faza}});
+        return promise;
+    }
+    
+    async addFenofaza (data:IFenofazaData){
+        var promise = await axiosInstance.post("vineApp/fenofaza/fenofaze",data);
+        return promise;
+    }
+
+    async updateFenofaza(data: IFenofazaData, id: any) {
+        var promise = await axiosInstance.patch("vineApp/fenofaza/fenofaze",data,{params:{id}});
         return promise;
     }
 
     async deleteItemById(id: string) {
-        var promise = await axiosInstance.delete("vineApp/fenofaza/",{params:{id}});
+        var promise = await axiosInstance.delete("vineApp/fenofaza/fenofaze",{params:{id}});
         return promise;
     }
 

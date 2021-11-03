@@ -1,19 +1,16 @@
 package com.hr.igz.VineApp.controller;
 
-import java.util.Map;
-import java.util.Set;
-
+import com.hr.igz.VineApp.domain.dto.TipSredstvaDto;
+import com.hr.igz.VineApp.services.TipSredstvaService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.hr.igz.VineApp.domain.dto.TipSredstvaDto;
-import com.hr.igz.VineApp.services.TipSredstvaService;
-
-import lombok.extern.slf4j.Slf4j;
+import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -26,7 +23,7 @@ public class TipZastitnogSredstvaController {
 
 	@GetMapping("/svi-tipovi-paged")
 	@Operation(summary= "Operacija dohvacanje svih tipova sredstava sa stranicenjem")
-	public ResponseEntity<Map<String, Object>> getAllTipoviSredstavaPage(
+	public Page<TipSredstvaDto> getAllTipoviSredstavaPage(
 			@RequestParam(defaultValue = "2") int pageSize,
 			@RequestParam(defaultValue = "0") int pageNo,
 			@RequestParam(defaultValue = "id,desc") String [] sort){
@@ -41,7 +38,7 @@ public class TipZastitnogSredstvaController {
 	
 	@GetMapping(value = "/tip-by-name")
 	@Operation(summary= "Operacija za dohvacanje svih tipova sredstava prema imenu")
-	public ResponseEntity<Map<String,Object>> findTipSredstvaByNamePaged(
+	public Page<TipSredstvaDto> findTipSredstvaByNamePaged(
 			@RequestParam String name,
 			@RequestParam(defaultValue = "2") int pageSize,
 			@RequestParam(defaultValue = "0") int pageNo,
@@ -63,7 +60,7 @@ public class TipZastitnogSredstvaController {
 		return tipSredstvaService.updateTipSredstva(tipSredstva,id);
 	}
 
-	@DeleteMapping(value = "/")
+	@DeleteMapping(value = "/tip")
 	@Operation(summary= "Operacija za brisanje tipa sredstva")
 	public ResponseEntity<Object> deleteTipSredstva(@RequestParam Long id){
 		return tipSredstvaService.deleteTipSredstvaById(id);

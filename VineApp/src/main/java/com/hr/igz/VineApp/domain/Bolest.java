@@ -1,24 +1,26 @@
 package com.hr.igz.VineApp.domain;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 
 @Entity(name="Bolest")
 @Table(name="BOLEST")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
+@ToString(onlyExplicitlyIncluded = true)
 public class Bolest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -26,17 +28,23 @@ public class Bolest implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
-	private Instant date;
-
 	private String description;
 
 	private String name;
 
-	@OneToMany(mappedBy="bolest")
+	@OneToMany(mappedBy="bolest",orphanRemoval = true)
 	private Set<BolestHasFaza> bolestHasFazas;
 
-	@OneToMany(mappedBy="bolest")
+	@OneToMany(mappedBy="bolest",orphanRemoval = true)
 	private Set<SredstvoHasBolest> sredstvoHasBolests;
 
+	@CreatedDate
+	private Instant date;
+
+	@LastModifiedDate
+	@Column(name = "updated_date")
+	private Instant updatedDate;
+
+	private int approved;
 
 }

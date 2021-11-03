@@ -1,24 +1,5 @@
 package com.hr.igz.VineApp.services.impl;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
 import com.hr.igz.VineApp.domain.TipZastitnogSredstva;
 import com.hr.igz.VineApp.domain.dto.TipSredstvaDto;
 import com.hr.igz.VineApp.exception.DeleteFailureException;
@@ -28,9 +9,19 @@ import com.hr.igz.VineApp.mapper.TipSredstvaMapper;
 import com.hr.igz.VineApp.repository.TipSredstvaRepository;
 import com.hr.igz.VineApp.services.TipSredstvaService;
 import com.hr.igz.VineApp.utils.SortingHelperUtil;
-
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 
 @Service
@@ -54,11 +45,10 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 			throw new ObjectAlreadyExists("Tip sredstva vec postoji u bazi!");
 		}
 		TipZastitnogSredstva tip = mapper.TipSredstvaDtoToTipSredstva(tipSredstva);
-		tip.setDate(Instant.now());
 		try {
 			tipSredstvaRepository.save(tip);
 		}catch (Exception e) {
-			log.error("Nije moguce unijeti tip sredstva{}",tipSredstva.toString());
+			log.error("Nije moguce unijeti tip sredstva{}",tipSredstva);
 			throw new PostFailureException("Nije moguce unijeti tip sredstva!");
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body("Tip sredstva je uspješno kreiran");
@@ -66,12 +56,11 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public ResponseEntity<Map<String, Object>> findAllPagable(int pageSize, int pageNo, String[] sort) {
+	public Page<TipSredstvaDto> findAllPagable(int pageSize, int pageNo, String[] sort) {
 
 		List<Order> orders = sortHelper.getOrdersFromArray(sort);
 		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(orders));
-		Page<TipZastitnogSredstva> page = tipSredstvaRepository.findAll(paging);
-		return new ResponseEntity<>(createResponse(page), HttpStatus.OK);
+		return tipSredstvaRepository.findAll(paging).map(mapper::TipSredstvaToTipSredstvaDto);
 	}
 	
 	
@@ -80,7 +69,7 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 	public ResponseEntity<Set<Object>> findAll() {
 		
 		ArrayList<TipZastitnogSredstva> tipovi = new ArrayList<>();
-		Set<Object> tipoviSredstva = new HashSet<Object>();
+		Set<Object> tipoviSredstva = new HashSet<>();
 		
 		tipSredstvaRepository.findAll().forEach(tipovi::add);
 		tipovi.stream().forEach(tip ->{
@@ -97,13 +86,13 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public ResponseEntity<Map<String, Object>> findTipSredstvaByName(int pageSize, int pageNo, String[] sort,
+	public Page<TipSredstvaDto> findTipSredstvaByName(int pageSize, int pageNo, String[] sort,
 			String name) {
 		
 		List<Order> orders = sortHelper.getOrdersFromArray(sort);
 		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(orders));
-		Page<TipZastitnogSredstva> page = tipSredstvaRepository.findByNameContaining(name,paging);
-		return new ResponseEntity<>(createResponse(page),HttpStatus.OK);
+		return tipSredstvaRepository.findByNameContaining(name,paging).map(mapper::TipSredstvaToTipSredstvaDto);
+
 	}
 
 	@Override
@@ -116,7 +105,6 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 					throw new PostFailureException("Nije moguce pronaći željeni tip sredstva!");
 				});
 		oldTip = mapper.UpdateTipZastitnogSredstvaFromDto(oldTip,tipSredstva);
-		oldTip.setDate(Instant.now());
 		try {
 			tipSredstvaRepository.save(oldTip);
 		}catch (Exception e) {

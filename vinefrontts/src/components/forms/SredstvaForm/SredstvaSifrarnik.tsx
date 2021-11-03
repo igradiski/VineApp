@@ -1,6 +1,5 @@
 import { FunctionComponent, useState, useEffect } from "react";
 import { Table, Pagination, Modal } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import constant from "../../../constantsUI/constantsUI";
 import 'antd/dist/antd.css';
 import "./SredstvaCSS.css"
@@ -17,7 +16,7 @@ type Props = {
 
 const SredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
 
-    const [pageSize, setPageSize] = useState(2);
+    const pageSize = 2;
     const [pageNo, setPageNo] = useState(0);
     const [totalItems, setTotalItems] = useState(0);
     const [tableData, setTableData] = useState([])
@@ -70,9 +69,9 @@ const SredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
     const findByItemName = (name: string) => {
         sredstvaService.findByItemName(name)
         .then(response => {
-            setTableData(response.data.sredstva);
-            setTotalItems(response.data.totalItems);
-            setPageNo(response.data.currentPage);
+            setTableData(response.data.content);
+            setTotalItems(response.data.totalElements);
+            setPageNo(response.data.pageable.pageNumber);
         })
     }
 
@@ -85,13 +84,14 @@ const SredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
 
         sredstvaService.getAllSredstva(data)
             .then(response => {
-                setTableData(response.data.sredstva);
-                setTotalItems(response.data.totalItems);
-                setPageNo(response.data.currentPage);
+                setTableData(response.data.content);
+                setTotalItems(response.data.totalElements);
+                setPageNo(response.data.pageable.pageNumber);
             })
     }
     useEffect(() => {
         getInitialData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageNo]);
 
     const columns = [
@@ -132,7 +132,7 @@ const SredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
             dataIndex: 'dosageOn100',
         },
         {
-            title: constant.SREDSTVA_SIFRARNIK_UNESEN,
+            title: "Karenca",
             dataIndex: 'waiting',
         },
         {
@@ -142,6 +142,7 @@ const SredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
         {
             title: "Date",
             dataIndex: 'date',
+            render:(text:any) => datumClass.convertDateForTable(text)
         },
         {
             title: "",

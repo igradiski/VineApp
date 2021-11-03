@@ -45,6 +45,7 @@ public abstract class SredstvoMapper {
 	public abstract SredstvoDto ZastitnoSredstvoToZastitnoSredstvoDto(ZastitnoSredstvo sredstvo);
 
 	@Mapping(target="sredstvo.id",ignore = true)
+	@Mapping(target="sredstvo.date",ignore = true)
 	@Mapping(source = "sredstvoDto.name",target = "sredstvo.name")
 	@Mapping(source = "sredstvoDto.description",target = "sredstvo.description")
 	@Mapping(source = "sredstvoDto.composition",target = "sredstvo.composition")
@@ -55,7 +56,6 @@ public abstract class SredstvoMapper {
 	@Mapping(source = "sredstvoDto.concentration",target = "sredstvo.concentration")
 	@Mapping(source = "sredstvoDto.dosageOn100",target = "sredstvo.dosageOn100")
 	@Mapping(source = "sredstvoDto.waiting",target = "sredstvo.waiting")
-	@Mapping(source = "sredstvoDto.date",target = "sredstvo.date")
 	@Mapping(target = "sredstvo.tipZastitnogSredstva",expression = "java(tipSredstvaRepositoryRepos.findById(sredstvoDto.getTypeOfMedium()).get())")
 	public abstract ZastitnoSredstvo UpdateSredstvoFromDto(@MappingTarget ZastitnoSredstvo sredstvo, SredstvoDto sredstvoDto,TipSredstvaRepository tipSredstvaRepositoryRepos);
 

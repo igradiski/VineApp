@@ -23,6 +23,7 @@ public abstract class FenofazaMapper {
 	public abstract FenofazaDto FenofazaToFenofazaDto(FenozafaRazvoja fenofaza);
 	
 	@Mapping(target="fenofaza.id",ignore = true)
+	@Mapping(target="fenofaza.date",ignore = true)
 	@Mapping(source = "fenofazaDto.name",target = "fenofaza.name")
 	@Mapping(source = "fenofazaDto.timeOfUsage",target = "fenofaza.timeOfUsage")
 	public abstract FenozafaRazvoja UpdateFenofazaFromDto(@MappingTarget FenozafaRazvoja fenofaza,FenofazaDto fenofazaDto);

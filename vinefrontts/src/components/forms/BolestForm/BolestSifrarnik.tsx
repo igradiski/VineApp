@@ -16,7 +16,7 @@ type Props = {
 
 const BolestSifrarnik: FunctionComponent<Props> = ({onUpdate}) => {
 
-    const [pageSize, setPageSize] = useState(2);
+    const pageSize = 2;
     const [pageNo, setPageNo] = useState(0);
     const [totalItems,setTotalItems] = useState(0);
     const [tableData,setTableData] = useState([])
@@ -55,9 +55,9 @@ const BolestSifrarnik: FunctionComponent<Props> = ({onUpdate}) => {
     const findByItemName = (name: string) => {
         bolestService.findByItemName(name)
         .then(response => {
-            setTableData(response.data.bolesti);
-            setTotalItems(response.data.totalItems);
-            setPageNo(response.data.currentPage);
+            setTableData(response.data.content);
+            setTotalItems(response.data.totalElements);
+            setPageNo(response.data.pageable.pageNumber);
         })
     }
 
@@ -70,14 +70,16 @@ const BolestSifrarnik: FunctionComponent<Props> = ({onUpdate}) => {
         let bolestService = new BolestService();
         bolestService.getAllBolesti(data)
         .then(response =>{
-            setTableData(response.data.bolesti);
-            setTotalItems(response.data.totalItems);
-            setPageNo(response.data.currentPage);
+            console.log(response)
+            setTableData(response.data.content);
+            setTotalItems(response.data.totalElements);
+            setPageNo(response.data.pageable.pageNumber);
         })
     }
 
     useEffect(()=>{
         getInitialData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[pageNo]);
 
     const columns = [
@@ -93,6 +95,7 @@ const BolestSifrarnik: FunctionComponent<Props> = ({onUpdate}) => {
         {
             title: constant.BOLEST_SIFRARNIK_DATUM,
             dataIndex: 'date',
+            render:(text:any) => datumClass.convertDateForTable(text)
         },
         {
             title: "",

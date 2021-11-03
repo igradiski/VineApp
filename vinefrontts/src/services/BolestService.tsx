@@ -5,8 +5,6 @@ import IDefaultPagingData from "../types/IDefaultPagingData";
 
 class BolestService{
     
-    constructor(){}
-
     async getAllBolesti(data : IDefaultPagingData){
         var promise = await axiosInstance.get("vineApp/bolest/sve-bolesti",{params :data});
         return promise;
@@ -19,6 +17,11 @@ class BolestService{
 
     async findByItemName(name: string) {
         var promise = await axiosInstance.get("vineApp/bolest/bolest-by-name",{params:{name}});
+        return promise;
+    }
+
+    async findByName(name: string) {
+        var promise = await axiosInstance.get("vineApp/bolest/bolest-name",{params:{name}});
         return promise;
     }
 

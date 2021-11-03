@@ -1,6 +1,5 @@
 import { FunctionComponent, useState, useEffect } from "react";
 import { Table, Pagination, Modal } from 'antd';
-
 import constant from "../../../constantsUI/constantsUI";
 import TipSredstvaService from "../../../services/TipSredstvaService";
 import IDefaultPagingData from "../../../types/IDefaultPagingData";
@@ -19,7 +18,7 @@ type Props = {
 
 const TipSredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
 
-    const [pageSize, setPageSize] = useState(2);
+    const pageSize = 4;
     const [pageNo, setPageNo] = useState(0);
     const [totalItems, setTotalItems] = useState(0);
     const [tableData, setTableData] = useState([])
@@ -60,9 +59,9 @@ const TipSredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
     const findByItemName = (name: string) => {
         tipSredstvaSrc.findByItemName(name)
         .then(response => {
-            setTableData(response.data.tipoviSredstava);
-            setTotalItems(response.data.totalItems);
-            setPageNo(response.data.currentPage);
+            setTableData(response.data.content);
+            setTotalItems(response.data.totalElements);
+            setPageNo(response.data.pageable.pageNumber);
         })
     }
 
@@ -74,15 +73,15 @@ const TipSredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
         }
         tipSredstvaSrc.getAllTipSredstva(data)
             .then(response => {
-                setTableData(response.data.tipoviSredstava);
-                setTotalItems(response.data.totalItems);
-                setPageNo(response.data.currentPage);
+                setTableData(response.data.content);
+                setTotalItems(response.data.totalElements);
+                setPageNo(response.data.pageable.pageNumber);
             })
     }
 
-
     useEffect(() => {
         getInitialData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageNo]);
 
     const columns = [
@@ -95,6 +94,7 @@ const TipSredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
             title: constant.TIP_SREDSTVA_TBL_DATUM,
             dataIndex: 'date',
             key: 'date',
+            render:(text:any) => datumClass.convertDateForTable(text)
         },
         {
             title: "",

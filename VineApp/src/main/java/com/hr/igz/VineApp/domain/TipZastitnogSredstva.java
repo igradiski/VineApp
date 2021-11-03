@@ -1,24 +1,23 @@
 package com.hr.igz.VineApp.domain;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import lombok.Data;
+import java.util.Set;
 
 @Entity
 @Table(name="TIP_ZASTITNOG_SREDSTVA")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class TipZastitnogSredstva implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -28,12 +27,15 @@ public class TipZastitnogSredstva implements Serializable {
 	private Long id;
 	
 	private String name;
-	
-	@Column(name="date")
-	private Instant date;
-	
+
 	@OneToMany(mappedBy = "tipZastitnogSredstva")
-	@JsonManagedReference
-	private List<ZastitnoSredstvo> sredstva;
+	private Set<ZastitnoSredstvo> sredstva;
+
+	@CreatedDate
+	private Instant date;
+
+	@LastModifiedDate
+	@Column(name = "updated_date")
+	private Instant updatedDate;
 
 }

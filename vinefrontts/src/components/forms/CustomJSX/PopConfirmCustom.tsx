@@ -1,8 +1,6 @@
 import { Popconfirm} from 'antd';
-import { EditOutlined,DeleteOutlined} from '@ant-design/icons';
 
-const PopConfirmCustom  = 
-(title:String,action:() =>void,icon:JSX.Element) => {
+const PopConfirmCustom  = (title:String,action:() =>void,icon:JSX.Element) => {
     return (
         <Popconfirm
             placement="top"

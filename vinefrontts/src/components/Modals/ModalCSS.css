@@ -1,0 +1,20 @@
+.ant-modal-content {
+    text-align: center;
+}
+.modal-div{
+    display:inline-block;
+}
+.modal-row{
+    display:inline;
+}
+.p-bold{
+    font-weight:bold;
+    font-size: 20px;
+}
+.p-content{
+    font-size: 16px;
+}
+.ant-modal-title {
+    font-weight: bolder;
+    font-size: 25px;
+}

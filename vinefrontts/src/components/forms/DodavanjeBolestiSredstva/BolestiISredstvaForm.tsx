@@ -92,6 +92,7 @@ const PregledBolestiISredstvaForm: FunctionComponent = () => {
         getSveBolesti();
         getSvaSredstva();
         getSveFaze();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

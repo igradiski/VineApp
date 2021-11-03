@@ -160,6 +160,36 @@
 
     //pregled bolesti
     PREGLED_BOLESTI_NASLOV:"Pregled bolesti i sredstava",
+    PREGLED_BOLESTI_BOLEST_LABEL:"Bolest",
+    PREGLED_BOLESTI_FAZA_LABEL:"Faza:",
+    PREGLED_BOLESTI_SREDSTVO_LABEL:"Sredstvo:",
+    PREGLED_BOLESTI_FILTER:"Filtriraj tablicu",
+
+    //BOLEST MODAL
+    BOLEST_MODAL_TITLE:"Pregled detalja bolesti",
+    BOLEST_MODAL_NAZIV:"Naziv:",
+    BOLEST_MODAL_OPIS:"Opis:",
+    BOLEST_MODAL_DATUM:"Datum zadnje izmjene:",
+
+    //FAZA MODAL
+    FAZA_MODAL_TITLE:"Pregled detalja faze",
+    FAZA_MODAL_VRIJEME: "Vrijeme primjene",
+
+    //SREDSTVO MODAL
+    SREDSTVO_MODAL_TITLE:"Pregled detalja sredstva",
+    SREDSTVO_MODAL_NAZIV:"Naziv",
+    SREDSTVO_MODAL_OPIS:"Opis",
+    SREDSTVO_MODAL_SASTAV:"Sastav",
+    SREDSTVO_MODAL_GRUPA:"Grupa",
+    SREDSTVO_MODAL_FORMULACIJA:"Formulacija",
+    SREDSTVO_MODAL_PRIMJENA:"Primjena",
+    SREDSTVO_MODAL_KORISTENJE:"Koristenje",
+    SREDSTVO_MODAL_KONCENTRACIJA:"Koncentracija",
+    SREDSTVO_MODAL_DOZIRANJE:"Doziranje na 100l",
+    SREDSTVO_MODAL_UNESEN:"Datum unosa",
+    SREDSTVO_MODAL_TIP:"Tip sredstva",
+    SREDSTVO_MODAL_KARENCA:"Karenca:",
+
 }) 
 
 export default constantsUI;

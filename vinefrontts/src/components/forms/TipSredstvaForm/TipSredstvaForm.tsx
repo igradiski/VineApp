@@ -1,10 +1,8 @@
 import { FunctionComponent, useState,useEffect } from "react";
 import { Form, Input, Button,Modal } from 'antd';
-
 import constant from "../../../constantsUI/constantsUI";
 import 'antd/dist/antd.css';
 import "./TipSredstvaCSS.css"
-import TipSredstvaSifrarnik from "./TipSredstvaSifrarnik";
 import TipSredstvaService from "../../../services/TipSredstvaService";
 import ITipSredstvaData from "../../../types/ITipSredstvaData";
 
@@ -68,6 +66,7 @@ const TipSredstva: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
         form.setFieldsValue({
             name:updateData.name,
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

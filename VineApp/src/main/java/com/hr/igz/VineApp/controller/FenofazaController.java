@@ -1,20 +1,18 @@
 package com.hr.igz.VineApp.controller;
 
-import java.util.Map;
-import java.util.Set;
-
 import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
+import com.hr.igz.VineApp.domain.dto.FenofazaDto;
+import com.hr.igz.VineApp.services.FenofazaService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.hr.igz.VineApp.domain.dto.FenofazaDto;
-import com.hr.igz.VineApp.services.FenofazaService;
-
-import lombok.extern.slf4j.Slf4j;
+import java.util.Optional;
+import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -25,9 +23,9 @@ public class FenofazaController {
 	
 	private final FenofazaService fenofazaService;
 
-	@GetMapping(value = "/fenofaze-name")
+	@GetMapping(value = "/fenofaze-by-name")
 	@Operation(summary= "Operacija za dohvacanje fenofaza prema imenu sa stranicenjem")
-	public ResponseEntity <Map<String,Object>> findFenofazaByNamePaged(
+	public Page<FenofazaDto> findFenofazaByNamePaged(
 			@RequestParam String name,
 			@RequestParam(defaultValue = "2") int pageSize,
 			@RequestParam(defaultValue = "0") int pageNo,
@@ -35,10 +33,16 @@ public class FenofazaController {
 
 		return fenofazaService.findFenofazaByNamePaged(pageSize,pageNo,sort,name);
 	}
+
+	@GetMapping(value= "fenofaze-name")
+	@Operation(summary = "Operacija za dohvacanje odredene fenofaze")
+	public Optional<FenofazaDto> findFenofazaByname(@RequestParam (name = "faza")String name){
+		return fenofazaService.findFenofazaByName(name);
+	}
 	
 	@GetMapping(value="/fenofaze")
 	@Operation(summary= "Operacija za dohvacanje fenofaza sa stranicenjem")
-	public ResponseEntity<Map<String,Object>> getFenofazePaged(
+	public Page<FenofazaDto> getFenofazePaged(
 			@RequestParam(defaultValue = "2") int pageSize,
 			@RequestParam(defaultValue = "0") int pageNo,
 			@RequestParam(defaultValue = "id,desc") String [] sort){

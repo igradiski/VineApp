@@ -27,6 +27,7 @@ public abstract class TipSredstvaMapper {
 	public abstract AntDCascaderDto AntTipSredstvaToAntDCascaderDto(TipZastitnogSredstva sredstvo);
 
 	@Mapping(target="oldTip.id",ignore = true)
+	@Mapping(target="oldTip.date",ignore = true)
 	@Mapping(source = "tipSredstva.name",target = "oldTip.name")
 	public abstract TipZastitnogSredstva UpdateTipZastitnogSredstvaFromDto(@MappingTarget TipZastitnogSredstva oldTip,
 			TipSredstvaDto tipSredstva);

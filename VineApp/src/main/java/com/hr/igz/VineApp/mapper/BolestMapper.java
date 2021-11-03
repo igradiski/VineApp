@@ -23,6 +23,7 @@ public abstract class BolestMapper {
 	public abstract BolestDto BolestToBolestDto(Bolest bolest);
 	
 	@Mapping(target="bolest.id",ignore = true)
+	@Mapping(target="bolest.date",ignore = true)
 	@Mapping(source="bolestDto.name",target = "bolest.name")
 	@Mapping(source="bolestDto.description",target = "bolest.description")
 	public abstract Bolest UpdateBolestFromDto (@MappingTarget Bolest bolest, BolestDto bolestDto);

@@ -1,6 +1,5 @@
 import { FunctionComponent, useState, useEffect } from "react";
 import { Form, Input, Button, Modal } from 'antd';
-
 import constant from "../../../constantsUI/constantsUI";
 import 'antd/dist/antd.css';
 import "./FenofazaCSS.css"
@@ -74,6 +73,7 @@ const FenofazaForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
             name:updateData.name,
             timeOfUsage:updateData.timeOfUsage
         })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

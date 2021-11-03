@@ -1,21 +1,18 @@
 package com.hr.igz.VineApp.controller;
 
-import java.util.Map;
-import java.util.Set;
-
 import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
+import com.hr.igz.VineApp.domain.dto.BolestDto;
+import com.hr.igz.VineApp.services.BolestService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.hr.igz.VineApp.domain.dto.BolestDto;
-import com.hr.igz.VineApp.services.BolestService;
-
-import lombok.extern.slf4j.Slf4j;
+import java.util.Optional;
+import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -28,17 +25,22 @@ public class BolestController {
 
 	@GetMapping(value = "/bolest-by-name")
 	@Operation(summary= "Operacija za dohvacanje bolesti prema imenu sa stranicenjem")
-	public ResponseEntity <Map<String,Object>> findBolestiByNamePaged(
+	public Page<BolestDto> findBolestiByNamePaged(
 			@RequestParam String name,
 			@RequestParam(defaultValue = "2") int pageSize,
 			@RequestParam(defaultValue = "0") int pageNo,
 			@RequestParam(defaultValue = "id,desc") String [] sort){
 		return bolestService.findBolestByNamePaged(pageSize,pageNo,sort,name);
 	}
-	
+
+	@GetMapping(value = "bolest-name")
+	public Optional<BolestDto> findBolestByName(@RequestParam String name){
+		return bolestService.findBolestByName(name);
+	}
+
 	@GetMapping(value="/sve-bolesti")
 	@Operation(summary= "Operacija za dohvacanje bolesti sa stranicenjem")
-	public ResponseEntity <Map<String,Object>> dohvatiBolestiPaged(
+	public Page<BolestDto> dohvatiBolestiPaged(
 			@RequestParam(defaultValue = "2") int pageSize,
 			@RequestParam(defaultValue = "0") int pageNo,
 			@RequestParam(defaultValue = "id,desc") String [] sort){

@@ -13,7 +13,6 @@ import com.hr.igz.VineApp.services.SredstvoService;
 import com.hr.igz.VineApp.utils.SortingHelperUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +23,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,12 +48,11 @@ public class SredstvoServiceImpl implements SredstvoService {
 			throw new ObjectAlreadyExists("Zastitno sredstvo vec postoji u bazi!");
 		}
 		ZastitnoSredstvo zastitnoSredstvo = mapper.sredstvoDtoToZastitnoSredstvo(sredstvo,tipSredstvaRepository);
-		zastitnoSredstvo.setApproved(1);
-		zastitnoSredstvo.setDate(Instant.now());
+		zastitnoSredstvo.setApproved(0);
 		try {
 			sredstvoRepository.save(zastitnoSredstvo);
 		}catch (Exception e) {
-			log.info("Greska kod unosa zastitnog sredstva {}",sredstvo.toString());
+			log.info("Greska kod unosa zastitnog sredstva {}",sredstvo);
 			throw new PostFailureException(e.getMessage());
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body("Sredstvo uspješno dodano!");
@@ -63,22 +60,26 @@ public class SredstvoServiceImpl implements SredstvoService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public ResponseEntity<Map<String, Object>> getAllSredstvaPagable(int pageNo, int pageSize, String[] sort) {
+	public Page<SredstvoDto> getAllSredstvaPagable(int pageNo, int pageSize, String[] sort) {
 		
 		List<Order> orders = sortHelper.getOrdersFromArray(sort);
 		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(orders));
-		Page<ZastitnoSredstvo> page = sredstvoRepository.findAll(paging);
-		return new ResponseEntity<>(createResponse(page),HttpStatus.OK);
+		return sredstvoRepository.findAll(paging).map(mapper::ZastitnoSredstvoToZastitnoSredstvoDto);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public ResponseEntity<Map<String, Object>> findSredstvoByNamePaged(int pageSize, int pageNo, String[] sort, String name) {
+	public Optional<SredstvoDto> findSredstvoByName(String name) {
+		return sredstvoRepository.findByName(name).map(mapper::ZastitnoSredstvoToZastitnoSredstvoDto);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<SredstvoDto> findSredstvoByNamePaged(int pageSize, int pageNo, String[] sort, String name) {
 
 		List<Order> orders = sortHelper.getOrdersFromArray(sort);
 		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(orders));
-		Page<ZastitnoSredstvo> page = sredstvoRepository.findByNameContaining(name,paging);
-		return new ResponseEntity<>(createResponse(page),HttpStatus.OK);
+		return sredstvoRepository.findByNameContaining(name,paging).map(mapper::ZastitnoSredstvoToZastitnoSredstvoDto);
 	}
 
 	@Override
@@ -96,11 +97,10 @@ public class SredstvoServiceImpl implements SredstvoService {
 
 		ZastitnoSredstvo oldSredstvo = sredstvoRepository.findById(id)
 				.orElseThrow(()->{
-					log.error("Nije moguce pronaci sredstvo s id: {}",id.toString());
+					log.error("Nije moguce pronaci sredstvo s id: {}",id);
 					throw new PostFailureException("Nije moguce pronaci zeljeno sredstvo!");
 				});
 		oldSredstvo = mapper.UpdateSredstvoFromDto(oldSredstvo,sredstvoDto,tipSredstvaRepository);
-		oldSredstvo.setDate(Instant.now());
 		try{
 			sredstvoRepository.save(oldSredstvo);
 		}catch (Exception e){
@@ -116,7 +116,7 @@ public class SredstvoServiceImpl implements SredstvoService {
 
 		ZastitnoSredstvo sredstvo = sredstvoRepository.findById(id)
 				.orElseThrow(()->{
-					log.error("Ne postoji sredstvo s id: {}",id.toString());
+					log.error("Ne postoji sredstvo s id: {}",id);
 					throw new DeleteFailureException("Nije moguce pronaći željenu fenofazu!");
 				});
 		try{
@@ -126,25 +126,5 @@ public class SredstvoServiceImpl implements SredstvoService {
 			log.error("Nije moguce obrisati sredstvo: {}",sredstvo.toString());
 			throw new DeleteFailureException("Ne postoji objekt za brisanje!");
 		}
-	}
-
-	private Map<String, Object> createResponse(Page<ZastitnoSredstvo> page){
-
-		Map<String, Object> response = new HashMap<>();
-		if(page != null){
-			response.put("sredstva", mapAllSredstva(page.getContent()));
-			response.put("totalPages", page.getTotalPages());
-			response.put("totalItems", page.getTotalElements());
-			response.put("currentPage", page.getNumber());
-		}
-		return response;
-	}
-
-	private Set<SredstvoDto> mapAllSredstva(List<ZastitnoSredstvo> list){
-		Set<SredstvoDto> set = new HashSet<SredstvoDto>();
-		list.stream().forEach(sredstvo ->{
-			set.add(mapper.ZastitnoSredstvoToZastitnoSredstvoDto(sredstvo));
-		});
-		return set;
 	}
 }

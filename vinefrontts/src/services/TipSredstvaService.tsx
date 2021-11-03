@@ -6,9 +6,6 @@ import ITipSredstvaData from "../types/ITipSredstvaData";
 
 class TipSredstvaService{
     
-    constructor() {
-    }
-
     async getAll(){
         var promise = await axiosInstance.get("vineApp/tip_sredstva/svi-tipovi");
         return promise;
@@ -19,23 +16,24 @@ class TipSredstvaService{
         return promise;
     }
 
+    async findByItemName(name:string){
+        var promise = await axiosInstance.get("vineApp/tip_sredstva/tip-by-name",{params:{name}});
+        return promise;
+    }
+
     async addTipSredstva(data: ITipSredstvaData){
         var promise = await axiosInstance.post("vineApp/tip_sredstva/novi-tip",data);
         return promise;
     }
     
     async updateTipSredstva(data: ITipSredstvaData, id: any) {
-        var promise = await axiosInstance.put("vineApp/tip_sredstva/azurirani-tip",data,{params:{id}});
+        var promise = await axiosInstance.patch("vineApp/tip_sredstva/azurirani-tip",data,{params:{id}});
         return promise;
     }
 
-    async findByItemName(name:string){
-        var promise = await axiosInstance.get("vineApp/tip_sredstva/tip-by-name",{params:{name}});
-        return promise;
-    }
     
     async deleteItemById(id:string){
-        var promise = await axiosInstance.delete("vineApp/tip_sredstva/",{params:{id}});
+        var promise = await axiosInstance.delete("vineApp/tip_sredstva/tip",{params:{id}});
         return promise;
     }
 

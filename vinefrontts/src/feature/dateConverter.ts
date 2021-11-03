@@ -1,8 +1,4 @@
-
 class DateConverter{
-
-    constructor(){}
-
     convertDateForTable(date:any){
         var oldDateFormat = new Date(date);
         var string =oldDateFormat.getDay()+"."
@@ -11,7 +7,5 @@ class DateConverter{
         oldDateFormat.getHours()+":"+oldDateFormat.getMinutes()+":"+oldDateFormat.getSeconds();
         return string;
     }
-
 }
-
 export default DateConverter;

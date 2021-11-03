@@ -90,6 +90,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/tip_sredstva/**").permitAll()
 				.antMatchers("/bolest-sredstvo/**").permitAll()
 			.antMatchers("/zastitno_sredstvo/**").permitAll()
+				.antMatchers("/bolest-faza/**").permitAll()
 			.anyRequest().authenticated();
 		//http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}

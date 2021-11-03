@@ -1,15 +1,16 @@
 package com.hr.igz.VineApp.domain;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
 
-import javax.persistence.*;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.Date;
-import java.util.Set;
 
 
 /**
@@ -18,23 +19,32 @@ import java.util.Set;
  */
 @Entity(name="BolestHasFaza")
 @Table(name="bolest_has_faza")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class BolestHasFaza implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date date;
+	private Long id;
 
 	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="BOLEST_id")
 	private Bolest bolest;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="FENOZAFA_RAZVOJA_id")
 	private FenozafaRazvoja fenozafaRazvoja;
+
+	@CreatedDate
+	private Instant date;
+
+	@LastModifiedDate
+	@Column(name = "updated_date")
+	private Instant updatedDate;
+
+	private int approved;
 
 }

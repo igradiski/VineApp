@@ -28,8 +28,6 @@ const SredstvaForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
     const [dosageOn100, setDosageOn100] = useState("");
     const [waiting, setWaiting] = useState("2");
     const [typeOfMedium, setTypeOfMedium] = useState("");
-    const [typeOfMediumId,setTypeOfMediumId] = useState("");
-
     const { TextArea } = Input;
     const [form] = Form.useForm();
     const sredstvaSrc = new SredstvaService();
@@ -47,21 +45,6 @@ const SredstvaForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
 
         });
     }
-    const ocistiFormu = () => {
-        setName("");
-        setDescription("");
-        setComposition("");
-        setGroup("");
-        setFormulation("");
-        setTypeOfAction("");
-        setUsage("");
-        setConcentration("");
-        setDosageOn100("");
-        setWaiting("");
-        setTypeOfMedium("");
-        form.resetFields();
-    }
-
     const unesiSredstvo = () => {
         const data: ISredstvoData = {
             name: name,
@@ -134,6 +117,7 @@ const SredstvaForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
     useEffect(() => {
         getInitialData();
         setDataForUpdate();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

@@ -17,7 +17,7 @@ type Props = {
 
 const FenofazaSifrarnik: FunctionComponent<Props> = ({onUpdate}) => {
 
-    const [pageSize, setPageSize] = useState(2);
+    const pageSize = 4;
     const [pageNo, setPageNo] = useState(0);
     const [totalItems, setTotalItems] = useState(0);
     const [tableData, setTableData] = useState();
@@ -39,7 +39,6 @@ const FenofazaSifrarnik: FunctionComponent<Props> = ({onUpdate}) => {
     }
 
     const deleteClick = (record: any) => {
-
        fenofazaService.deleteItemById(record.id)
        .then(()=>{
         Modal.success({
@@ -58,9 +57,9 @@ const FenofazaSifrarnik: FunctionComponent<Props> = ({onUpdate}) => {
     const findByItemName = (name: string) => {
         fenofazaService.findByItemName(name)
         .then(response => {
-            setTableData(response.data.fenofaze);
-            setTotalItems(response.data.totalItems);
-            setPageNo(response.data.currentPage);
+            setTableData(response.data.content);
+            setTotalItems(response.data.totalElements);
+            setPageNo(response.data.pageable.pageNumber);
         })
     }
 
@@ -72,15 +71,16 @@ const FenofazaSifrarnik: FunctionComponent<Props> = ({onUpdate}) => {
         }
         fenofazaService.getAllFenofaze(data)
             .then(response => {
-                setTableData(response.data.fenofaze);
-                setTotalItems(response.data.totalItems);
-                setPageNo(response.data.currentPage);
+                setTableData(response.data.content);
+                setTotalItems(response.data.totalElements);
+                setPageNo(response.data.pageable.pageNumber);
             })
     }
 
 
     useEffect(() => {
         getInitialData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageNo]);
 
     const columns = [

@@ -1,22 +1,15 @@
 package com.hr.igz.VineApp.domain;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.Set;
 
 
 /**
@@ -25,8 +18,10 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Table(name="USER")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class User implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -56,4 +51,7 @@ public class User implements Serializable {
 
 	@OneToMany(mappedBy="user")
 	private List<UserRole> userRoles;
+
+	@OneToMany(mappedBy = "user",orphanRemoval = true)
+	private Set<Vinograd> vinogradi;
 }

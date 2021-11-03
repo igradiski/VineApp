@@ -46,6 +46,18 @@
     justify-content: space-around;
 }
 
+    .ant-cascader-menu {
+      height: 40%;
+    }
+
+.ant-switch-checked {
+    background-color: #7cb305;
+}
+
+.switch-class{
+    margin-bottom: 2%;
+}
+
 @media only screen and (max-width: 650px) {
     
     .splitter-div{
