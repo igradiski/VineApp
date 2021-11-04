@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import java.util.Base64;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +43,7 @@ public class BolestServiceImpl implements BolestService {
 	@Transactional
 	public ResponseEntity<Object> addBolest(BolestDto bolestDto) {
 
+
 		if (bolestRepository.existsByName(bolestDto.getName())) {
 			log.error("Postoji fenofaza s imenom: {}", bolestDto.getName());
 			throw new ObjectAlreadyExists("Bolest toga imena vec postoji!");
@@ -49,6 +51,9 @@ public class BolestServiceImpl implements BolestService {
 		Bolest bolest = mapper.BolestDtoToBolest(bolestDto);
 		bolest.setApproved(0);
 		try {
+			byte[] decodedBytes = Base64.getDecoder().decode(bolestDto.getBase64());
+			log.info(String.valueOf(decodedBytes.length));
+			bolest.setPicture(decodedBytes);
 			bolestRepository.save(bolest);
 		} catch (Exception e) {
 			log.error("Greška kod unosa bolesti: {}", bolest);
@@ -74,6 +79,16 @@ public class BolestServiceImpl implements BolestService {
 		List<Order> orders = sortHelper.getOrdersFromArray(sort);
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(orders));
 		return bolestRepository.findByNameContaining(name,paging).map(mapper::BolestToBolestDto);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Optional<BolestDto> getBolestForCard(Long id) {
+		Bolest bolest = bolestRepository.findById(id).get();
+		String base64 = Base64.getEncoder().encodeToString(bolest.getPicture());
+		BolestDto dto = mapper.BolestToBolestDto(bolest);
+		dto.setBase64(base64);
+		return Optional.of(dto);
 	}
 
 	@Override

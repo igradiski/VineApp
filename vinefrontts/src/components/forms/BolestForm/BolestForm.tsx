@@ -1,6 +1,6 @@
-import { FunctionComponent, useState, useEffect } from "react";
-import { Form, Input, Button, Modal } from 'antd';
-
+import { FunctionComponent, useState, useEffect, SetStateAction } from "react";
+import { Form, Input, Button, Modal, Upload, message } from 'antd';
+import PictureUpload from "../CustomJSX/PictureUpload";
 import constant from "../../../constantsUI/constantsUI";
 import 'antd/dist/antd.css';
 import "./BolestCSS.css"
@@ -18,6 +18,8 @@ const BolestForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [form] = Form.useForm();
+    const [fileBase64, setFileBase64]= useState("");
+    const [fileName,setFileName] = useState("");
     const { TextArea } = Input;
 
     function successModal() {
@@ -38,14 +40,22 @@ const BolestForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
         form.resetFields();
     }
 
+    const setFileData = (file:any,name:any,base64:any) =>{
+        setFileBase64(base64);
+        setFileName(name);
+    }
+
 
     const unesiBolest = () => {
         let data: IBolestdata = {
             id: "",
             name: name,
             description: description,
-            date: ""
+            date: "",
+            picture_name:fileName,
+            base64:fileBase64
         }
+        console.log(data)
         let bolestService = new BolestService();
         if (isUpdate) {
             bolestService.updateBolest(data, updateData.id)
@@ -57,6 +67,7 @@ const BolestForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
                     errorModal()
                 })
         } else {
+            console.log(data)
             bolestService.addBolest(data)
                 .then(response => {
                     successModal()
@@ -71,15 +82,15 @@ const BolestForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
         setName(updateData.name);
         setDescription(updateData.description);
         form.setFieldsValue({
-            name:updateData.name,
-            description:updateData.description
+            name: updateData.name,
+            description: updateData.description
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <Form
-            form ={form}
+            form={form}
             name="basic"
             className="forma-sredstva"
             onFinish={() => form.resetFields()}
@@ -118,13 +129,21 @@ const BolestForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
                 />
             </Form.Item>
             <Form.Item
-            >
-
+                label="Slika bolesti:"name="description"
+                rules={[
+                    {
+                        required: true,
+                        message: constant.BOLEST_OPIS_MESSAGE_REQUIRED,
+                    },
+                ]}>
+            <PictureUpload setFileData={setFileData}/>
+            </Form.Item>       
+            <Form.Item >
                 <Button type="primary"
                     htmlType="submit"
                     onClick={unesiBolest}
                 >
-                    { isUpdate ? constant.BOLEST_BUTTON_AZURIRAJ:constant.SREDSTVA_UNOS_BUTTON}
+                    {isUpdate ? constant.BOLEST_BUTTON_AZURIRAJ : constant.SREDSTVA_UNOS_BUTTON}
                 </Button>
             </Form.Item>
         </Form>

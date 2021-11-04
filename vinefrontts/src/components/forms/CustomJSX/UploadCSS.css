@@ -1,0 +1,19 @@
+.ant-form input[type='file'] {
+    display: initial;
+}
+
+.div-upload{
+    text-align: center;
+}
+
+.upload-button{
+    font-weight: bold;
+    border-color: black;
+}
+
+.add-remove-btn{
+    display: inline-block;
+}
+.btn-style{
+    width: 100%;
+}

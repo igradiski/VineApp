@@ -9,6 +9,7 @@ import IBolestdata from "../../../types/IBolestData";
 import TableUpdateDelete from "../CustomJSX/TableUpdateDelete";
 import DateConverter from "../../../feature/dateConverter";
 import SearchByName from "../CustomJSX/SearchBy";
+import TableFieldForDescription from "../CustomJSX/TableFieldForDescription";
 
 type Props = {
     onUpdate : (step: number,data:IBolestdata) =>void
@@ -31,7 +32,9 @@ const BolestSifrarnik: FunctionComponent<Props> = ({onUpdate}) => {
             id:record.id,
             name:record.name,
             description:record.description,
-            date:""
+            date:"",
+            base64:"",
+            picture_name:"",
         }
         onUpdate(0,data);
     }
@@ -91,6 +94,7 @@ const BolestSifrarnik: FunctionComponent<Props> = ({onUpdate}) => {
         {
             title: constant.BOLEST_SIFRARNIK_OPIS,
             dataIndex: 'description',
+            render:(text:any,record:any) => TableFieldForDescription(text,record)
         },
         {
             title: constant.BOLEST_SIFRARNIK_DATUM,

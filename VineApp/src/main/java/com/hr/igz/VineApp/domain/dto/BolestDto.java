@@ -18,5 +18,9 @@ public class BolestDto {
 	private String description;
 	
 	private Instant date;
+
+	private String base64;
+
+	private String picture_name;
 	
 }

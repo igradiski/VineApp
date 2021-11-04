@@ -1,5 +1,6 @@
 package com.hr.igz.VineApp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Blob;
 import java.time.Instant;
 import java.util.Set;
 
@@ -44,6 +46,11 @@ public class Bolest implements Serializable {
 	@LastModifiedDate
 	@Column(name = "updated_date")
 	private Instant updatedDate;
+
+	@JsonIgnore
+	private byte[] picture;
+
+	private String picture_name;
 
 	private int approved;
 

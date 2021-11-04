@@ -15,12 +15,12 @@ const BolestSteps: FunctionComponent = () => {
 
     const [currentStep,setCurrentStep] = useState(0);
     const [isUpdate,setIsUpdate] = useState(false);
-    const [updateData,setUpdateData]= useState<IBolestdata>({name:"",date:"",description:"",id:""});
+    const [updateData,setUpdateData]= useState<IBolestdata>({name:"",date:"",description:"",id:"",base64:"",picture_name:""});
 
     const changeStep =(step:number) =>{
         setCurrentStep(step);
         setIsUpdate(false);
-        setUpdateData({name:"",date:"",description:"",id:""});
+        setUpdateData({name:"",date:"",description:"",id:"",base64:"",picture_name:"" });
     }
 
     const changeStepForUpdate = (step: number,data:IBolestdata) => {

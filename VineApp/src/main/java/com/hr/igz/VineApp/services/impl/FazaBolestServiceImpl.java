@@ -83,7 +83,7 @@ public class FazaBolestServiceImpl implements FazaBolestService {
         }else if(bolestId != null ){
             Bolest bolest = dohvatiBolestPremaId(bolestId);
             return fazaBolestRepository.findByBolest(bolest,paging).map(bolestFazaMapper::toDto);
-        }else if( azaId != null){
+        }else if( fazaId != null){
             FenozafaRazvoja faza = dohvatiFazuPremaId(fazaId);
             return fazaBolestRepository.findByFenozafaRazvoja(faza,paging).map(bolestFazaMapper::toDto);
         }else{

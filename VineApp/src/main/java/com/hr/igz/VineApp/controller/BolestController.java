@@ -1,5 +1,6 @@
 package com.hr.igz.VineApp.controller;
 
+import com.hr.igz.VineApp.domain.Bolest;
 import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
 import com.hr.igz.VineApp.domain.dto.BolestDto;
 import com.hr.igz.VineApp.services.BolestService;
@@ -34,8 +35,15 @@ public class BolestController {
 	}
 
 	@GetMapping(value = "bolest-name")
+	@Operation(summary= "Operacija za dohvacanje bolesti prema imenu")
 	public Optional<BolestDto> findBolestByName(@RequestParam String name){
 		return bolestService.findBolestByName(name);
+	}
+
+	@GetMapping(value = "/bolest-card")
+	@Operation(summary = "Dohvaca bolest za prikaz u kartici")
+	public Optional<BolestDto> getBolestForCard(@RequestParam Long id){
+		return bolestService.getBolestForCard(id);
 	}
 
 	@GetMapping(value="/sve-bolesti")

@@ -23,4 +23,6 @@ public interface BolestService {
     ResponseEntity<Set<AntDCascaderDto>> getBolestiZaCascader();
 
 	Optional<BolestDto> findBolestByName(String name);
+
+    Optional<BolestDto> getBolestForCard(Long id);
 }

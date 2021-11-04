@@ -15,6 +15,24 @@
     background-color: #fcffe6;
 }
 
+.ant-modal-content {
+    text-align: center;
+    background-color:#7cb305;
+}
+.ant-card-body {
+    font-weight: bold;
+}
+.ant-modal-header {
+    background-color:#7cb305;
+    border-color: black;
+}
+.ant-modal-title {
+    font-weight: bolder;
+    font-size: 25px;
+    font-weight:bold;
+    background-color:#7cb305;
+}
+
 .ant-menu.ant-menu-dark{
     background-color:#7cb305;
 }

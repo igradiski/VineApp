@@ -5,6 +5,11 @@ import IDefaultPagingData from "../types/IDefaultPagingData";
 
 class BolestService{
     
+    async getBolestForCard(id: any) {
+        var promise = await axiosInstance.get("vineApp/bolest/bolest-card",{params :{id}})
+        return promise
+    }
+    
     async getAllBolesti(data : IDefaultPagingData){
         var promise = await axiosInstance.get("vineApp/bolest/sve-bolesti",{params :data});
         return promise;
