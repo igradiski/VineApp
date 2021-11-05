@@ -1,6 +1,5 @@
 package com.hr.igz.VineApp.controller;
 
-import com.hr.igz.VineApp.domain.Bolest;
 import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
 import com.hr.igz.VineApp.domain.dto.BolestDto;
 import com.hr.igz.VineApp.services.BolestService;

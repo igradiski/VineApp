@@ -1,21 +1,22 @@
 import React, { FunctionComponent, useState } from 'react';
-import { setTimeout } from 'timers';
-import { Button,Spin } from 'antd';
+import { Button } from 'antd';
 import 'antd/dist/antd.css';
 import "./UploadCSS.css"
 
 type Props = {
-    setFileData: (file: any, name: any, base64: any) => void;
+    setFileData: (name: string, base64: string) => void;
 }
 
 
 const PictureUpload: FunctionComponent<Props> = ({ setFileData }) => {
-    
-    const [file, setFile] = useState<string>();
+
+
     const [imagePreview, setImagePreview] = useState<any>("");
-    const [base64, setBase64] = useState<string>();
-    const [name, setName] = useState<string>();
-    
+    const [confirmed, setConfirmed] = useState(false);
+    var base642: string = "";
+    var pictureName: string = "";
+
+
     const setPicture = (file: any) => {
         if (file) {
             const reader = new FileReader();
@@ -26,46 +27,46 @@ const PictureUpload: FunctionComponent<Props> = ({ setFileData }) => {
 
     const _handleReaderLoaded = (readerEvt: any) => {
         let binaryString = readerEvt.target.result;
-        setBase64(btoa(binaryString))
+        base642 = btoa(binaryString);
+        onFileSubmit();
     }
 
-    const onFileSubmit = (e: any) => {
-        setFileData(file, name, base64)
+    const onFileSubmit = () => {
+        setFileData(pictureName, base642);
+        setConfirmed(true);
     }
 
     const photoUpload = (e: any) => {
-        e.preventDefault();
         const reader = new FileReader();
         const file = e.target.files[0];
         if (reader !== undefined && file !== undefined) {
             reader.onloadend = () => {
-                setFile(file)
                 setPicture(file);
-                setName(file.name)
+                pictureName = file.name;
                 setImagePreview(reader.result)
             }
             reader.readAsDataURL(file);
         }
     }
-
     const remove = () => {
-        setFile("")
+        base642 = "";
         setImagePreview("")
-        setBase64("")
-        setName("")
+        setFileData("", "");
+        setConfirmed(false);
+    }
+
+    function success(e: any) {
+        photoUpload(e);
     }
 
     return (
         <div className="div-upload">
-            <input className="upload-button" type="file" name="avatar" id="file" accept=".jpef, .png, .jpg" onChange={photoUpload} src={imagePreview} />
+            <input className="upload-button" type="file" ref={e => imagePreview} placeholder={"aa"} name="avatar" id="file" accept=".jpef, .png, .jpg" src={imagePreview} onChange={(e: any) => { success(e) }} />
             {imagePreview !== "" &&
                 <div className="add-remove-btn">
-                    <Button className="btn-style" type="primary" onClick={onFileSubmit} >
-                        Spremi
-                    </Button>
                     <Button className="btn-style" type="primary" onClick={remove} >Izbrisi</Button>
-                </div>
-            }
+                </div>}
+            {confirmed ? <p className="info-p">Slika je spremljena u memoriju!</p>:<p className="info-p">Slika je prazna!</p>}
         </div>
 
     )

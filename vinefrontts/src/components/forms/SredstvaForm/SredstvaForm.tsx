@@ -7,6 +7,7 @@ import "./SredstvaCSS.css"
 import TipSredstvaService from "../../../services/TipSredstvaService";
 import ISredstvoData from "../../../types/ISredstvoType";
 import SredstvaService from "../../../services/SredstvaService";
+import PictureUpload from "../CustomJSX/PictureUpload";
 
 type Props = {
     isUpdate: boolean,
@@ -28,6 +29,8 @@ const SredstvaForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
     const [dosageOn100, setDosageOn100] = useState("");
     const [waiting, setWaiting] = useState("2");
     const [typeOfMedium, setTypeOfMedium] = useState("");
+    const [fileBase64, setFileBase64]= useState("");
+    const [fileName,setFileName] = useState("");
     const { TextArea } = Input;
     const [form] = Form.useForm();
     const sredstvaSrc = new SredstvaService();
@@ -61,6 +64,8 @@ const SredstvaForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
             id: "",
             date: "",
             tipSredstvaId:"",
+            base64:fileBase64,
+            picture_name:fileName
         }
         if (isUpdate) {
             sredstvaSrc.updateSredstvo(data,updateData.id)
@@ -113,6 +118,10 @@ const SredstvaForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
         })
     }
 
+    const setFileData = (name:string,base64:string) =>{
+        setFileBase64(base64);
+        setFileName(name);
+    }
 
     useEffect(() => {
         getInitialData();
@@ -244,6 +253,18 @@ const SredstvaForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
                     onChange={e =>{ 
                         setTypeOfMedium(e[0].toString())
                         }} />
+            </Form.Item>
+            <Form.Item
+                label={constant.UNOS_SREDSTVA_SLIKA}
+                name="description"
+                rules={[
+                    {
+                        required: true,
+                        message: constant.BOLEST_OPIS_MESSAGE_REQUIRED,
+                    },
+                ]}>
+            <PictureUpload
+            setFileData={setFileData} />
             </Form.Item>
             <Form.Item
             >

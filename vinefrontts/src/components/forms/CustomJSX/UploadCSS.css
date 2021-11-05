@@ -1,19 +1,57 @@
 .ant-form input[type='file'] {
     display: initial;
+    
 }
 
 .div-upload{
     text-align: center;
+    display: inline-grid;
+    align-content: space-around;
+    margin-right: 10%;
 }
 
 .upload-button{
+
+    
     font-weight: bold;
     border-color: black;
+    margin-right: 5%;
+    margin-left: 10%;
 }
 
 .add-remove-btn{
     display: inline-block;
+    padding:5%;
+    margin-right: 5%;
 }
 .btn-style{
-    width: 100%;
+    width: 50%;
+}
+
+.info-p{
+    font-weight:bold;
+}
+
+@media only screen and (max-width:650px) {
+    .div-upload{
+        text-align: center;
+        display: block;
+        align-content: space-around;
+        margin-right: 10%;
+    }
+
+    .add-remove-btn{
+        display: grid;
+        padding:1%;
+        margin-left: 25%;
+    }
+    .div-upload{
+        margin-left: 10%;
+        text-align: center;
+        display: inline-grid;
+        align-content: space-around;
+        margin-right: 10%;
+    }
+    
+    
 }

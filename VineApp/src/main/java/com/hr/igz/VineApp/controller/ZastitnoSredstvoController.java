@@ -49,6 +49,11 @@ public class ZastitnoSredstvoController {
 		return sredstvoService.findSredstvoByName(name);
 	}
 
+	@GetMapping(value = "/sredstva-card")
+	public Optional<SredstvoDto> getSredstvoForCard(@RequestParam Long id){
+		return sredstvoService.getSredstvoForCard(id);
+	}
+
 	@GetMapping(value= "/sva-sredstva-cascader")
 	@Operation(summary= "Dohvaca zastitna sredstva za cascader")
 	public ResponseEntity<Set<AntDCascaderDto>> getSredstvaForCascader(){

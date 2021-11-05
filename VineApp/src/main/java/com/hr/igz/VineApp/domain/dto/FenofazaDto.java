@@ -5,8 +5,10 @@ import java.time.Instant;
 import javax.validation.constraints.NotBlank;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Data	
+@Data
+@NoArgsConstructor
 public class FenofazaDto {
 	
 	private Long id;

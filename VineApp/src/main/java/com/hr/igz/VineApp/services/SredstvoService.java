@@ -23,4 +23,6 @@ public interface SredstvoService {
     ResponseEntity<Set<AntDCascaderDto>> getSredstvaForCascader();
 
     Optional<SredstvoDto> findSredstvoByName(String name);
+
+    Optional<SredstvoDto> getSredstvoForCard(Long id);
 }

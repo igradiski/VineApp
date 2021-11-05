@@ -33,7 +33,7 @@ public class Vinograd implements Serializable {
 
     private String name;
 
-    private String opis;
+    private String description;
 
     @CreatedDate
     private Instant date;

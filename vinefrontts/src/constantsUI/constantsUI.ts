@@ -34,7 +34,9 @@
     LEFT_MENU_SREDSTVA : "Sredstva",
     LEFT_MENU_TIP_SREDSTVA : "Tip sredstva",
     LEFT_MENU_PREGLED_BOLESTI: "Pregled bolesti",
+    LEFT_MENU_MOJ_VINOGRAD:"Moj vinograd",
     LEFT_MENU_SVE:"Sredstva i bolesti",
+    LEFT_MENU_VINOVA_LOZA:"Vinova loza",
     API_BASE_URL: process.env.REACT_APP_BASE_URL,
 
     //TIP SREDSTVA
@@ -78,6 +80,7 @@
     UNOS_SREDSTVA_ERROR : "Dogodila se greška kod unosa, provjerite podatke!",
     UNOS_SREDSTVA_BUTTON_UPDATE:"Ažuriraj",
     UNOS_SREDSTVA_FORM_UDPATE:"Ažuriranje sredstva",
+    UNOS_SREDSTVA_SLIKA:"Slika sredstva:",
 
 
     //SREDSTVA_SIFRARNIK
@@ -189,6 +192,37 @@
     SREDSTVO_MODAL_UNESEN:"Datum unosa",
     SREDSTVO_MODAL_TIP:"Tip sredstva",
     SREDSTVO_MODAL_KARENCA:"Karenca:",
+
+    //MOJ VINOGRAD
+    MOJ_VINOGRAD_NASLOV:"Moj vinograd",
+    MOJ_VINOGRAD_TABLE_NAZIV:"Naziv",
+    MOJ_VINOGRAD_TABLE_ADRESA:"Adresa",
+    MOJ_VINOGRAD_TABLE_OPIS:"Opis",
+    MOJ_VINOGRAD_TABLE_DATUM:"Datum",
+    MOJ_VINOGRAD_TABLE_UNOS:"Novi vinograd",
+    MOJ_VINOGRAD_TABLE_TRSJE:"Broj čokota",
+    MOJ_VINOGRAD_MODAL_NASLOV_UNOS:"Unos vinograda",
+    MOJ_VINOGRAD_MODAL_FORM_NAZIV: "Naziv:",
+    MOJ_VINOGRAD_MODAL_FORM_ADRESA: "Adresa:",
+    MOJ_VINOGRAD_MODAL_FORM_OPIS: "Opis:",
+    MOJ_VINOGRAD_MODAL_UNOS_OBAVEZAN:" Obavezno je unijeti ovo polje!",
+    MOJ_VINOGRAD_MODAL_UNOS: "Unos vinograda",
+    MOJ_VINOGRAD_MODAL_AZUIRANJE:"Ažuriranje vinograda",
+    MOJ_VINOGRAD_MODAL_UNOS_USPJESAN_NASLOV:"Unos uspjesan",
+    MOJ_VINOGRAD_MODAL_UNOS_USPJESAN:"Uspjesno ste unijeli zapis",
+    MOJ_VINOGRAD_MODAL_UNOS_NIJE_USPJESAN_NASLOV:"Greška kod unosa",
+    MOJ_VINOGRAD_MODAL_UNOS_NIJE_USPJESAN:"Dogodila se greška kod unosa zapisa",
+
+    //vinova loza
+    VINOVALOZA_STEPS_NASLOV_UNOS:"Unos vinove loze",
+    VINOVALOZA_STEPS_NASLOV_AUZIRANJE:"Ažuriranje vinove loze",
+    VINOVALOZA_SIFRARNIK_NASLOV:"Pregled vinove loze",
+    VINOVALOZA_SLIKA:"Slika loze",
+    VINOVALOZA_BUTTON_UNESI:"Unesi",
+    VINOVALOZA_BUTTON_AZURIRAJ:"Ažuriraj",
+
+
+
 
 }) 
 

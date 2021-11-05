@@ -9,6 +9,7 @@ import ISredstvoData from "../../../types/ISredstvoType";
 import DateConverter from "../../../feature/dateConverter";
 import SearchByName from "../CustomJSX/SearchBy";
 import TableUpdateDelete from "../CustomJSX/TableUpdateDelete";
+import TableFieldForDescription from "../CustomJSX/TableFieldForDescription";
 
 type Props = {
     onUpdate: (step: number, data: ISredstvoData) => void
@@ -44,7 +45,9 @@ const SredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
             waiting: record.waiting,
             typeOfMedium: record.nameOfTipSredstva,
             id: record.id,
-            date: ""
+            date: "",
+            base64:"",
+            picture_name:""
         }
         onUpdate(0, data);
     }
@@ -102,6 +105,7 @@ const SredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
         {
             title: constant.SREDSTVA_SIFRARNIK_OPIS,
             dataIndex: 'description',
+            render:(text:any,record:any) => TableFieldForDescription(text,record,"sredstvo")
         },
         {
             title: constant.SREDSTVA_SIFRARNIK_SASTAV,

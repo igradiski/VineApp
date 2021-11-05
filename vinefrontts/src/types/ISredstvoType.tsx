@@ -12,5 +12,7 @@ export default interface ISredstvoData{
     typeOfMedium:string,
     id:string,
     date:string,
-    tipSredstvaId:string
+    tipSredstvaId:string, 
+    base64:string,
+    picture_name:string
 }

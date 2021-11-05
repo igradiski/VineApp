@@ -1,15 +1,14 @@
 package com.hr.igz.VineApp.domain.dto;
 
-import java.time.Instant;
+import com.sun.istack.NotNull;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-
-import com.sun.istack.NotNull;
-
-import lombok.Data;
+import java.time.Instant;
 
 @Data
+@NoArgsConstructor
 public class SredstvoDto {
 
 	private Long id;
@@ -52,6 +51,10 @@ public class SredstvoDto {
 	private String nameOfTipSredstva;
 
 	private Long tipSredstvaId;
+
+	private String base64;
+
+	private String picture_name;
 
 
 

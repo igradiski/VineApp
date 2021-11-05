@@ -12,8 +12,9 @@ import SredstvaSteps from "./components/forms/SredstvaForm/SredstvaSteps";
 import BolestSteps from "./components/forms/BolestForm/BolestSteps";
 import FenofazaSteps from "./components/forms/FenofazaRazvoja/FenofazaSteps";
 import TipSredstvaSteps from "./components/forms/TipSredstvaForm/TipSredstvaSteps";
-import PregledBolesti from "./components/forms/PregledBolestiForm/PregledBolesti";
+import MojVinograd from "./components/forms/MojVinograd/MojVinograd";
 import DodavanjeBolestiSredstvaSteps from "./components/forms/DodavanjeBolestiSredstva/DodavanjeBolestiSredstvaSteps";
+import VinovaLozaSteps from "./components/forms/VinovaLozaForm/VinovaLozaSteps";
 
 
 const App = () => {
@@ -26,8 +27,8 @@ const App = () => {
             path="/pregled"
           />
           <PublicRoutes
-            component={PregledBolesti}
-            path="/pregledBolesti" 
+            component={MojVinograd}
+            path="/mojVinograd" 
           />
           <PublicRoutes
             component={DodavanjeBolestiSredstvaSteps}
@@ -36,6 +37,10 @@ const App = () => {
           <PublicRoutes
             component={Login}
             path="/login"
+          />
+          <PublicRoutes
+          component={VinovaLozaSteps}
+          path="/vinovaLoza"
           />
           <PublicRoutes
             component={RegisterForm}

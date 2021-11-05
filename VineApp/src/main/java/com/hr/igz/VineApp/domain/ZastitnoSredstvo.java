@@ -1,5 +1,6 @@
 package com.hr.igz.VineApp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -72,5 +73,10 @@ public class ZastitnoSredstvo implements Serializable {
 	@LastModifiedDate
 	@Column(name = "updated_date")
 	private Instant updatedDate;
+
+	@JsonIgnore
+	private byte[] picture;
+
+	private String picture_name;
 
 }

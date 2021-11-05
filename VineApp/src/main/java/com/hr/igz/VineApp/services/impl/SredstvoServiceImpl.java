@@ -23,7 +23,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,6 +53,8 @@ public class SredstvoServiceImpl implements SredstvoService {
 		ZastitnoSredstvo zastitnoSredstvo = mapper.sredstvoDtoToZastitnoSredstvo(sredstvo,tipSredstvaRepository);
 		zastitnoSredstvo.setApproved(0);
 		try {
+			byte[] decoBytes =Base64.getDecoder().decode(sredstvo.getBase64());
+			zastitnoSredstvo.setPicture(decoBytes);
 			sredstvoRepository.save(zastitnoSredstvo);
 		}catch (Exception e) {
 			log.info("Greska kod unosa zastitnog sredstva {}",sredstvo);
@@ -71,6 +76,17 @@ public class SredstvoServiceImpl implements SredstvoService {
 	@Transactional(readOnly = true)
 	public Optional<SredstvoDto> findSredstvoByName(String name) {
 		return sredstvoRepository.findByName(name).map(mapper::ZastitnoSredstvoToZastitnoSredstvoDto);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Optional<SredstvoDto> getSredstvoForCard(Long id) {
+
+		ZastitnoSredstvo sredstvo = sredstvoRepository.findById(id).get();
+		String base64 = Base64.getEncoder().encodeToString(sredstvo.getPicture());
+		SredstvoDto sredstvoDto = mapper.ZastitnoSredstvoToZastitnoSredstvoDto(sredstvo);
+		sredstvoDto.setBase64(base64);
+		return Optional.of(sredstvoDto);
 	}
 
 	@Override
@@ -100,7 +116,14 @@ public class SredstvoServiceImpl implements SredstvoService {
 					log.error("Nije moguce pronaci sredstvo s id: {}",id);
 					throw new PostFailureException("Nije moguce pronaci zeljeno sredstvo!");
 				});
-		oldSredstvo = mapper.UpdateSredstvoFromDto(oldSredstvo,sredstvoDto,tipSredstvaRepository);
+		if(sredstvoDto.getBase64() == "") {
+			oldSredstvo = mapper.UpdateSredstvoFromDto(oldSredstvo,sredstvoDto,tipSredstvaRepository);
+		}else{
+			byte[] decoBytes =Base64.getDecoder().decode(sredstvoDto.getBase64());
+			oldSredstvo.setPicture(decoBytes);
+			oldSredstvo.setPicture_name(sredstvoDto.getPicture_name());
+		}
+
 		try{
 			sredstvoRepository.save(oldSredstvo);
 		}catch (Exception e){

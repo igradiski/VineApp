@@ -19,6 +19,10 @@ class SredstvaService{
         var promise = await axiosInstance.get("vineApp/zastitno_sredstvo/sredstva-name",{params:{name}});
         return promise;
     }
+    async getSredstvoForCard(id: any) {
+        var promise = await axiosInstance.get("vineApp/zastitno_sredstvo/sredstva-card",{params:{id}});
+        return promise;
+    }
 
     async getAllSredstvaForCascader() {
         var promise = await axiosInstance.get("vineApp/zastitno_sredstvo/sva-sredstva-cascader");

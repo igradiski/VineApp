@@ -1,11 +1,12 @@
-import { FunctionComponent, useState, useEffect, SetStateAction } from "react";
-import { Form, Input, Button, Modal, Upload, message } from 'antd';
+import { FunctionComponent, useState, useEffect } from "react";
+import { Form, Input, Button, Modal } from 'antd';
 import PictureUpload from "../CustomJSX/PictureUpload";
 import constant from "../../../constantsUI/constantsUI";
 import 'antd/dist/antd.css';
 import "./BolestCSS.css"
 import IBolestdata from "../../../types/IBolestData";
 import BolestService from "../../../services/BolestService";
+
 
 
 type Props = {
@@ -40,7 +41,7 @@ const BolestForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
         form.resetFields();
     }
 
-    const setFileData = (file:any,name:any,base64:any) =>{
+    const setFileData = (name:string,base64:string) =>{
         setFileBase64(base64);
         setFileName(name);
     }
@@ -129,14 +130,16 @@ const BolestForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
                 />
             </Form.Item>
             <Form.Item
-                label="Slika bolesti:"name="description"
+                label="Slika bolesti:"
+                name="description"
                 rules={[
                     {
                         required: true,
                         message: constant.BOLEST_OPIS_MESSAGE_REQUIRED,
                     },
                 ]}>
-            <PictureUpload setFileData={setFileData}/>
+            <PictureUpload
+            setFileData={setFileData} />
             </Form.Item>       
             <Form.Item >
                 <Button type="primary"

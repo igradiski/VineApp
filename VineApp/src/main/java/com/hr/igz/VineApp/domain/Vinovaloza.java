@@ -1,5 +1,6 @@
 package com.hr.igz.VineApp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,4 +41,11 @@ public class Vinovaloza {
 
     @OneToMany(mappedBy="vinovaloza")
     private Set<VinogradHasVinovaloza> vinogradHasVinovalozas;
+
+    @JsonIgnore
+    private byte[] picture;
+
+    private String picture_name;
+
+    private Integer approved;
 }

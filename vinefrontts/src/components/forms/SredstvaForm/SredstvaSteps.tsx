@@ -29,7 +29,9 @@ const SredstvaSteps: FunctionComponent = () => {
         typeOfMedium:"",
         id:"",
         date:"",
-        tipSredstvaId:""});
+        tipSredstvaId:"",
+        base64:"",
+        picture_name:""});
         //TODO CONTEXT HOOK
     const changeStep =(step:number) =>{
         setCurrentStep(step);
@@ -48,7 +50,9 @@ const SredstvaSteps: FunctionComponent = () => {
             typeOfMedium:"",
             id:"",
             date:"",
-            tipSredstvaId:""});
+            tipSredstvaId:"",
+            base64:"",
+            picture_name:""});
     }
 
     const changeStepForUpdate = (step: number,data:ISredstvoData) => {

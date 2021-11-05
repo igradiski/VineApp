@@ -94,7 +94,7 @@ const BolestSifrarnik: FunctionComponent<Props> = ({onUpdate}) => {
         {
             title: constant.BOLEST_SIFRARNIK_OPIS,
             dataIndex: 'description',
-            render:(text:any,record:any) => TableFieldForDescription(text,record)
+            render:(text:any,record:any) => TableFieldForDescription(text,record,"bolest")
         },
         {
             title: constant.BOLEST_SIFRARNIK_DATUM,
@@ -110,7 +110,7 @@ const BolestSifrarnik: FunctionComponent<Props> = ({onUpdate}) => {
 
     return (
         <div>
-            <h1 className="form-title">{constant.TIP_SREDSTVA_NASLOV_SIFRARNIK}</h1>
+            <h1 className="form-title">{constant.BOLEST_SIFRARNIK}</h1>
             <Table 
             className="tablica-tip-sredstva" 
             columns={columns}

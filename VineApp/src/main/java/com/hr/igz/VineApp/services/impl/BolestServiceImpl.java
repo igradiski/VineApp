@@ -19,10 +19,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import java.util.Base64;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -52,7 +52,6 @@ public class BolestServiceImpl implements BolestService {
 		bolest.setApproved(0);
 		try {
 			byte[] decodedBytes = Base64.getDecoder().decode(bolestDto.getBase64());
-			log.info(String.valueOf(decodedBytes.length));
 			bolest.setPicture(decodedBytes);
 			bolestRepository.save(bolest);
 		} catch (Exception e) {
@@ -115,7 +114,13 @@ public class BolestServiceImpl implements BolestService {
 					log.error("Ne postoji bolest za azuriranje s ID: {}",id);
 					throw new PostFailureException("Ne postoji bolest za azuriranje!");
 				});
-		oldBolest = mapper.UpdateBolestFromDto(oldBolest, bolestDto);
+		if(bolestDto.getBase64() == ""){
+			oldBolest = mapper.UpdateBolestFromDto(oldBolest, bolestDto);
+		}else{
+			byte[] decodedBytes = Base64.getDecoder().decode(bolestDto.getBase64());
+			oldBolest.setPicture(decodedBytes);
+			oldBolest.setPicture_name(bolestDto.getPicture_name());
+		}
 		try {
 			bolestRepository.save(oldBolest);
 		}catch (Exception e) {
