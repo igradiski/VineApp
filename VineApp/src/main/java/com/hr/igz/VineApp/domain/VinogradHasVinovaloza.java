@@ -4,9 +4,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.Instant;
 
 @Entity(name="vinograd_has_vinovaloza")
 @Table(name="vinograd_has_vinovaloza")
@@ -21,13 +24,23 @@ public class VinogradHasVinovaloza {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    private int quantity;
+    private Integer quantity;
 
     @ManyToOne(fetch=FetchType.LAZY)
     private Vinograd vinograd;
 
     @ManyToOne(fetch=FetchType.LAZY)
     private Vinovaloza vinovaloza;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    private User user;
+
+    @CreatedDate
+    private Instant date;
+
+    @LastModifiedDate
+    @Column(name = "updated_date")
+    private Instant updatedDate;
 }

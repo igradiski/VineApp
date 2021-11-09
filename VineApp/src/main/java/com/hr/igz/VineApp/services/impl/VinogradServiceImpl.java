@@ -2,10 +2,12 @@ package com.hr.igz.VineApp.services.impl;
 
 import com.hr.igz.VineApp.domain.User;
 import com.hr.igz.VineApp.domain.Vinograd;
+import com.hr.igz.VineApp.domain.VinogradHasVinovaloza;
 import com.hr.igz.VineApp.domain.dto.VinogradDto;
 import com.hr.igz.VineApp.exception.ObjectAlreadyExists;
 import com.hr.igz.VineApp.mapper.VinogradMapper;
 import com.hr.igz.VineApp.repository.UserRepository;
+import com.hr.igz.VineApp.repository.VinogradHasLozaRepository;
 import com.hr.igz.VineApp.repository.VinogradRepository;
 import com.hr.igz.VineApp.services.VinogradService;
 import com.hr.igz.VineApp.utils.SortingHelperUtil;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -28,6 +31,8 @@ import java.util.List;
 public class VinogradServiceImpl  implements VinogradService {
 
     private final VinogradRepository vinogradRepository;
+
+    private final VinogradHasLozaRepository vinogradHasLozaRepository;
 
     private final UserRepository userRepository;
 
@@ -55,9 +60,18 @@ public class VinogradServiceImpl  implements VinogradService {
 
         List<Sort.Order> orders = sortHelper.getOrdersFromArray(sort);
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(orders));
-        return vinogradRepository.findAllByUser(createFejkUser(),paging).map(mapper::toDto);
+        return vinogradRepository.findAllByUser(createFejkUser(),paging)
+                .map(vinograd -> mapper.toDto(vinograd,cokotiCount(vinograd.getId())));
     }
 
+    @Transactional(readOnly = true)
+    public Integer cokotiCount(Long id) {
+        Vinograd vinograd = vinogradRepository.findById(id).get();
+        return vinogradHasLozaRepository.findByVinograd(vinograd)
+                .stream()
+                .mapToInt(VinogradHasVinovaloza::getQuantity)
+                .sum();
+    }
     //TODO  DOHVATITI S PRIJAVE
     private User createFejkUser(){
         return userRepository.getById(2L);

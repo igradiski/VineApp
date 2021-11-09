@@ -4,6 +4,7 @@ import { Card, Modal, Spin,Divider } from 'antd';
 import BolestService from "../../../services/BolestService";
 import b64BlobConverter from "../../../feature/base64ToURL";
 import SredstvaService from "../../../services/SredstvaService";
+import VinovaLozaService from "../../../services/VinovaLozaService";
 
 
 
@@ -25,6 +26,7 @@ const TableFieldForDescription = (text: any, record: any,forma:string) => {
 
     const bolestService = new BolestService();
     const sredstvoService = new SredstvaService();
+    const lozaService = new VinovaLozaService();
     const converterB64 = new b64BlobConverter();
 
     const openCard = () => {
@@ -36,10 +38,17 @@ const TableFieldForDescription = (text: any, record: any,forma:string) => {
                 setImage(response.data.base64);
                 setContent(response.data.description)
             })
+        }else if(forma ==="loza"){
+            lozaService.getAllLozaForCard(record.id)
+            .then(response => {
+                console.log(response.data)
+                setTitle(response.data.name);
+                setImage(response.data.base64);
+                setContent(response.data.description)
+            })
         }else{
             sredstvoService.getSredstvoForCard(record.id)
             .then(response => {
-                console.log(response.data)
                 setTitle(response.data.name);
                 setImage(response.data.base64);
                 setSastav(response.data.composition);
@@ -61,6 +70,13 @@ const TableFieldForDescription = (text: any, record: any,forma:string) => {
     }
 
     const bolestdata = () => {
+        return(
+            <p style={{backgroundColor:"white"}}>
+                {content}
+            </p>
+        )
+    }
+    const lozaData = () =>{
         return(
             <p style={{backgroundColor:"white"}}>
                 {content}
@@ -110,7 +126,9 @@ const TableFieldForDescription = (text: any, record: any,forma:string) => {
                         style={{ width: "100%" }}
                         cover={<img style={{ width: "100%",height:"10%",borderRadius: "10%",backgroundColor:"#7cb305"}} alt="" src={imgUrl} />}
                     >
-                        {forma === "bolest" ? bolestdata() :sredstvoData()}
+                        {forma === "bolest" ? bolestdata() : ""}
+                        {forma === "loza" ? lozaData() : ""}
+                        {forma === "sredstvo" ? lozaData() :""}
                     </Card>
                 </Spin>
 

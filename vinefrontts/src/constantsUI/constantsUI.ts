@@ -212,7 +212,14 @@
     MOJ_VINOGRAD_MODAL_UNOS_USPJESAN:"Uspjesno ste unijeli zapis",
     MOJ_VINOGRAD_MODAL_UNOS_NIJE_USPJESAN_NASLOV:"Greška kod unosa",
     MOJ_VINOGRAD_MODAL_UNOS_NIJE_USPJESAN:"Dogodila se greška kod unosa zapisa",
-
+    MOJ_VINOGRAD_BUTTON_DODAJ_LOZU:"Dodajte novu vrstu loze",
+    MOJ_VINOGRAD_DODAVANJE_LOZE_USPJESNO_TITLE:"Dodana loza",
+    MOJ_VINOGRAD_DODAVANJE_LOZE_USPJESNO:"Loza uspješno dodana u vinograd!",
+    MOJ_VINOGRAD_DODAVANJE_LOZE_NIJE_USPJESNO_TITLE:"Greška kod dodavanja loze",
+    MOJ_VINOGRAD_DODAVANJE_LOZE_NIJE_USPJESNO:"Dogodila se greška kod dodavanja loze u vinograd!",
+    MOJ_VINOGRAD_DODAVANJE_LOZE:"Dodavanje loze",
+    MOJ_VINOGRAD_MODAL_LOZA_FORM: "Loza:",
+    MOJ_VINOGRAD_MODAL_LOZA_FORM_BROJ: "Broj:",
     //vinova loza
     VINOVALOZA_STEPS_NASLOV_UNOS:"Unos vinove loze",
     VINOVALOZA_STEPS_NASLOV_AUZIRANJE:"Ažuriranje vinove loze",
@@ -220,9 +227,15 @@
     VINOVALOZA_SLIKA:"Slika loze",
     VINOVALOZA_BUTTON_UNESI:"Unesi",
     VINOVALOZA_BUTTON_AZURIRAJ:"Ažuriraj",
-
-
-
+    VINOVALOZA_MODAL_USPJESNO_TITLE:"Uspjesan unos",
+    VINOVALOZA_MODAL_USPJESNO_:"Unos loze je uspjesa!",
+    VINOVALOZA_MODAL_NIJE_USPJESNO_TITLE:"Greška kod unosa",
+    VINOVALOZA_MODAL_NIJE_USPJESNO_:"Unos nije uspio!",
+    VINOVA_LOZA_SIFRARNIK_NASLOV:"Pregled vinove loze",
+    VINOVA_LOZA_TABLICA_NAZIV:"Naziv",
+    VINOVA_LOZA_TABLICA_OPIS:"Opis",
+    VINOVA_LOZA_TABLICA_DATUM:"Datum",
+    
 
 }) 
 

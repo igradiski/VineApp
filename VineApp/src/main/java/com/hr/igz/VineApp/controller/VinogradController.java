@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/vinogradi")
@@ -33,6 +35,4 @@ public class VinogradController {
             @RequestParam(defaultValue = "id,desc") String [] sort){
         return vinogradService.getVinogradi(pageSize,pageNo,sort);
     }
-
-
 }

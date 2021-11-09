@@ -5,11 +5,14 @@ import constant from "../../../constantsUI/constantsUI";
 import 'antd/dist/antd.css';
 import "./VinovaLozaCSS.css"
 import PictureUpload from "../CustomJSX/PictureUpload";
+import IVinovaLozaData from "../../../types/IVinovaLozaData";
+import VinovaLozaService from "../../../services/VinovaLozaService";
 
 type Props = {
     isUpdate: boolean,
+    updateData : IVinovaLozaData
 }
-const VinovaLozaForm:FunctionComponent<Props> = ({isUpdate}) =>{
+const VinovaLozaForm:FunctionComponent<Props> = ({isUpdate,updateData}) =>{
 
     const { TextArea } = Input;
     const [form] = Form.useForm();
@@ -18,15 +21,70 @@ const VinovaLozaForm:FunctionComponent<Props> = ({isUpdate}) =>{
     const [fileBase64, setFileBase64]= useState("");
     const [fileName,setFileName] = useState("");
 
+    const lozaService = new VinovaLozaService();
 
     const setFileData = (name:string,base64:string) =>{
         setFileBase64(base64);
         setFileName(name);
     }
 
-    const unesiLozu = () => {
-
+    function successModal() {
+        Modal.success({
+            title: constant.VINOVALOZA_MODAL_USPJESNO_TITLE,
+            content: constant.VINOVALOZA_MODAL_USPJESNO_
+        });
     }
+    function errorModal() {
+        Modal.error({
+            title: constant.VINOVALOZA_MODAL_NIJE_USPJESNO_TITLE,
+            content: constant.VINOVALOZA_MODAL_NIJE_USPJESNO_,
+
+        });
+    }
+
+    const ocistiFormu = () =>{
+        setName("");
+        setDescription("");
+        form.resetFields();
+    }
+
+    const unesiLozu = () => {
+        const data : IVinovaLozaData ={
+            base64:fileBase64,
+            date:"",
+            description:description,
+            name:name,
+            id:"",
+            picture_name:fileName
+        }
+        if(isUpdate){
+            lozaService.updateLoza(data,updateData.id)
+            .then(response => {
+                isUpdate = false;
+                ocistiFormu();
+                successModal();
+            }).catch((error) => {
+                errorModal()
+            })
+        }else{
+            lozaService.addLoza(data)
+            .then(response => {
+                successModal();
+            }).catch((error) => {
+                errorModal();
+            })
+        }
+    }
+
+    useEffect(() => {
+        setName(updateData.name);
+        setDescription(updateData.description);
+        form.setFieldsValue({
+            name: updateData.name,
+            description: updateData.description
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return (
         <Form
             form={form}

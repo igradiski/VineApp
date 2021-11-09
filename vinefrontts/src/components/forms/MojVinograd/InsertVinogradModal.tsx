@@ -3,6 +3,7 @@ import { Modal, Button ,Form,Input} from 'antd';
 import constant from "../../../constantsUI/constantsUI";
 import IVinogradData from "../../../types/IVinogradData";
 import VinogradService from "../../../services/VinogradService";
+
 type Props = {
     isVisible:boolean;
     closeModal: () => void;

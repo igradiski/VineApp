@@ -45,7 +45,7 @@ public class BolestServiceImpl implements BolestService {
 
 
 		if (bolestRepository.existsByName(bolestDto.getName())) {
-			log.error("Postoji fenofaza s imenom: {}", bolestDto.getName());
+			log.error("Postoji bolest s imenom: {}", bolestDto.getName());
 			throw new ObjectAlreadyExists("Bolest toga imena vec postoji!");
 		}
 		Bolest bolest = mapper.BolestDtoToBolest(bolestDto);
@@ -83,6 +83,7 @@ public class BolestServiceImpl implements BolestService {
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<BolestDto> getBolestForCard(Long id) {
+
 		Bolest bolest = bolestRepository.findById(id).get();
 		String base64 = Base64.getEncoder().encodeToString(bolest.getPicture());
 		BolestDto dto = mapper.BolestToBolestDto(bolest);
@@ -123,11 +124,12 @@ public class BolestServiceImpl implements BolestService {
 		}
 		try {
 			bolestRepository.save(oldBolest);
+			return ResponseEntity.status(HttpStatus.OK).body("Bolest je uspješno ažurirana");
 		}catch (Exception e) {
 			log.error("Nije moguce ažurirati bolest: {}",oldBolest.toString());
 			throw new PostFailureException("Nije moguce ažurirati zeljenu bolest!");
 		}
-		return ResponseEntity.status(HttpStatus.OK).body("Bolest je uspješno ažurirana");
+
 	}
 
 	@Override
@@ -141,7 +143,7 @@ public class BolestServiceImpl implements BolestService {
 				});
 		try {
 			bolestRepository.delete(bolest);
-			return ResponseEntity.status(HttpStatus.CREATED).body("Bolest uspjesno obrisana");
+			return ResponseEntity.status(HttpStatus.OK).body("Bolest uspjesno obrisana");
 		} catch (Exception e) {
 			log.error("Nije moguce obrisati bolest: {}",bolest.toString());
 			throw new DeleteFailureException(e.getMessage());

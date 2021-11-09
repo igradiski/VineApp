@@ -54,4 +54,7 @@ public class User implements Serializable {
 
 	@OneToMany(mappedBy = "user",orphanRemoval = true)
 	private Set<Vinograd> vinogradi;
+
+	@OneToMany(mappedBy="user")
+	private Set<VinogradHasVinovaloza> vinogradHasVinovalozas;
 }

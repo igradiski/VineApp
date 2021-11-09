@@ -3,6 +3,10 @@ import axiosInstance from "../axios/axiosInstance";
 import IDefaultPagingData from "../types/IDefaultPagingData";
 
 class VinogradService{
+    async getCokotiCount(id: any) {
+        var promise = await axiosInstance.get("vineApp/vinogradi/loza-count",{params:id});
+        return promise;
+    }
    
     async insertVinograd(data: IVinogradData) {
         var promise = await axiosInstance.post("vineApp/vinogradi/vinograd",data);

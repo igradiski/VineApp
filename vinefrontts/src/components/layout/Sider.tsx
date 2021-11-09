@@ -41,7 +41,7 @@ const GuestMenu = () => {
                 <Menu.Item key="9" icon={<UsergroupAddOutlined />}>
                     <Link className="left-menu-link" to="/MojVinograd">{constantsUI.LEFT_MENU_MOJ_VINOGRAD}</Link>
                 </Menu.Item>
-                <Menu.Item key="10" icon={<UsergroupAddOutlined />}>
+                <Menu.Item key="11" icon={<UsergroupAddOutlined />}>
                     <Link className="left-menu-link" to="/vinovaLoza">{constantsUI.LEFT_MENU_VINOVA_LOZA}</Link>
                 </Menu.Item>
             </SubMenu>

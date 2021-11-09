@@ -26,11 +26,11 @@ public class Vinovaloza {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String name;
 
-    private String opis;
+    private String description;
 
     @CreatedDate
     private Instant date;

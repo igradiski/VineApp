@@ -87,6 +87,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(AUTH_WHITELIST).permitAll()
 			.antMatchers("/bolest/**").permitAll()
 			.antMatchers("/fenofaza/**").permitAll()
+				.antMatchers("/vinova-loza/**").permitAll()
+				.antMatchers("/vinograd-loza/**").permitAll()
 			.antMatchers("/tip_sredstva/**").permitAll()
 				.antMatchers("/vinogradi/**").permitAll()
 				.antMatchers("/bolest-sredstvo/**").permitAll()
