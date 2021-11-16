@@ -1,5 +1,5 @@
 import { FunctionComponent, useState, useEffect } from "react";
-import { Table, Pagination, Button, Tag, } from 'antd';
+import { Table, Pagination, Button, Tag,Modal } from 'antd';
 import constant from "../../../constantsUI/constantsUI";
 import "./MojVinogradCSS.css"
 import TableUpdateDelete from "../CustomJSX/TableUpdateDelete";
@@ -10,9 +10,9 @@ import DateConverter from "../../../feature/dateConverter";
 import { EyeOutlined } from "@ant-design/icons";
 import InsertVinogradLozaModal from "./InsertVinogradLozaModal";
 import VinogradLozaService from "../../../services/VinogradLozaService";
-import IVinovaLozaData from "../../../types/IVinovaLozaData";
 import IVinogradLozaFilter from "../../../types/IVinogradLozaFilter";
 import b64BlobConverter from "../../../feature/base64ToURL";
+import UpdateVinogradLozaModal from "./UpdateVinogradLozaModal";
 
 
 const MojVinograd: FunctionComponent = () => {
@@ -29,6 +29,9 @@ const MojVinograd: FunctionComponent = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalLozaVisible, setModalLozaVisible] = useState(false);
     const [detaljiVisible, setDetaljiVisibe] = useState(false);
+
+    const [lozaIsUpdateVisible,setLozaIsUpdateVisible] = useState(false);
+    const [updateId,setUpdateId] = useState("");
     
     const vinogradService = new VinogradService();
     const vinogradLozaService = new VinogradLozaService();
@@ -36,14 +39,59 @@ const MojVinograd: FunctionComponent = () => {
     const converterB64 = new b64BlobConverter();
 
     const promijeniStranicu = (page: number, pageSize: number | undefined) => {
-        setPageNo(page - 1);
+        page - 1 <= 0 ?  setPageNo(0) :  setPageNo(page - 1)
     }
-    const editClick = (text: any, record: any) => { }
-    const deleteClick = (record: any) => { }
-    const closeModal = () => { setModalVisible(false);setModalLozaVisible(false)}
+    const promijeniStranicuLoza = (page: number, pageSize: number | undefined) => {
+        page - 1 <= 0 ?  setLozaPageNo(0) :  setLozaPageNo(page - 1)
+    }
 
-    const pokaziDetalje = () => {
+    const editVinogradClick = (text: any, record: any) => { 
+        
+    }
 
+    const deleteVinogradClick = (record: any) => { 
+        vinogradService.deleteById(record.id)
+        .then(()=>{
+            Modal.success({
+                title: constant.MOJ_VINOGRAD_LOZA_BRISANJE_TITLE,
+                content: constant.MOJ_VINOGRAD_LOZA_BRISANJE
+            });
+            getInitialData();
+        }).catch(()=>{
+            Modal.error({
+                title: constant.MOJ_VINOGRAD_LOZA_BRISANJE_FAIL_TITLE,
+                content: constant.MOJ_VINOGRAD_LOZA_BRISANJE_FAIL,
+            });
+        })
+        getVinogradLozaData();
+    }
+
+    const editClick = (text: any, record: any) => { 
+        setLozaIsUpdateVisible(true);
+        setUpdateId(record.id);
+    }
+
+    const deleteClick = (record: any) => { 
+        vinogradLozaService.deleteById(record.id)
+        .then(()=>{
+            Modal.success({
+                title: constant.MOJ_VINOGRAD_LOZA_BRISANJE_TITLE,
+                content: constant.MOJ_VINOGRAD_LOZA_BRISANJE
+            });
+            getVinogradLozaData();
+        }).catch(()=>{
+            Modal.error({
+                title: constant.MOJ_VINOGRAD_LOZA_BRISANJE_FAIL_TITLE,
+                content: constant.MOJ_VINOGRAD_LOZA_BRISANJE_FAIL,
+            });
+        })
+    }
+    const closeModal = () => { 
+        setModalVisible(false);
+        setModalLozaVisible(false);
+        setLozaIsUpdateVisible(false)
+        getVinogradLozaData();
+        getInitialData();
     }
 
     const columns = [
@@ -70,11 +118,6 @@ const MojVinograd: FunctionComponent = () => {
         },
         {
             title: "",
-            dataIndex: 'buttons',
-            render: (text: any, record: any) => TableUpdateDelete(() => editClick(text, record), () => deleteClick(record), constant.BOLEST_BRISANJE_PITANJE)
-        },
-        {
-            title: "",
             dataIndex: 'detalji',
             render: (text: any, record: any) => {
                 return (
@@ -88,26 +131,30 @@ const MojVinograd: FunctionComponent = () => {
                 )
             }
         },
+        {
+            title: "",
+            dataIndex: 'buttons',
+            render: (text: any, record: any) => TableUpdateDelete(() => editVinogradClick(text, record), () => deleteVinogradClick(record), constant.BOLEST_BRISANJE_PITANJE)
+        },
     ]
 
 
     const lozaColumns = [
         {
-            title: constant.MOJ_VINOGRAD_TABLE_NAZIV,
+            title: constant.MOJ_VINOGRAD_NAZIV_LOZE_TABLICA,
             dataIndex: 'nazivLoze',
         },
         {
-            title: constant.MOJ_VINOGRAD_TABLE_ADRESA,
+            title: constant.MOJ_VINOGRAD_BROJ_LOZE_TABLICA,
             dataIndex: 'brojCokota',
         },
         {
-            title: constant.MOJ_VINOGRAD_TABLE_DATUM,
             dataIndex: 'slikaLoze',
             render: (text:any, record:any) =>{ 
                 var blob = converterB64.b64toBlob(text, '');
                 var blobUrl = URL.createObjectURL(blob);
                 return(
-                    <img style={{ width: "50px",height:"50px",borderRadius: "10%",backgroundColor:"#7cb305"}} alt="" src={blobUrl} />
+                    <img className="img-normal-size" alt="" src={blobUrl} />
                 )
         }
         },
@@ -145,7 +192,7 @@ const MojVinograd: FunctionComponent = () => {
 
     const getVinogradLozaData = async () => {
         const data: IVinogradLozaFilter = {
-            pageNo: pageNo,
+            pageNo: lozaPageNo,
             pageSize: pageSize,
             sort: [],
             vinogradId:vinogradId
@@ -154,7 +201,6 @@ const MojVinograd: FunctionComponent = () => {
         if(vinogradId !== ""){
             vinogradLozaService.findByVinogradPaged(data)
         .then(response => {
-            console.log(response.data)
             setLozaTableData(response.data.content);
             setLozaTotalItems(response.data.totalElements);
             setLozaPageNo(response.data.pageable.pageNumber);
@@ -165,7 +211,7 @@ const MojVinograd: FunctionComponent = () => {
     useEffect(() => {
         getVinogradLozaData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [vinogradId])
+    }, [vinogradId,lozaPageNo])
 
     return (
         <div className="tip-sredstva-main-div">
@@ -206,12 +252,15 @@ const MojVinograd: FunctionComponent = () => {
                                 {constant.MOJ_VINOGRAD_BUTTON_DODAJ_LOZU}
                             </Button>
                         </div>
+                        <Pagination pageSize={pageSize} total={lozaTotalItems} onChange={promijeniStranicuLoza} />
                     </div>
 
                     : ""
             }
-            <InsertVinogradModal isVisible={modalVisible} closeModal={closeModal} />
-            <InsertVinogradLozaModal isVisible={modalLozaVisible} closeModal={closeModal} vinogradId={vinogradId} vinogradName={vinogradName} />
+            <InsertVinogradModal isVisible={modalVisible} closeModal={closeModal}  />
+            <InsertVinogradLozaModal isVisible={modalLozaVisible} closeModal={closeModal} 
+            vinogradId={vinogradId} vinogradName={vinogradName}/>
+            <UpdateVinogradLozaModal closeModal={closeModal} isVisible={lozaIsUpdateVisible} id={updateId} />
         </div>
 
     );

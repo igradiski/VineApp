@@ -41,7 +41,6 @@ const TableFieldForDescription = (text: any, record: any,forma:string) => {
         }else if(forma ==="loza"){
             lozaService.getAllLozaForCard(record.id)
             .then(response => {
-                console.log(response.data)
                 setTitle(response.data.name);
                 setImage(response.data.base64);
                 setContent(response.data.description)
@@ -95,9 +94,6 @@ const TableFieldForDescription = (text: any, record: any,forma:string) => {
                 <p>Primjena: </p>
                 <p style={{textDecoration:"underline",fontWeight:"normal"}}>{primjena}</p>
                 <Divider type="horizontal" />
-                <p>Koncentracija (grama): </p>
-                <p style={{textDecoration:"underline",fontWeight:"normal"}}>{koncentracija}</p>
-                <Divider type="horizontal" />
                 <p>Na 100 litara: </p>
                 <p style={{textDecoration:"underline",fontWeight:"normal"}}>{litara100}</p>
                 <Divider type="horizontal" />
@@ -128,7 +124,7 @@ const TableFieldForDescription = (text: any, record: any,forma:string) => {
                     >
                         {forma === "bolest" ? bolestdata() : ""}
                         {forma === "loza" ? lozaData() : ""}
-                        {forma === "sredstvo" ? lozaData() :""}
+                        {forma === "sredstvo" ? sredstvoData() :""}
                     </Card>
                 </Spin>
 

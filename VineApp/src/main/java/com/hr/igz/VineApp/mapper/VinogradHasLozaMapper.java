@@ -15,5 +15,6 @@ public abstract class VinogradHasLozaMapper {
     @Mapping(source = "quantity",target = "brojCokota")
     @Mapping(target = "nazivLoze",expression = "java(vinovaloza.getVinovaloza().getName())")
     @Mapping(target ="slikaLoze", expression= "java(vinovaloza.getVinovaloza().getPicture())")
+    @Mapping(source ="updatedDate",target =  "date")
     public abstract VinogradHasLozaDto ToDto(VinogradHasVinovaloza vinovaloza);
 }

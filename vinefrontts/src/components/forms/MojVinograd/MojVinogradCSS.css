@@ -2,3 +2,20 @@
     float:right;
     margin-right:10%;
 }
+
+.img-normal-size{
+    width:100px;
+    height:100px;
+    border-radius: 10%;
+}
+
+.img-normal-size:hover {
+    position: relative;
+    -webkit-transform:scale(3); /* or some other value */
+    transform:scale(3);
+    z-index:1000;
+}
+
+.ant-table-cell{
+    font-weight: bold;
+}

@@ -17,7 +17,7 @@ type Props = {
 
 const FenofazaSifrarnik: FunctionComponent<Props> = ({onUpdate}) => {
 
-    const pageSize = 4;
+    const pageSize = 5;
     const [pageNo, setPageNo] = useState(0);
     const [totalItems, setTotalItems] = useState(0);
     const [tableData, setTableData] = useState();

@@ -25,9 +25,8 @@ public class Spricanje {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @CreatedDate
     private Instant date;
 
     @LastModifiedDate

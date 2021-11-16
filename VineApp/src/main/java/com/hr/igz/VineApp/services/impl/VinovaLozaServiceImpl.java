@@ -105,12 +105,11 @@ public class VinovaLozaServiceImpl  implements VinovaLozaService {
             throw new DeleteFailureException("Ne postoji objekt za brisanje!");
         });
         if(vinovaLozaDto.getBase64() == ""){
-            oldLoza = mapper.updateFromDto(oldLoza,vinovaLozaDto);
-        }else{
             byte[] decodedBytes = Base64.getDecoder().decode(vinovaLozaDto.getBase64());
             oldLoza.setPicture(decodedBytes);
             oldLoza.setPicture_name(vinovaLozaDto.getPicture_name());
         }
+        oldLoza = mapper.updateFromDto(oldLoza,vinovaLozaDto);
         try{
             vinovaLozaRepository.save(oldLoza);
             return ResponseEntity.status(HttpStatus.OK).body("Loza je uspješno ažurirana");

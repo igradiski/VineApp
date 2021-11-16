@@ -25,4 +25,6 @@ public interface SredstvoService {
     Optional<SredstvoDto> findSredstvoByName(String name);
 
     Optional<SredstvoDto> getSredstvoForCard(Long id);
+
+    Optional<Object> getUtrosak(Integer voda, Long id);
 }

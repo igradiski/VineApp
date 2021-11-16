@@ -146,7 +146,7 @@ const BolestForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
                     htmlType="submit"
                     onClick={unesiBolest}
                 >
-                    {isUpdate ? constant.BOLEST_BUTTON_AZURIRAJ : constant.SREDSTVA_UNOS_BUTTON}
+                    {isUpdate ? constant.BOLEST_BUTTON_AZURIRAJ : constant.BOLEST_BUTTON_UNESI}
                 </Button>
             </Form.Item>
         </Form>

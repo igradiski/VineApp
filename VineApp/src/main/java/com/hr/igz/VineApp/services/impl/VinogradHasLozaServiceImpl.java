@@ -5,6 +5,7 @@ import com.hr.igz.VineApp.domain.Vinograd;
 import com.hr.igz.VineApp.domain.VinogradHasVinovaloza;
 import com.hr.igz.VineApp.domain.Vinovaloza;
 import com.hr.igz.VineApp.domain.dto.VinogradHasLozaDto;
+import com.hr.igz.VineApp.exception.DeleteFailureException;
 import com.hr.igz.VineApp.exception.ObjectAlreadyExists;
 import com.hr.igz.VineApp.exception.PostFailureException;
 import com.hr.igz.VineApp.mapper.VinogradHasLozaMapper;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -46,6 +48,7 @@ public class VinogradHasLozaServiceImpl implements VinogradHasLozaService {
 
 
     @Override
+    @Transactional
     public ResponseEntity<Object> dodajVinogradHasLoza(VinogradHasLozaDto vinogradHasLozaDto) {
 
         Vinograd vinograd = vinogradRepository.findById(vinogradHasLozaDto.getIdVinograd())
@@ -68,14 +71,15 @@ public class VinogradHasLozaServiceImpl implements VinogradHasLozaService {
         vinogradHasVinovaloza.setUser(getUser());
         try{
             vinogradHasLozaRepository.save(vinogradHasVinovaloza);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Vinograd i loza uspojesno uneseni!");
         }catch (Exception e){
+            log.error("Greska kod unosa loze u vinograd!");
             throw new PostFailureException("Greška kod unosa zapisa");
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body("Vinograd i loza uspojesno uneseni!");
-
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<VinogradHasLozaDto> dohvatiVinogradHasLoza(int pageSize, int pageNo, String[] sort, Long vinogradId) {
 
         Vinograd vinograd = vinogradRepository.findById(vinogradId)
@@ -89,8 +93,33 @@ public class VinogradHasLozaServiceImpl implements VinogradHasLozaService {
                 .map(mapper::ToDto);
     }
 
+    @Override
+    @Transactional
+    public ResponseEntity<Object> deleteVinogradHasLozaById(Long id) {
+
+        try{
+            vinogradHasLozaRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Zapis uspješno obrisan!");
+        }catch (Exception e){
+            throw new DeleteFailureException("Brisanje nije uspjelo!");
+        }
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<Object> updateVinogradHasLoza(VinogradHasLozaDto vinogradHasLozaDto, Long id) {
+
+        VinogradHasVinovaloza vhv = vinogradHasLozaRepository.findById(id).get();
+        if(vhv != null){
+            vhv.setQuantity(vinogradHasLozaDto.getBrojCokota());
+            vinogradHasLozaRepository.save(vhv);
+            return ResponseEntity.status(HttpStatus.OK).body("Kolicina uspjesno azurirana!");
+        }else{
+            throw new PostFailureException("Greska kod azuriranja!");
+        }
+    }
+
     private User getUser(){
         return  userRepository.getById(1L);
-
     }
 }

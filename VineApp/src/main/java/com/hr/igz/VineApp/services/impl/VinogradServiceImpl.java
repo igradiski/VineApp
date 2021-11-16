@@ -5,6 +5,7 @@ import com.hr.igz.VineApp.domain.Vinograd;
 import com.hr.igz.VineApp.domain.VinogradHasVinovaloza;
 import com.hr.igz.VineApp.domain.dto.VinogradDto;
 import com.hr.igz.VineApp.exception.ObjectAlreadyExists;
+import com.hr.igz.VineApp.exception.PostFailureException;
 import com.hr.igz.VineApp.mapper.VinogradMapper;
 import com.hr.igz.VineApp.repository.UserRepository;
 import com.hr.igz.VineApp.repository.VinogradHasLozaRepository;
@@ -62,6 +63,17 @@ public class VinogradServiceImpl  implements VinogradService {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(orders));
         return vinogradRepository.findAllByUser(createFejkUser(),paging)
                 .map(vinograd -> mapper.toDto(vinograd,cokotiCount(vinograd.getId())));
+    }
+
+    @Override
+    public ResponseEntity<Object> deleteVinogradById(Long id) {
+        Vinograd vinograd = vinogradRepository.findById(id).get();
+        if(vinograd != null){
+            vinogradRepository.delete(vinograd);
+            return ResponseEntity.status(HttpStatus.OK).body("Vinograd  je uspješno OBRISAN");
+        }else{
+            throw new PostFailureException("TODO DELETE exception");
+        }
     }
 
     @Transactional(readOnly = true)

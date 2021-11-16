@@ -12,17 +12,12 @@ import VinogradLozaService from "../../../services/VinogradLozaService";
 type Props = {
     isVisible: boolean;
     closeModal: () => void;
-    vinogradId: string;
-    vinogradName: string;
+    id: string;
 }
 
-const InsertVinogradLozaModal: FunctionComponent<Props> = ({ isVisible, closeModal, vinogradId, vinogradName }) => {
-
-    const [vinovaLoza, setVinovaLoza] = useState("");
+const UpdateVinogradLozaModal: FunctionComponent<Props> = ({ isVisible, closeModal, id}) => {
     const [brojLoze, setBrojLoze] = useState("");
-    const [options, setOptions] = useState([]);
     const [form] = Form.useForm();
-    const lozaService = new VinovaLozaService();
     const vinogradLozaService = new VinogradLozaService();
 
     const successModal = () => {
@@ -38,28 +33,14 @@ const InsertVinogradLozaModal: FunctionComponent<Props> = ({ isVisible, closeMod
 
         });
     }
-
-    const onChange = (value: any, selectedOption: any) => {
-        setVinovaLoza(value[0])
-    }
-    const filter = (inputValue: string, path: CascaderOptionType[]) => {
-        return path.some((option: any) => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
-    }
-    const getLozaCascader = () => {
-        lozaService.getAllLozaCascader()
-            .then(response => {
-                setOptions(response.data)
-            })
-    }
-    const unesiLozaVinograd = () => {
+    const updateLozaVinograd = () => {
         var data: IVinogradLozaData = {
             brojCokota: brojLoze,
-            idLoza: vinovaLoza,
-            idVinograd: vinogradId,
+            idLoza: "",
+            idVinograd: "",
             nazivLoze: "",
-            slikaLoze: "",
-        }
-        vinogradLozaService.insertNewVinogradLoza(data)
+            slikaLoze: "",        }
+        vinogradLozaService.updateVinogradLoza(data,id)
             .then(response => {
                 successModal();
             }).catch((error) => {
@@ -67,20 +48,10 @@ const InsertVinogradLozaModal: FunctionComponent<Props> = ({ isVisible, closeMod
             })
 
     }
-
-    useEffect(() => {
-        form.setFieldsValue({
-            name: vinogradName,
-        })
-        getLozaCascader();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-
     return (
         <Modal
             visible={isVisible}
-            title={constant.MOJ_VINOGRAD_DODAVANJE_LOZE}
+            title={constant.MOJ_VINOGRAD_MODAL_AZURIRANJE_LOZE}
             onOk={() => closeModal()}
             onCancel={() => closeModal()}>
             <Form
@@ -88,25 +59,6 @@ const InsertVinogradLozaModal: FunctionComponent<Props> = ({ isVisible, closeMod
                 name="basic"
                 className="forma-sredstva"
                 onFinish={() => form.resetFields()}>
-                <Form.Item
-                    label={constant.MOJ_VINOGRAD_MODAL_LOZA_FORM}
-                    name="loza"
-                    rules={[
-                        {
-                            required: false,
-                            message: constant.MOJ_VINOGRAD_MODAL_UNOS_OBAVEZAN,
-                        },
-                    ]}
-                >
-                    <Cascader
-                        options={options}
-                        onChange={onChange}
-                        style={{ width: "45%" }}
-                        placeholder="Please select"
-
-                        showSearch={{ filter }}
-                    />
-                </Form.Item>
                 <Form.Item
                     label={constant.MOJ_VINOGRAD_MODAL_LOZA_FORM_BROJ}
                     name="broj"
@@ -129,9 +81,9 @@ const InsertVinogradLozaModal: FunctionComponent<Props> = ({ isVisible, closeMod
 
                     <Button type="primary"
                         htmlType="submit"
-                        onClick={unesiLozaVinograd}
+                        onClick={updateLozaVinograd}
                     >
-                        {constant.MOJ_VINOGRAD_MODAL_UNOS}
+                        {constant.BOLEST_BUTTON_AZURIRAJ}
                     </Button>
                 </Form.Item>
             </Form>
@@ -139,4 +91,4 @@ const InsertVinogradLozaModal: FunctionComponent<Props> = ({ isVisible, closeMod
     )
 }
 
-export default InsertVinogradLozaModal;
+export default UpdateVinogradLozaModal;

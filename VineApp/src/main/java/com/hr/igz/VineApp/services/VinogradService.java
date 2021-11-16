@@ -12,4 +12,5 @@ public interface VinogradService {
 
     Page<VinogradDto> getVinogradi(int pageSize, int pageNo, String[] sort);
 
+    ResponseEntity<Object> deleteVinogradById(Long id);
 }

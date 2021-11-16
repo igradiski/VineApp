@@ -9,4 +9,8 @@ public interface VinogradHasLozaService {
     ResponseEntity<Object> dodajVinogradHasLoza(VinogradHasLozaDto vinogradHasLozaDto);
 
     Page<VinogradHasLozaDto> dohvatiVinogradHasLoza(int pageSize, int pageNo, String[] sort, Long vinogradId);
+
+    ResponseEntity<Object> deleteVinogradHasLozaById(Long id);
+
+    ResponseEntity<Object> updateVinogradHasLoza(VinogradHasLozaDto vinogradHasLozaDto, Long id);
 }

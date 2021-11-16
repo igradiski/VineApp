@@ -22,7 +22,7 @@ public class SpricanjeHasZastitnoSredstvo {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private Double dosage;
 
@@ -32,4 +32,9 @@ public class SpricanjeHasZastitnoSredstvo {
 
     @ManyToOne(fetch=FetchType.LAZY)
     private Spricanje spricanje;
+
+    private String remark;
+
+    @Column(name = "user_dosage")
+    private Double user_dosage;
 }

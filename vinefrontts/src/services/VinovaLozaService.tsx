@@ -16,7 +16,7 @@ class VinovaLozaService{
     }
 
     async deleteById(id: any) {
-         var promise = await axiosInstance.delete("vineApp/vinova-loza/loza",{params:{id}});
+        var promise = await axiosInstance.delete("vineApp/vinova-loza/loza",{params:{id}});
         return promise;
     }
 

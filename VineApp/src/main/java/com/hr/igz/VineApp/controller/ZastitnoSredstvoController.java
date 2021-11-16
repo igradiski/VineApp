@@ -16,7 +16,7 @@ import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/zastitno_sredstvo")
+@RequestMapping("/zastitno-sredstvo")
 @Slf4j
 @RequiredArgsConstructor
 public class ZastitnoSredstvoController {
@@ -52,6 +52,12 @@ public class ZastitnoSredstvoController {
 	@GetMapping(value = "/sredstva-card")
 	public Optional<SredstvoDto> getSredstvoForCard(@RequestParam Long id){
 		return sredstvoService.getSredstvoForCard(id);
+	}
+
+	@GetMapping(value = "/utrosak")
+	@Operation(description = "Dohvacanje preporucene kolicine sredstva ")
+	public Optional<Object> getUtrosak(@RequestParam Integer water, @RequestParam Long id){
+		return sredstvoService.getUtrosak(water,id);
 	}
 
 	@GetMapping(value= "/sva-sredstva-cascader")

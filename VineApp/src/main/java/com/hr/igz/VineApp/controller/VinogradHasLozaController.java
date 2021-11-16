@@ -34,5 +34,18 @@ public class VinogradHasLozaController {
     @RequestParam Long vinogradId){
         return vinogradHasLozaService.dohvatiVinogradHasLoza(pageSize,pageNo,sort,vinogradId);
     }
+    @DeleteMapping(value = "/loze")
+    @Operation(description = "Operacija za brisanja zapisa iz tablice koja povezuje vingorad i loze")
+    public ResponseEntity<Object> deleteVinogradHasLozaById(@RequestParam Long id){
+        return vinogradHasLozaService.deleteVinogradHasLozaById(id);
+    }
+
+    @PatchMapping(value ="/loze")
+    @Operation(description = "Azuriranje podatka o broju cokota")
+    public ResponseEntity<Object> updateVinogradHasLoza (
+            @Validated @RequestBody VinogradHasLozaDto vinogradHasLozaDto,
+            @RequestParam Long id){
+        return vinogradHasLozaService.updateVinogradHasLoza(vinogradHasLozaDto,id);
+    }
 
 }

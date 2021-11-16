@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -82,11 +83,25 @@ public class SredstvoServiceImpl implements SredstvoService {
 	@Transactional(readOnly = true)
 	public Optional<SredstvoDto> getSredstvoForCard(Long id) {
 
-		ZastitnoSredstvo sredstvo = sredstvoRepository.findById(id).get();
+		ZastitnoSredstvo sredstvo = getSredstvo(id);
 		String base64 = Base64.getEncoder().encodeToString(sredstvo.getPicture());
 		SredstvoDto sredstvoDto = mapper.ZastitnoSredstvoToZastitnoSredstvoDto(sredstvo);
 		sredstvoDto.setBase64(base64);
 		return Optional.of(sredstvoDto);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Optional<Object> getUtrosak(Integer voda, Long id) {
+
+		ZastitnoSredstvo sredstvo = getSredstvo(id);
+		if(voda != null  && voda > 0){
+			BigDecimal na100 = (sredstvo.getDosageOn100().divide(new BigDecimal(100)));
+			BigDecimal naKolicinu = na100.multiply(new BigDecimal(voda));
+			return Optional.of(naKolicinu);
+		}else{
+			return Optional.of(0);
+		}
 	}
 
 	@Override
@@ -111,19 +126,13 @@ public class SredstvoServiceImpl implements SredstvoService {
 	@Transactional
 	public ResponseEntity<Object> updateSredstvo(SredstvoDto sredstvoDto, Long id) {
 
-		ZastitnoSredstvo oldSredstvo = sredstvoRepository.findById(id)
-				.orElseThrow(()->{
-					log.error("Nije moguce pronaci sredstvo s id: {}",id);
-					throw new PostFailureException("Nije moguce pronaci zeljeno sredstvo!");
-				});
-		if(sredstvoDto.getBase64() == "") {
-			oldSredstvo = mapper.UpdateSredstvoFromDto(oldSredstvo,sredstvoDto,tipSredstvaRepository);
-		}else{
+		ZastitnoSredstvo oldSredstvo = getSredstvo(id);
+		if(sredstvoDto.getBase64() != "") {
 			byte[] decoBytes =Base64.getDecoder().decode(sredstvoDto.getBase64());
 			oldSredstvo.setPicture(decoBytes);
 			oldSredstvo.setPicture_name(sredstvoDto.getPicture_name());
 		}
-
+		oldSredstvo = mapper.UpdateSredstvoFromDto(oldSredstvo,sredstvoDto,tipSredstvaRepository);
 		try{
 			sredstvoRepository.save(oldSredstvo);
 		}catch (Exception e){
@@ -137,11 +146,7 @@ public class SredstvoServiceImpl implements SredstvoService {
 	@Transactional
 	public ResponseEntity<Object> deleteSredstvoById(Long id) {
 
-		ZastitnoSredstvo sredstvo = sredstvoRepository.findById(id)
-				.orElseThrow(()->{
-					log.error("Ne postoji sredstvo s id: {}",id);
-					throw new DeleteFailureException("Nije moguce pronaći željenu fenofazu!");
-				});
+		ZastitnoSredstvo sredstvo = getSredstvo(id);
 		try{
 			sredstvoRepository.delete(sredstvo);
 			return ResponseEntity.status(HttpStatus.OK).body("Fenofaza uspjesno obrisana");
@@ -149,5 +154,13 @@ public class SredstvoServiceImpl implements SredstvoService {
 			log.error("Nije moguce obrisati sredstvo: {}",sredstvo.toString());
 			throw new DeleteFailureException("Ne postoji objekt za brisanje!");
 		}
+	}
+
+	private ZastitnoSredstvo getSredstvo(Long id){
+		return sredstvoRepository.findById(id)
+				.orElseThrow(()->{
+					log.error("Ne postoji sredstvo s id: {}",id);
+					throw new DeleteFailureException("Nije moguce pronaći željeno sredstvo!");
+				});
 	}
 }

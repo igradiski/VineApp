@@ -50,8 +50,6 @@ const InsertVinogradModal:FunctionComponent<Props> = ({isVisible,closeModal}) =>
                 errorModal();
             })
         }
-
-        closeModal();
     }
 
     return(
@@ -118,9 +116,7 @@ const InsertVinogradModal:FunctionComponent<Props> = ({isVisible,closeModal}) =>
                     onChange={e => setDescription(e.target.value)}
                 />
             </Form.Item>
-            <Form.Item
-            >
-
+            <Form.Item>
                 <Button type="primary"
                     htmlType="submit"
                     onClick={unesiVinograd}

@@ -15,6 +15,7 @@ import TipSredstvaSteps from "./components/forms/TipSredstvaForm/TipSredstvaStep
 import MojVinograd from "./components/forms/MojVinograd/MojVinograd";
 import DodavanjeBolestiSredstvaSteps from "./components/forms/DodavanjeBolestiSredstva/DodavanjeBolestiSredstvaSteps";
 import VinovaLozaSteps from "./components/forms/VinovaLozaForm/VinovaLozaSteps";
+import UnosSpricanja from "./components/forms/UnosSpricanja/UnosSpricanja";
 
 
 const App = () => {
@@ -37,6 +38,10 @@ const App = () => {
           <PublicRoutes
             component={Login}
             path="/login"
+          />
+          <PublicRoutes
+            component={UnosSpricanja}
+            path="/spricanja"
           />
           <PublicRoutes
           component={VinovaLozaSteps}

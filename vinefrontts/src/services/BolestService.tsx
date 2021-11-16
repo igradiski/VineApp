@@ -41,7 +41,7 @@ class BolestService{
     }
 
     async updateBolest(data: IBolestdata, id: string) {
-        var promise = await axiosInstance.patch("vineApp/bolest/azurirana-bolest",data,{params:{id}});
+        var promise = await axiosInstance.patch("vineApp/bolest/bolest",data,{params:{id}});
         return promise;
     }
 

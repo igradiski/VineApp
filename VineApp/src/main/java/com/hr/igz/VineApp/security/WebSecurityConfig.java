@@ -86,13 +86,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/swagger-ui").permitAll()
 				.antMatchers(AUTH_WHITELIST).permitAll()
 			.antMatchers("/bolest/**").permitAll()
+				.antMatchers("/spricanje-sredstvo/**").permitAll()
 			.antMatchers("/fenofaza/**").permitAll()
 				.antMatchers("/vinova-loza/**").permitAll()
 				.antMatchers("/vinograd-loza/**").permitAll()
+				.antMatchers("/spricanja/**").permitAll()
 			.antMatchers("/tip_sredstva/**").permitAll()
 				.antMatchers("/vinogradi/**").permitAll()
 				.antMatchers("/bolest-sredstvo/**").permitAll()
-			.antMatchers("/zastitno_sredstvo/**").permitAll()
+			.antMatchers("/zastitno-sredstvo/**").permitAll()
 				.antMatchers("/bolest-faza/**").permitAll()
 			.anyRequest().authenticated();
 		//http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

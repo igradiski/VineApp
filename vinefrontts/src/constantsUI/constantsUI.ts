@@ -37,6 +37,7 @@
     LEFT_MENU_MOJ_VINOGRAD:"Moj vinograd",
     LEFT_MENU_SVE:"Sredstva i bolesti",
     LEFT_MENU_VINOVA_LOZA:"Vinova loza",
+    LEFT_MENU_SPRICANJA:"Špricanja",
     API_BASE_URL: process.env.REACT_APP_BASE_URL,
 
     //TIP SREDSTVA
@@ -64,7 +65,7 @@
     SREDSTVA_NAME_REQUIRED : "Potreno je unijeti naziv sredstva!",
     SREDSTVA_OPIS : "Opis: ",
     SREDSTVA_SASTAV: "Sastav: ",
-    SREDSTVA_GRUPA : "Grupa: ",
+    SREDSTVA_GRUPA : "Mjerna jedinica sredstva: ",
     SREDSTVA_FORMULACIJA: "Formulacija: ",
     SREDSTVA_NACIN_DJELOVANJA: "Način djelovanja: ",
     SREDSTVA_UPORABA : "Uporaba: ",
@@ -116,6 +117,7 @@
     BOLEST_BRISANJE_FAIL_NASLOV:"Brisanje nije uspjelo!",
     BOLEST_BRISANJE_FAIL:"Brisanje nije moguće!",
     BOLEST_BRISANJE_PITANJE:"Želite li obrisati zapis?",
+    BOLEST_BUTTON_UNESI:"Unesi",
     BOLEST_BUTTON_AZURIRAJ:"Ažuriraj",
 
     //FENOZAFA RAZVOJA
@@ -207,7 +209,9 @@
     MOJ_VINOGRAD_MODAL_FORM_OPIS: "Opis:",
     MOJ_VINOGRAD_MODAL_UNOS_OBAVEZAN:" Obavezno je unijeti ovo polje!",
     MOJ_VINOGRAD_MODAL_UNOS: "Unos vinograda",
+    MOJ_VINOGRAD_MODAL_AZURIRANJE_LOZE: "Ažuriranje loze",
     MOJ_VINOGRAD_MODAL_AZUIRANJE:"Ažuriranje vinograda",
+    MOJ_VINOGRAD_MODAL_AZUIRANJE_BROJ_LOZE:"Ažuriranje vinograda",
     MOJ_VINOGRAD_MODAL_UNOS_USPJESAN_NASLOV:"Unos uspjesan",
     MOJ_VINOGRAD_MODAL_UNOS_USPJESAN:"Uspjesno ste unijeli zapis",
     MOJ_VINOGRAD_MODAL_UNOS_NIJE_USPJESAN_NASLOV:"Greška kod unosa",
@@ -220,6 +224,13 @@
     MOJ_VINOGRAD_DODAVANJE_LOZE:"Dodavanje loze",
     MOJ_VINOGRAD_MODAL_LOZA_FORM: "Loza:",
     MOJ_VINOGRAD_MODAL_LOZA_FORM_BROJ: "Broj:",
+    MOJ_VINOGRAD_NAZIV_LOZE_TABLICA:"Naziv:",
+    MOJ_VINOGRAD_BROJ_LOZE_TABLICA:"Broj čokota:",
+    MOJ_VINOGRAD_LOZA_BRISANJE_TITLE:"Uspješno brisanje!",
+    MOJ_VINOGRAD_LOZA_BRISANJE:"Uspješno obrisan zapis!",
+    MOJ_VINOGRAD_LOZA_BRISANJE_FAIL_TITLE:"Brisanje nije uspjelo!",
+    MOJ_VINOGRAD_LOZA_BRISANJE_FAIL:"Brisanje zapisa nije uspjelo",
+    
     //vinova loza
     VINOVALOZA_STEPS_NASLOV_UNOS:"Unos vinove loze",
     VINOVALOZA_STEPS_NASLOV_AUZIRANJE:"Ažuriranje vinove loze",
@@ -235,7 +246,49 @@
     VINOVA_LOZA_TABLICA_NAZIV:"Naziv",
     VINOVA_LOZA_TABLICA_OPIS:"Opis",
     VINOVA_LOZA_TABLICA_DATUM:"Datum",
-    
+
+    //SPRICANJE
+    SPRICANJE_OPIS:"Opis špricanja",
+    SPRICANJE_DATUM:"Datum špricanja",
+    SPRICANJE_KOLICINA_VODE:"Količina vode",
+    SPRICANJE_NASLOV:"Pregled špricanja",
+    SPRICANJE_UNOS_SPRICANJA:"Dodaj špricanje",
+    SPRICANJE_PREGLED_SREDSTAVA: "Popis sredstava",
+    SPRICANJE_SREDSTVA_NAZIV:"Naziv",
+    SPRICANJE_SREDSTVA_TIP:"Tip",
+    SPRICANJE_SREDSTVA_DOZIRANJE:"Preporuceno doziranje(100 l)",
+    SPRICANJE_SREDSTVA_DOZIRANJE_USER:"Doziranje",
+    SPRICANJE_SREDSTVA_KARENCA:"Karenca",
+    SPRICANJE_SREDSTVA_ISKORISTENO:"Utrošeno",
+    SPRICANJE_DODAJ_NOVO_SREDSTVO:"Dodaj sredstvo",
+
+    //spricanje modal
+    SPRICANJE_MODAL_NASLOV:"Unos špricanja",
+    SPRICANJE_MODAL_OPIS:"Opis:",
+    SPRICANJE_MODAL_VODA:"Količina vode:",
+    SPRICANJE_MODAL_DATUM:"Datum špricanja:",
+    SPRICANJE_MODAL_UNOS_SUCCESS_TITLE:"Unos uspješan",
+    SPRICANJE_MODAL_UNOS_SUCCESS:"Zapis je uspješno unesen",
+    SPRICANJE_MODAL_UNOS_FAIL_TITLE:"Greška kod unosa",
+    SPRICANJE_MODAL_UNOS_FAIL:"Dogodila se greška kod unosa zapisa",
+    SPRICANJE_MODAL_BRISANJE_SUCCESS_TITLE:"Brisanje uspješno",
+    SPRICANJE_MODAL_BRISANJE_SUCCESS:"Zapis je uspješno obrisan",
+    SPRICANJE_MODAL_BRISANJE_FAIL_TITLE:"Greška kod brisanja",
+    SPRICANJE_MODAL_BRISANJE_FAIL:"Dogodila se greška kod brisanja zapisa",
+
+    //spricanje sredstvo modal
+    SPRICANJE_SREDSTVO_MODAL:"Sredstvo:",
+    SPRICANJE_SREDSTVO_PREPORUCENI_UTROSAK:"Preporuceni utrosak:",
+    SPRICANJE_SREDSTVO_USER_UTROSAK:"Utrosak:",
+    SPRICANJE_SREDSTVO_USER_NAPOMENA:"Napomena:",
+    SPRICANJE_SREDSTVO_UNOS:"Unesi",
+    SPRICANJE_SREDSTVO_AZURIRAJ:"Ažuriraj",
+    SPRICANJE_SREDSTVO_UNOS_SUCCESS_TITLE:"Unos uspješan",
+    SPRICANJE_SREDSTVO_UNOS_SUCCESS:"Uspješno uneseno sredstvo za špricanje",
+    SPRICANJE_SREDSTVO_UNOS_FAIL_TITLE:"Greška kod unosa",
+    SPRICANJE_SREDSTVO_UNOS_FAIL:"Dogodila se greška kod unosa sredstva za špricanje",
+    SPRICANJE_OMJER_MODAL_NASLOV:"Pregled omjera",
+
 
 }) 
 

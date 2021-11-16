@@ -27,6 +27,7 @@ public class VinogradController {
             @Validated @RequestBody VinogradDto vinogradDto){
         return vinogradService.insertVinograd(vinogradDto);
     }
+
     @GetMapping(value ="/vinogradi")
     @Operation(summary = "Dohvacanje korisnikovih vinograda")
     public Page<VinogradDto> getVinogradi(
@@ -35,4 +36,11 @@ public class VinogradController {
             @RequestParam(defaultValue = "id,desc") String [] sort){
         return vinogradService.getVinogradi(pageSize,pageNo,sort);
     }
+
+    @DeleteMapping(value = "/vinograd")
+    @Operation(summary = "Operacija za brisanje vinograda")
+    public ResponseEntity<Object> deleteVinogradById(@RequestParam Long id){
+        return vinogradService.deleteVinogradById(id);
+    }
+
 }

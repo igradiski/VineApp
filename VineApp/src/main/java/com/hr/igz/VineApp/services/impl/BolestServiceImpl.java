@@ -115,13 +115,12 @@ public class BolestServiceImpl implements BolestService {
 					log.error("Ne postoji bolest za azuriranje s ID: {}",id);
 					throw new PostFailureException("Ne postoji bolest za azuriranje!");
 				});
-		if(bolestDto.getBase64() == ""){
-			oldBolest = mapper.UpdateBolestFromDto(oldBolest, bolestDto);
-		}else{
+		if(bolestDto.getBase64() != ""){
 			byte[] decodedBytes = Base64.getDecoder().decode(bolestDto.getBase64());
 			oldBolest.setPicture(decodedBytes);
 			oldBolest.setPicture_name(bolestDto.getPicture_name());
 		}
+		oldBolest = mapper.UpdateBolestFromDto(oldBolest, bolestDto);
 		try {
 			bolestRepository.save(oldBolest);
 			return ResponseEntity.status(HttpStatus.OK).body("Bolest je uspješno ažurirana");

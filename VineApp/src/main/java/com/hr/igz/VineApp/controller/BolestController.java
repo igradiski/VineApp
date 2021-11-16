@@ -65,7 +65,7 @@ public class BolestController {
 		return bolestService.addBolest(bolest);
 	}
 	
-	@PatchMapping(value="/azurirana-bolest")
+	@PatchMapping(value="/bolest")
 	@Operation(summary= "Operacija za azuriranje bolesti")
 	public ResponseEntity<Object> updateBolest(
 			@Validated @RequestBody BolestDto bolestDto,
