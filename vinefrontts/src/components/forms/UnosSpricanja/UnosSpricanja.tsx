@@ -14,6 +14,7 @@ import SpricanjeSredstvoService from "../../../services/SpricanjeSredstvoService
 import ISredstvaFilter from "../../../services/ISredstvaFilter";
 import b64BlobConverter from "../../../feature/base64ToURL";
 import SredstvoOmjer from "../CustomJSX/SredstvoOmjer";
+import ISredstvoData from "../../../types/ISredstvoType";
 
 const UnosSpricanja: FunctionComponent = () => {
 
@@ -32,9 +33,11 @@ const UnosSpricanja: FunctionComponent = () => {
     const [sredstvaTableData,setSredstvatableData] = useState([]);
     const [litraza,setLitraza] = useState("");
     const [sredstvoModalVisible,setSredstvoModalVisible] = useState(false);
-    const [insertSpricanjeId,setInsertSpricanjeId] = useState("");
-    var spricanjeId="";
-    
+    const [spricanjeId,setSpricanjeId] = useState("");
+    const [isSredstvoUpdate,setIsSredstvoUpdate] = useState(false);
+    const [sredstvoUpdateUtrosak,setSredstvoUpdateUtrosak] = useState("");
+    const [sredstvoUpdateNapomena,setSredstvoUpdateNapomena] = useState("");
+    const [zapisId, setZapisId] = useState("");
     const spricanjeService = new SpricanjeService();
     const spricanjeSredstvoService = new SpricanjeSredstvoService();
     const datumClass = new DateConverter();
@@ -48,15 +51,7 @@ const UnosSpricanja: FunctionComponent = () => {
     }
 
     const editSpricanje = (text: any, record: any) => {
-
         setIsSpricanjeUpdate(true);
-        setUpdatedata({
-            date: record.date,
-            description: record.description,
-            water: record.water,
-            id: record.id,
-            userId: ""
-        });
         setModalSpricanjeVisible(true);
     }
 
@@ -76,25 +71,42 @@ const UnosSpricanja: FunctionComponent = () => {
             })
     }
 
+    const deleteSredstvo = (record: any) =>{
+        spricanjeSredstvoService.deleteById(record.id)
+            .then(() => {
+                Modal.success({
+                    title: constant.SPRICANJE_SREDSTVO_MODAL_BRISANJE_SUCCESS_TITLE,
+                    content: constant.SPRICANJE_SREDSTVO_MODAL_BRISANJE_SUCCESS
+                });
+            }).catch(() => {
+                Modal.error({
+                    title: constant.SPRICANJE_SREDSTVO_MODAL_BRISANJE_FAIL_TITLE,
+                    content: constant.SPRICANJE_SREDSTVO_MODAL_BRISANJE_FAIL,
+                });
+            })
+            getInitialSredstvoData();
+    }
+
+    const editSredstvo = (text: any, record: any) => {
+        setIsSredstvoUpdate(true);
+        setSredstvoUpdateUtrosak(record.utrosak);
+        setSredstvoUpdateNapomena(record.napomena);
+        setZapisId(record.id);
+        setSredstvoModalVisible(true);
+    }
+
     const closeSpricanjeModal = () => {
         setModalSpricanjeVisible(false);
+        setIsSpricanjeUpdate(false);
         getInitialData();
         getInitialSredstvoData();
-        setIsSpricanjeUpdate(false);
     }
 
     const closeSredstvaModal = () =>{
         setSredstvoModalVisible(false);
-
-    }
-
-    const prikaziSredstva = (record:any) =>{
-        setLitraza(record.water);
-        spricanjeId=record.id;
-        setInsertSpricanjeId(record.id);
-        setSredstvaVisible(true);
         getInitialSredstvoData();
     }
+
 
     const columns = [
         {
@@ -104,7 +116,7 @@ const UnosSpricanja: FunctionComponent = () => {
         {
             title: constant.SPRICANJE_DATUM,
             dataIndex: 'date',
-            render: (text: any) => datumClass.convertDateForSpricanje(text)
+            render: (text: any) => datumClass.convertDateForSpricanje(text),
         },
         {
             title: constant.SPRICANJE_KOLICINA_VODE,
@@ -116,7 +128,11 @@ const UnosSpricanja: FunctionComponent = () => {
             dataIndex: 'detalji',
             render: (text: any, record: any) => {
                 return (
-                    <Tag icon={<EyeOutlined />} color="success" onClick={() => prikaziSredstva(record)}>
+                    <Tag icon={<EyeOutlined />} color="success" onClick={() => {
+                        setSredstvaVisible(true)
+                        setSpricanjeId(record.id);
+                        setLitraza(record.water)
+                        }}>
                         Prikazi sredstva
                     </Tag>
                 )
@@ -138,7 +154,6 @@ const UnosSpricanja: FunctionComponent = () => {
         }
         spricanjeService.getSpricanja(data)
             .then(response => {
-                console.log(response);
                 setTableData(response.data.content);
                 setTotalItems(response.data.totalElements);
                 setPageNo(response.data.pageable.pageNumber);
@@ -153,31 +168,36 @@ const UnosSpricanja: FunctionComponent = () => {
 
 
     const getInitialSredstvoData = () =>{
-        const data: ISredstvaFilter = {
-            pageNo: pageNo,
-            pageSize: sredstvaPageSize,
-            sort: [],
-            id:spricanjeId
+            const data: ISredstvaFilter = {
+                pageNo: sredstvaPageNo,
+                pageSize: sredstvaPageSize,
+                sort: [],
+                id:spricanjeId
+            }
+            if(spricanjeId != ""){
+            spricanjeSredstvoService.findBySpricanje(data)
+            .then(response => {
+                setSredstvatableData(response.data.content);
+                setSredstvaTotalItems(response.data.totalElements);
+                setSredstvaPageNo(response.data.pageable.pageNumber);
+            })
         }
-        console.log(data);
-        spricanjeSredstvoService.findBySpricanje(data)
-        .then(response => {
-            console.log(response.data)
-            setSredstvatableData(response.data.content);
-            setSredstvaTotalItems(response.data.totalElements);
-            setSredstvaPageNo(response.data.pageable.pageNumber);
-        })
+        
     }
 
     useEffect(() => {
         getInitialSredstvoData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sredstvaPageNo])
+    }, [spricanjeId,sredstvaPageNo])
 
     const sredstvaColumns = [
         {
             title: constant.SPRICANJE_SREDSTVA_NAZIV,
             dataIndex: 'naziv',
+        },
+        {
+            title: constant.SPRICANJE_SREDSTVA_NAPOMENA,
+            dataIndex: 'napomena',
         },
         {
             title: constant.SPRICANJE_SREDSTVA_TIP,
@@ -210,7 +230,7 @@ const UnosSpricanja: FunctionComponent = () => {
         {
             title: "",
             dataIndex: 'buttons',
-            render: (text: any, record: any) => TableUpdateDelete(() => editSpricanje(text, record), () => deleteSpricanje(record), constant.BOLEST_BRISANJE_PITANJE)
+            render: (text: any, record: any) => TableUpdateDelete(() => editSredstvo(text, record), () => deleteSredstvo(record), constant.BOLEST_BRISANJE_PITANJE)
         },
 
     ]
@@ -261,7 +281,9 @@ const UnosSpricanja: FunctionComponent = () => {
             }
             
             <UnosSpricanjaModal isVisible={modalSpricanjeVisible} isUpdate={isSpricanjeUpdate} updateData={updateData} closeModal={closeSpricanjeModal} />
-            <InsertSredstvoForSpricanjeModal isVisible={sredstvoModalVisible} spricanjeId={insertSpricanjeId} isUpdate={false} closeModal={closeSredstvaModal} water={litraza} />
+            <InsertSredstvoForSpricanjeModal isVisible={sredstvoModalVisible} spricanjeId={spricanjeId}  isUpdate={isSredstvoUpdate} 
+            closeModal={closeSredstvaModal} water={litraza} utrosak={sredstvoUpdateUtrosak} 
+            napomena={sredstvoUpdateNapomena} zapisId={zapisId}/>
         </div>
     )
 }

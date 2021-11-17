@@ -13,18 +13,21 @@ type Props = {
     closeModal: () => void;
     water:string;
     spricanjeId:string;
+    utrosak:string;
+    napomena:string;
+    zapisId:string;
 }
 
-const InsertSredstvoForSpricanjeModal: FunctionComponent<Props> = ({isVisible,isUpdate,closeModal,water,spricanjeId}) =>{
+const InsertSredstvoForSpricanjeModal: FunctionComponent<Props> = ({isVisible,isUpdate,closeModal,water,spricanjeId,utrosak,napomena,zapisId}) =>{
 
     const [form] = Form.useForm();
     const { TextArea } = Input;
 
     const [options, setOptions] = useState([]);
     const [sredstvo,setSredstvo] =useState("");
-    const [userLiztraza,setUserLitraza] = useState("");
+    const [userUtrosak,setUserUtrosak] = useState("");
     const [preporuceniUtrosak,setPreporuceniUtrosak] = useState("0");
-    const [napomena,setNapomena] = useState("");
+    const [napomenaUser,setNapomenaUser] = useState("");
 
     const sredstvoService = new SredstvaService();
     const spricanjeSredstvoService = new SpricanjeSredstvoService();
@@ -63,22 +66,25 @@ const InsertSredstvoForSpricanjeModal: FunctionComponent<Props> = ({isVisible,is
     }
 
     const unesiSredstvoZaSpricanje = () =>{
-        console.log(spricanjeId)
         const data:ISredstvoSpricanjeData = {
             id:"",
             base64:"",
             karenca:"",
-            napomena:napomena,
+            napomena:napomenaUser,
             naziv:"",
             preporuceno:"",
             sredstvo:sredstvo,
             tip:"",
-            utrosak:userLiztraza,
+            utrosak:userUtrosak,
             spricanjeId:spricanjeId
         }
-        console.log(data)
         if(isUpdate){
-
+            spricanjeSredstvoService.updateSpricanjeSredstvo(data,zapisId)
+            .then(response => {
+                successModal();
+            }).catch((error) => {
+                errorModal();
+            })
         }else{
             spricanjeSredstvoService.addSpricanjeSredstvo(data)
             .then(response => {
@@ -95,6 +101,15 @@ const InsertSredstvoForSpricanjeModal: FunctionComponent<Props> = ({isVisible,is
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => {
+        setNapomenaUser(napomena);
+        setUserUtrosak(utrosak);
+        form.setFieldsValue({
+            utrosak:utrosak,
+            napomenaUser:napomena
+        })
+    }, [utrosak]);
+
     return (
         <Modal
             visible={isVisible}
@@ -108,7 +123,7 @@ const InsertSredstvoForSpricanjeModal: FunctionComponent<Props> = ({isVisible,is
                 className="forma-sredstva"
                 onFinish={() => form.resetFields()}
             >
-                <Form.Item
+                {isUpdate ? "": <Form.Item
                     label={constant.SPRICANJE_SREDSTVO_MODAL}
                     name="loza"
                     rules={[
@@ -125,8 +140,8 @@ const InsertSredstvoForSpricanjeModal: FunctionComponent<Props> = ({isVisible,is
                         placeholder="Please select"
                         showSearch={{ filter }}
                     />
-                </Form.Item>
-                <Form.Item
+                </Form.Item>}
+                {isUpdate ?  "" :<Form.Item
                     label={constant.SPRICANJE_SREDSTVO_PREPORUCENI_UTROSAK}
                     name="litraza"
                     rules={[
@@ -137,10 +152,11 @@ const InsertSredstvoForSpricanjeModal: FunctionComponent<Props> = ({isVisible,is
                     ]}
                 >
                     <p style={{fontWeight:"bold",marginLeft:"-10%",marginTop:"1%"}}>{preporuceniUtrosak} g</p>
-                </Form.Item>
+                </Form.Item>}
+                
                 <Form.Item
                     label={constant.SPRICANJE_SREDSTVO_USER_UTROSAK}
-                    name="litraza"
+                    name="utrosak"
                     rules={[
                         {
                             required: false,
@@ -151,13 +167,13 @@ const InsertSredstvoForSpricanjeModal: FunctionComponent<Props> = ({isVisible,is
                     <Input
                         className="input-login"
                         style={{ width: "40%" }}
-                        value={userLiztraza}
-                        onChange={e => setUserLitraza(e.target.value)}
+                        value={userUtrosak}
+                        onChange={e => setUserUtrosak(e.target.value)}
                     />
                 </Form.Item>
                 <Form.Item
                     label={constant.SPRICANJE_SREDSTVO_USER_NAPOMENA}
-                    name="napomena"
+                    name="napomenaUser"
                     rules={[
                         {
                             required: false,
@@ -169,8 +185,8 @@ const InsertSredstvoForSpricanjeModal: FunctionComponent<Props> = ({isVisible,is
                     className="text-area-4row"
                     rows={5}
                     style={{ width: "40%" }}
-                    value={napomena}
-                    onChange={e => setNapomena(e.target.value)}
+                    value={napomenaUser}
+                    onChange={e => setNapomenaUser(e.target.value)}
                 />
                 </Form.Item>
                 <Form.Item>

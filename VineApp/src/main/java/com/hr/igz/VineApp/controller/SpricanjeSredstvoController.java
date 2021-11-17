@@ -48,4 +48,18 @@ public class SpricanjeSredstvoController {
         return spricanjeSredstvoService.getOmjeri(sredstvoId,spricanjeId);
     }
 
+    @DeleteMapping("/sredstvo")
+    @Operation(summary = "Operacija za brisanje sredstva iz špricanja")
+    public ResponseEntity<Object> deleteSredstvoById(@RequestParam Long id){
+        return spricanjeSredstvoService.deleteById(id);
+    }
+
+    @PatchMapping("/sredstvo")
+    @Operation(summary = "Opracija za azuriranje sredstvo has spricanje")
+    public ResponseEntity<Object> updateSredstvoById(
+            @Validated @RequestBody SpricanjeSredstvoDto spricanjeSredstvoDto,
+            @RequestParam Long id){
+        return spricanjeSredstvoService.updateSredstvoById(spricanjeSredstvoDto,id);
+    }
+
 }

@@ -14,4 +14,8 @@ public interface SpricanjeSredstvoService {
     Page<SpricanjeSredstvoDto> getSredstvaPaged(int pageSize, int pageNo, String[] sort,Long id);
 
     Optional<SpricanjeOmjerDto> getOmjeri(Long sredstvoId, Long spricanjeId);
+
+    ResponseEntity<Object> deleteById(Long id);
+
+    ResponseEntity<Object> updateSredstvoById(SpricanjeSredstvoDto spricanjeSredstvoDto, Long id);
 }

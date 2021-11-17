@@ -5,6 +5,7 @@ import com.hr.igz.VineApp.domain.SpricanjeHasZastitnoSredstvo;
 import com.hr.igz.VineApp.domain.ZastitnoSredstvo;
 import com.hr.igz.VineApp.domain.dto.SpricanjeOmjerDto;
 import com.hr.igz.VineApp.domain.dto.SpricanjeSredstvoDto;
+import com.hr.igz.VineApp.exception.DeleteFailureException;
 import com.hr.igz.VineApp.exception.PostFailureException;
 import com.hr.igz.VineApp.mapper.SpricanjeSredstvoMapper;
 import com.hr.igz.VineApp.repository.SpricanjaRepository;
@@ -23,7 +24,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,7 +73,8 @@ public class SpricanjeSredstvoServiceImpl implements SpricanjeSredstvoService {
         Spricanje spricanje = getSpricanje(id);
         List<Sort.Order> orders = sortHelper.getOrdersFromArray(sort);
         Pageable paging = PageRequest.of(pageNo,pageSize, Sort.by(orders));
-        return spricanjeSredstvoRepository.findAllBySpricanje(spricanje,paging).map(mapper::toDto);
+        Page <SpricanjeHasZastitnoSredstvo> list = spricanjeSredstvoRepository.findBySpricanje(spricanje,paging);
+        return spricanjeSredstvoRepository.findBySpricanje(spricanje,paging).map(mapper::toDto);
     }
 
     @Override
@@ -92,6 +93,39 @@ public class SpricanjeSredstvoServiceImpl implements SpricanjeSredstvoService {
         return Optional.of(dto);
 
     }
+
+    @Override
+    @Transactional
+    public ResponseEntity<Object> deleteById(Long id) {
+
+        try{
+            spricanjeSredstvoRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Brisanje sredstva u spricanju uspjesno obavljeno!");
+        }catch (Exception e){
+            throw new DeleteFailureException(e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<Object> updateSredstvoById(SpricanjeSredstvoDto spricanjeSredstvoDto, Long id) {
+
+        SpricanjeHasZastitnoSredstvo shzs = spricanjeSredstvoRepository.findById(id)
+                .orElseThrow(() ->{
+                    log.error("Ne postoji zapis s id: {}", id);
+                    throw new PostFailureException("Nije moguce azurirati!");
+                });
+        shzs.setRemark(spricanjeSredstvoDto.getNapomena());
+        shzs.setDosage(spricanjeSredstvoDto.getUtrosak().doubleValue());
+        try{
+            spricanjeSredstvoRepository.save(shzs);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Spricanje i sredstvo uspojesno azurirani!");
+        }catch (Exception e){
+            log.error("Greska kod azuriranja sredstva u spricanje!");
+            throw new PostFailureException("Greška kod azuriranja zapisa");
+        }
+    }
+
     private Double getPercentage (Double a , double b){
 
         Double abs = Math.abs(a-b);

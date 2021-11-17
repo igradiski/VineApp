@@ -255,6 +255,7 @@
     SPRICANJE_UNOS_SPRICANJA:"Dodaj špricanje",
     SPRICANJE_PREGLED_SREDSTAVA: "Popis sredstava",
     SPRICANJE_SREDSTVA_NAZIV:"Naziv",
+    SPRICANJE_SREDSTVA_NAPOMENA:"Napomena",
     SPRICANJE_SREDSTVA_TIP:"Tip",
     SPRICANJE_SREDSTVA_DOZIRANJE:"Preporuceno doziranje(100 l)",
     SPRICANJE_SREDSTVA_DOZIRANJE_USER:"Doziranje",
@@ -275,6 +276,11 @@
     SPRICANJE_MODAL_BRISANJE_SUCCESS:"Zapis je uspješno obrisan",
     SPRICANJE_MODAL_BRISANJE_FAIL_TITLE:"Greška kod brisanja",
     SPRICANJE_MODAL_BRISANJE_FAIL:"Dogodila se greška kod brisanja zapisa",
+    SPRICANJE_SREDSTVO_MODAL_BRISANJE_SUCCESS_TITLE:"Brisanje sredstva uspješno",
+    SPRICANJE_SREDSTVO_MODAL_BRISANJE_SUCCESS:"Zapis je uspješno obrisan",
+    SPRICANJE_SREDSTVO_MODAL_BRISANJE_FAIL_TITLE:"Greška kod brisanja sredstva",
+    SPRICANJE_SREDSTVO_MODAL_BRISANJE_FAIL:"Dogodila se greška kod brisanja zapisa",
+
 
     //spricanje sredstvo modal
     SPRICANJE_SREDSTVO_MODAL:"Sredstvo:",
