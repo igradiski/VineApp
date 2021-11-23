@@ -108,6 +108,7 @@ const InsertSredstvoForSpricanjeModal: FunctionComponent<Props> = ({isVisible,is
             utrosak:utrosak,
             napomenaUser:napomena
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [utrosak]);
 
     return (

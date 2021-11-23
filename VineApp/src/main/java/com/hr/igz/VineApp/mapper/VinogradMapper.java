@@ -6,10 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel="spring")
-public abstract class VinogradMapper {
-
-
-    public abstract Vinograd toDomain(VinogradDto vinogradDto);
+public abstract class VinogradMapper implements EntityMapper<Vinograd,VinogradDto> {
 
     @Mapping(target = "brojCokota",source = "brojCokota")
     public abstract VinogradDto toDto(Vinograd vinograd,int brojCokota);

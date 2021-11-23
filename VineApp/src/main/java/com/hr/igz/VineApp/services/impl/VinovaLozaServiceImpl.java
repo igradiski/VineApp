@@ -46,7 +46,7 @@ public class VinovaLozaServiceImpl  implements VinovaLozaService {
             log.error("Postoji loza s imenom: {}", vinovaLozaDto.getName());
             throw new ObjectAlreadyExists("Vinova loza toga imena vec postoji!");
         }
-        Vinovaloza loza = mapper.ToDomain(vinovaLozaDto);
+        Vinovaloza loza = mapper.toEntity(vinovaLozaDto);
         loza.setApproved(0);
         try{
             byte[] decodedBytes = Base64.getDecoder().decode(vinovaLozaDto.getBase64());

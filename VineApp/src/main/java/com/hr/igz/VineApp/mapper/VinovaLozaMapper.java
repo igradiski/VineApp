@@ -8,11 +8,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel="spring")
-public abstract class VinovaLozaMapper {
-
-    public abstract Vinovaloza ToDomain(VinovaLozaDto vinovaLozaDto);
-
-    public abstract VinovaLozaDto toDto(Vinovaloza vinovaloza);
+public abstract class VinovaLozaMapper implements EntityMapper<Vinovaloza,VinovaLozaDto>{
 
     @Mapping(target = "vinovaloza.id",ignore = true)
     @Mapping(target = "vinovaloza.date",ignore = true)

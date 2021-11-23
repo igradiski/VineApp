@@ -5,8 +5,10 @@ import javax.persistence.Converter;
 
 public enum ERole {
 	
-	ROLE_BASIC_USER(1),
-	ROLE_ADMIN(2);
+	ROLE_USER(1),
+	ROLE_MODERATOR(2),
+	ROLE_ADMIN(3);
+
 	
 	private Integer value;
 

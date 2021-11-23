@@ -41,7 +41,7 @@ public class SpricanjaServiceImpl implements SpricanjaService {
     @Transactional
     public ResponseEntity<Object> insertSpricanje(SpricanjeDto spricanjeDto) {
 
-        Spricanje spricanje = mapper.toDomain(spricanjeDto);
+        Spricanje spricanje = mapper.toEntity(spricanjeDto);
         spricanje.setUser(createFejkUser());
         try{
             spricanjaRepository.save(spricanje);

@@ -12,9 +12,9 @@ import java.time.Instant;
 @NoArgsConstructor
 public class BolestSredstvoDto {
 
-    private String bolest;
+    private String bolestName;
 
-    private String sredstvo;
+    private String sredstvoName;
 
     private Long id;
 

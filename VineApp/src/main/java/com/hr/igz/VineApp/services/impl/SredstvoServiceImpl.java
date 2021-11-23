@@ -51,7 +51,7 @@ public class SredstvoServiceImpl implements SredstvoService {
 			log.info("Sredstvo s imenom {} postoji u bazi",sredstvo.getName());
 			throw new ObjectAlreadyExists("Zastitno sredstvo vec postoji u bazi!");
 		}
-		ZastitnoSredstvo zastitnoSredstvo = mapper.sredstvoDtoToZastitnoSredstvo(sredstvo,tipSredstvaRepository);
+		ZastitnoSredstvo zastitnoSredstvo = mapper.toEntity(sredstvo);
 		zastitnoSredstvo.setApproved(0);
 		try {
 			byte[] decoBytes =Base64.getDecoder().decode(sredstvo.getBase64());
@@ -70,13 +70,13 @@ public class SredstvoServiceImpl implements SredstvoService {
 		
 		List<Order> orders = sortHelper.getOrdersFromArray(sort);
 		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(orders));
-		return sredstvoRepository.findAll(paging).map(mapper::ZastitnoSredstvoToZastitnoSredstvoDto);
+		return sredstvoRepository.findAll(paging).map(mapper::toDto);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<SredstvoDto> findSredstvoByName(String name) {
-		return sredstvoRepository.findByName(name).map(mapper::ZastitnoSredstvoToZastitnoSredstvoDto);
+		return sredstvoRepository.findByName(name).map(mapper::toDto);
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class SredstvoServiceImpl implements SredstvoService {
 
 		ZastitnoSredstvo sredstvo = getSredstvo(id);
 		String base64 = Base64.getEncoder().encodeToString(sredstvo.getPicture());
-		SredstvoDto sredstvoDto = mapper.ZastitnoSredstvoToZastitnoSredstvoDto(sredstvo);
+		SredstvoDto sredstvoDto = mapper.toDto(sredstvo);
 		sredstvoDto.setBase64(base64);
 		return Optional.of(sredstvoDto);
 	}
@@ -110,7 +110,7 @@ public class SredstvoServiceImpl implements SredstvoService {
 
 		List<Order> orders = sortHelper.getOrdersFromArray(sort);
 		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(orders));
-		return sredstvoRepository.findByNameContaining(name,paging).map(mapper::ZastitnoSredstvoToZastitnoSredstvoDto);
+		return sredstvoRepository.findByNameContaining(name,paging).map(mapper::toDto);
 	}
 
 	@Override

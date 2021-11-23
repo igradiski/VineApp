@@ -6,15 +6,13 @@ import com.hr.igz.VineApp.domain.dto.VinogradHasLozaDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel="spring")
-public abstract class VinogradHasLozaMapper {
-
-    public abstract VinogradHasVinovaloza ToDomain(VinogradHasLozaDto vinogradHasLozaDto);
+@Mapper(componentModel="spring",uses={VinogradMapper.class,VinovaLozaMapper.class})
+public abstract class VinogradHasLozaMapper implements EntityMapper<VinogradHasVinovaloza,VinogradHasLozaDto> {
 
 
     @Mapping(source = "quantity",target = "brojCokota")
-    @Mapping(target = "nazivLoze",expression = "java(vinovaloza.getVinovaloza().getName())")
-    @Mapping(target ="slikaLoze", expression= "java(vinovaloza.getVinovaloza().getPicture())")
+    @Mapping(source="vinovaloza.name",target = "nazivLoze")
+    @Mapping(source ="vinovaloza.picture",target ="slikaLoze")
     @Mapping(source ="updatedDate",target =  "date")
     public abstract VinogradHasLozaDto ToDto(VinogradHasVinovaloza vinovaloza);
 }

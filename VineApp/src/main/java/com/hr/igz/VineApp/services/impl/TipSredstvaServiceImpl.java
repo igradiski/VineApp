@@ -44,7 +44,7 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 			log.error("Postoji tip sredstva s imenom: {}",tipSredstva.getName());
 			throw new ObjectAlreadyExists("Tip sredstva vec postoji u bazi!");
 		}
-		TipZastitnogSredstva tip = mapper.TipSredstvaDtoToTipSredstva(tipSredstva);
+		TipZastitnogSredstva tip = mapper.toEntity(tipSredstva);
 		try {
 			tipSredstvaRepository.save(tip);
 		}catch (Exception e) {
@@ -60,7 +60,7 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 
 		List<Order> orders = sortHelper.getOrdersFromArray(sort);
 		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(orders));
-		return tipSredstvaRepository.findAll(paging).map(mapper::TipSredstvaToTipSredstvaDto);
+		return tipSredstvaRepository.findAll(paging).map(mapper::toDto);
 	}
 	
 	
@@ -91,7 +91,7 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 		
 		List<Order> orders = sortHelper.getOrdersFromArray(sort);
 		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(orders));
-		return tipSredstvaRepository.findByNameContaining(name,paging).map(mapper::TipSredstvaToTipSredstvaDto);
+		return tipSredstvaRepository.findByNameContaining(name,paging).map(mapper::toDto);
 
 	}
 
@@ -148,9 +148,7 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 		
 		Set<TipSredstvaDto> set = new HashSet<TipSredstvaDto>();
 		if(!list.isEmpty()) {
-			list.stream().forEach( sredstvo -> {
-				set.add(mapper.TipSredstvaToTipSredstvaDto(sredstvo));
-			});
+			list.stream().map(mapper::toDto);
 		}
 		return set;
 	}

@@ -8,17 +8,19 @@ import UserService from "../../../services/userService";
 
 const RegisterForm: FunctionComponent = () => {
 
-    const [name, setName] = useState("") 
-
-
+    const [name, setName] = useState("");
+    const [surname,setSurname]= useState("");
+    const [username,setUsername] = useState("");
+    const [password,setPassword] = useState("");
+    const [mail,setMail] = useState("");
 
     const registerUser = () => {
         const data: IUserRegisterData ={
             name:name,
-            surname:"",
-            email:"",
-            password:"",
-            username:""
+            surname:surname,
+            email:mail,
+            password:password,
+            username:username
         }
         let usrSrc : UserService = new UserService();
         usrSrc.registerUser(data)
@@ -55,7 +57,10 @@ const RegisterForm: FunctionComponent = () => {
                     },
                 ]}
             >
-                <Input className="input-login" />
+                <Input className="input-login" 
+                value={surname}
+                onChange={e => setSurname(e.target.value)}
+                />
             </Form.Item>
 
             <Form.Item
@@ -68,7 +73,10 @@ const RegisterForm: FunctionComponent = () => {
                     },
                 ]}
             >
-                <Input className="input-login" />
+                <Input className="input-login" 
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                />
             </Form.Item>
             <Form.Item
                 label={constant.LABEL_PASSWORD}
@@ -80,7 +88,10 @@ const RegisterForm: FunctionComponent = () => {
                     },
                 ]}
             >
-                <Input.Password className="input-login" />
+                <Input.Password className="input-login"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                />
             </Form.Item>
 
             <Form.Item
@@ -93,7 +104,10 @@ const RegisterForm: FunctionComponent = () => {
                     },
                 ]}
             >
-                <Input className="input-login" />
+                <Input className="input-login"
+                value={mail}
+                onChange={e => setMail(e.target.value)}
+                />
             </Form.Item>
             <Form.Item
             >

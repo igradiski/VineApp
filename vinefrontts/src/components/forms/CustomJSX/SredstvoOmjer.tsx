@@ -3,7 +3,6 @@ import { FullscreenOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@ant-des
 import constants from "../../../constantsUI/constantsUI";
 import { Modal, Card, Statistic, Divider } from 'antd';
 import "./SredstvoOmjerCSS.css"
-import SpricanjeService from "../../../services/SpricanjeService";
 import SpricanjeSredstvoService from "../../../services/SpricanjeSredstvoService";
 
 const SredstvoOmjer = (text:any,record:any) => {

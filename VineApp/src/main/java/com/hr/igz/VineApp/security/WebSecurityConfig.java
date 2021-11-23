@@ -76,13 +76,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			// other public endpoints of your API may be appended to this array
 	};
 
-	@Override
+	/*@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable()
 			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.authorizeRequests()
-			.antMatchers("/api/auth/userTry").authenticated()
+			.antMatchers("/auth/**").authenticated()
 			.antMatchers("/swagger-ui").permitAll()
 				.antMatchers(AUTH_WHITELIST).permitAll()
 			.antMatchers("/bolest/**").permitAll()
@@ -97,6 +97,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/zastitno-sredstvo/**").permitAll()
 				.antMatchers("/bolest-faza/**").permitAll()
 			.anyRequest().authenticated();
-		//http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+	}*/
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.cors().and().csrf().disable()
+				.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				.authorizeRequests().antMatchers("/auth/**").permitAll()
+				.antMatchers("/api/test/**").permitAll()
+				.anyRequest().authenticated();
+
+		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
+
 }

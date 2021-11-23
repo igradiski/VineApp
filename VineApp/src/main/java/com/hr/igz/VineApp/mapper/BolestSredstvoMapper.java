@@ -6,12 +6,11 @@ import com.hr.igz.VineApp.domain.dto.BolestSredstvoDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel="spring")
-public abstract class BolestSredstvoMapper {
+@Mapper(componentModel="spring",uses = {BolestMapper.class,SredstvoMapper.class})
+public abstract class BolestSredstvoMapper implements EntityMapper<SredstvoHasBolest,BolestSredstvoDto> {
 
-    @Mapping(source = "shb.id",target = "id")
-    @Mapping(source = "shb.updatedDate",target = "lastUpdate")
-    @Mapping(target="bolest",expression = "java(shb.getBolest().getName())")
-    @Mapping(target="sredstvo",expression = "java(shb.getZastitnoSredstvo().getName())")
+
+    @Mapping(source="bolest.name",target="bolestName")
+    @Mapping(source="zastitnoSredstvo.name",target="sredstvoName")
     public abstract BolestSredstvoDto toDto(SredstvoHasBolest shb);
 }

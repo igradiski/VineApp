@@ -48,7 +48,7 @@ public class BolestServiceImpl implements BolestService {
 			log.error("Postoji bolest s imenom: {}", bolestDto.getName());
 			throw new ObjectAlreadyExists("Bolest toga imena vec postoji!");
 		}
-		Bolest bolest = mapper.BolestDtoToBolest(bolestDto);
+		Bolest bolest = mapper.toEntity(bolestDto);
 		bolest.setApproved(0);
 		try {
 			byte[] decodedBytes = Base64.getDecoder().decode(bolestDto.getBase64());
@@ -67,7 +67,7 @@ public class BolestServiceImpl implements BolestService {
 
 		List<Order> orders = sortHelper.getOrdersFromArray(sort);
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(orders));
-		return bolestRepository.findAll(paging).map(mapper::BolestToBolestDto);
+		return bolestRepository.findAll(paging).map(mapper::toDto);
 	}
 	
 	@Override
@@ -77,7 +77,7 @@ public class BolestServiceImpl implements BolestService {
 		
 		List<Order> orders = sortHelper.getOrdersFromArray(sort);
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(orders));
-		return bolestRepository.findByNameContaining(name,paging).map(mapper::BolestToBolestDto);
+		return bolestRepository.findByNameContaining(name,paging).map(mapper::toDto);
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class BolestServiceImpl implements BolestService {
 
 		Bolest bolest = bolestRepository.findById(id).get();
 		String base64 = Base64.getEncoder().encodeToString(bolest.getPicture());
-		BolestDto dto = mapper.BolestToBolestDto(bolest);
+		BolestDto dto = mapper.toDto(bolest);
 		dto.setBase64(base64);
 		return Optional.of(dto);
 	}
@@ -103,7 +103,7 @@ public class BolestServiceImpl implements BolestService {
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<BolestDto> findBolestByName(String name) {
-		return bolestRepository.findByName(name).map(mapper::BolestToBolestDto);
+		return bolestRepository.findByName(name).map(mapper::toDto);
 	}
 
 	@Override

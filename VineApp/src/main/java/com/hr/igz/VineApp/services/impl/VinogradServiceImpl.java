@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -49,7 +48,7 @@ public class VinogradServiceImpl  implements VinogradService {
             log.error("Postoji vinograd s danim imenom!");
             throw new ObjectAlreadyExists("Vinograd postoji s imenom : "+vinogradDto.getName());
         }
-        Vinograd vinograd = mapper.toDomain(vinogradDto);
+        Vinograd vinograd = mapper.toEntity(vinogradDto);
         vinograd.setUser(createFejkUser());
         vinogradRepository.save(vinograd);
         return ResponseEntity.status(HttpStatus.CREATED).body("Vinograd  je uspješno kreiran");

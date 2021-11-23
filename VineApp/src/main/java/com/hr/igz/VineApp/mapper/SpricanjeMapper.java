@@ -7,10 +7,10 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel="spring")
-public abstract class SpricanjeMapper {
+public abstract class SpricanjeMapper implements EntityMapper<Spricanje,SpricanjeDto> {
 
-    public abstract Spricanje toDomain(SpricanjeDto spricanjeDto);
 
+    @Mapping(source ="user.id" ,target = "userId")
     public abstract SpricanjeDto toDto(Spricanje spricanje);
 
     @Mapping(target="spricanje.id",ignore = true)

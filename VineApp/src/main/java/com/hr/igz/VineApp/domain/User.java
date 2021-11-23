@@ -46,8 +46,8 @@ public class User implements Serializable {
 
 	private String username;
 	
-	@OneToOne(mappedBy = "user")
-	private RefreshToken refreshToken;
+	@OneToMany(mappedBy = "user")
+	private Set<RefreshToken> refreshToken;
 
 	@OneToMany(mappedBy="user")
 	private List<UserRole> userRoles;

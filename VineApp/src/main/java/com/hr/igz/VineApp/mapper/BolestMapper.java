@@ -9,19 +9,8 @@ import com.hr.igz.VineApp.domain.Bolest;
 import com.hr.igz.VineApp.domain.dto.BolestDto;
 
 @Mapper(componentModel="spring")
-public abstract class BolestMapper {
-	
-	@Mapping(source = "id",target = "id")
-	@Mapping(source = "name",target = "name")
-	@Mapping(source = "description",target = "description")
-	public abstract Bolest BolestDtoToBolest(BolestDto bolestDto);
-	
-	@Mapping(source = "id",target = "id")
-	@Mapping(source = "name",target = "name")
-	@Mapping(source = "description",target = "description")
-	@Mapping(source = "date",target = "date")
-	public abstract BolestDto BolestToBolestDto(Bolest bolest);
-	
+public abstract class BolestMapper implements EntityMapper<Bolest,BolestDto> {
+
 	@Mapping(target="bolest.id",ignore = true)
 	@Mapping(target="bolest.date",ignore = true)
 	@Mapping(source="bolestDto.name",target = "bolest.name")

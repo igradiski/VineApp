@@ -78,12 +78,12 @@ const PregledBolestiISredstva: FunctionComponent = () => {
     const columns = [
         {
             title: "Bolest",
-            dataIndex: 'bolest',
+            dataIndex: 'bolestName',
             render: (text: any,record:any) => TableFieldForModal(text, () => openBolestiModal(record)) 
         },
         {
             title: sresdstvoSwitch ? "Sredstvo" : "Faza",
-            dataIndex: sresdstvoSwitch ? "sredstvo" : "faza",
+            dataIndex: sresdstvoSwitch ? "sredstvoName" : "fazaName",
             render: (text: any,record:any) => TableFieldForModal(text,
                  sresdstvoSwitch ? () => openSredstvoModal(record) :
                   () =>openFazaModal(record))

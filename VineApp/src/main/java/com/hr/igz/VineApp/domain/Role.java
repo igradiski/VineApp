@@ -3,14 +3,9 @@ package com.hr.igz.VineApp.domain;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.hr.igz.VineApp.enums.ERole;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,11 +25,12 @@ public class Role implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 
-	@Column(name="ROLE_NAME")
-	private String roleName;
-	
-	
+
 	@OneToMany(mappedBy="role")
 	private List<UserRole> userRoles;
+
+	@Enumerated(EnumType.STRING)
+	@Column(length = 20)
+	private ERole name;
 
 }

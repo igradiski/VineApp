@@ -46,7 +46,7 @@ public class FenofazaServiceImpl  implements FenofazaService{
 			log.error("Postoji fenofaza s imenom: {}",fenofaza.getName());
 			throw new ObjectAlreadyExists("Fenofaza imena vec postoji!");
 		}
-		FenozafaRazvoja fenofazaRazvoja = mapper.FenofazaDtoToFenofaza(fenofaza);
+		FenozafaRazvoja fenofazaRazvoja = mapper.toEntity(fenofaza);
 		try {
 			fenofazaRepository.save(fenofazaRazvoja);
 		} catch (Exception e) {
@@ -62,13 +62,13 @@ public class FenofazaServiceImpl  implements FenofazaService{
 		
 		List<Order> orders = sortHelper.getOrdersFromArray(sort);
 		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(orders));
-		return fenofazaRepository.findAll(paging).map(mapper::FenofazaToFenofazaDto);
+		return fenofazaRepository.findAll(paging).map(mapper::toDto);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<FenofazaDto> findFenofazaByName(String name) {
-		return fenofazaRepository.findByName(name).map(mapper::FenofazaToFenofazaDto);
+		return fenofazaRepository.findByName(name).map(mapper::toDto);
 	}
 
 	
@@ -79,7 +79,7 @@ public class FenofazaServiceImpl  implements FenofazaService{
 		
 		List<Order> orders = sortHelper.getOrdersFromArray(sort);
 		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(orders));
-		return fenofazaRepository.findByNameContaining(name,paging).map(mapper::FenofazaToFenofazaDto);
+		return fenofazaRepository.findByNameContaining(name,paging).map(mapper::toDto);
 	}
 
 	@Override

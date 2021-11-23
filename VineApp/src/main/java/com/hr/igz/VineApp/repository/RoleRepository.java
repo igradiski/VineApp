@@ -10,5 +10,4 @@ import com.hr.igz.VineApp.domain.Role;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
-	Optional<Role> findByRoleName(String name);
 }

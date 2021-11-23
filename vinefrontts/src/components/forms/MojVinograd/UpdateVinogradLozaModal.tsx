@@ -1,11 +1,6 @@
-import { FunctionComponent, useState, useEffect } from "react";
-import { Modal, Button, Form, Input, Cascader } from 'antd';
+import { FunctionComponent, useState} from "react";
+import { Modal, Button, Form, Input} from 'antd';
 import constant from "../../../constantsUI/constantsUI";
-import IVinogradData from "../../../types/IVinogradData";
-import VinogradService from "../../../services/VinogradService";
-import VinovaLozaService from "../../../services/VinovaLozaService";
-import { element } from "prop-types";
-import { CascaderOptionType } from "antd/lib/cascader";
 import IVinogradLozaData from "../../../types/IVinogradLozaData";
 import VinogradLozaService from "../../../services/VinogradLozaService";
 

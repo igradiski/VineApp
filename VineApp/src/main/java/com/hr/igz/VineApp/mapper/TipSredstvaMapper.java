@@ -9,18 +9,9 @@ import com.hr.igz.VineApp.domain.dto.TipSredstvaDto;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel="spring")
-public abstract class TipSredstvaMapper {
+public abstract class TipSredstvaMapper implements EntityMapper<TipZastitnogSredstva,TipSredstvaDto> {
 
-	@Mapping(source="id",target="id")
-	@Mapping(source="name",target="name")
-	@Mapping(source="date",target="date")
-	public abstract TipSredstvaDto TipSredstvaToTipSredstvaDto(TipZastitnogSredstva sredstvo);
 
-	@Mapping(source="id",target="id")
-	@Mapping(source="name",target="name")
-	@Mapping(source="date",target="date")
-	public abstract TipZastitnogSredstva TipSredstvaDtoToTipSredstva(TipSredstvaDto sredstvoDto);
-	
 	@Mapping(source="id",target="key")
 	@Mapping(source="id",target="value")
 	@Mapping(source="name",target="label")

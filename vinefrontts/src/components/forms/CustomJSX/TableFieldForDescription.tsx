@@ -18,7 +18,7 @@ const TableFieldForDescription = (text: any, record: any,forma:string) => {
     const[sastav,setSastav] = useState("");
     const[formulacija,setFormulacija] = useState("");
     const[primjena,setPrimjena] = useState("");
-    const[koncentracija,setKoncentracija] = useState("");
+    //const[koncentracija,setKoncentracija] = useState("");
     const[litara100,set100L] = useState("");
     const[tipSredstva,setTipSredstva] = useState("");
     const[karenca,setKarenca] = useState("");
@@ -53,7 +53,7 @@ const TableFieldForDescription = (text: any, record: any,forma:string) => {
                 setSastav(response.data.composition);
                 setFormulacija(response.data.formulation);
                 setPrimjena(response.data.typeOfAction);
-                setKoncentracija(response.data.concentration);
+                //setKoncentracija(response.data.concentration);
                 set100L(response.data.dosageOn100);
                 setTipSredstva(response.data.usage);
                 setKarenca(response.data.waiting);

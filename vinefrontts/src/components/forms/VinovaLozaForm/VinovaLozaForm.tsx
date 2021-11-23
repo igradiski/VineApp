@@ -1,6 +1,5 @@
 import { FunctionComponent, useState, useEffect } from "react";
-import { Form, Input, Button, Cascader, Modal } from 'antd';
-
+import { Form, Input, Button, Modal } from 'antd';
 import constant from "../../../constantsUI/constantsUI";
 import 'antd/dist/antd.css';
 import "./VinovaLozaCSS.css"

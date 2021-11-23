@@ -1,6 +1,5 @@
 import axiosInstance from "../axios/axiosInstance";
 import IDefaultPagingData from "../types/IDefaultPagingData";
-import IVinogradLozaData from "../types/IVinogradLozaData";
 import IVinovaLozaData from "../types/IVinovaLozaData";
 
 class VinovaLozaService{

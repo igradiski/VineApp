@@ -14,7 +14,6 @@ import SpricanjeSredstvoService from "../../../services/SpricanjeSredstvoService
 import ISredstvaFilter from "../../../services/ISredstvaFilter";
 import b64BlobConverter from "../../../feature/base64ToURL";
 import SredstvoOmjer from "../CustomJSX/SredstvoOmjer";
-import ISredstvoData from "../../../types/ISredstvoType";
 
 const UnosSpricanja: FunctionComponent = () => {
 
@@ -53,6 +52,7 @@ const UnosSpricanja: FunctionComponent = () => {
     const editSpricanje = (text: any, record: any) => {
         setIsSpricanjeUpdate(true);
         setModalSpricanjeVisible(true);
+        setUpdatedata({ date: "", description: "", id: "", userId: "", water: "" });
     }
 
     const deleteSpricanje = (record: any) => {
@@ -174,7 +174,7 @@ const UnosSpricanja: FunctionComponent = () => {
                 sort: [],
                 id:spricanjeId
             }
-            if(spricanjeId != ""){
+            if(spricanjeId !== ""){
             spricanjeSredstvoService.findBySpricanje(data)
             .then(response => {
                 setSredstvatableData(response.data.content);

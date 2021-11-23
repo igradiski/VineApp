@@ -5,20 +5,17 @@ import com.hr.igz.VineApp.domain.dto.SpricanjeSredstvoDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
-public abstract class SpricanjeSredstvoMapper {
+@Mapper(componentModel = "spring",uses = {SpricanjeMapper.class,BolestMapper.class,TipSredstvaMapper.class})
+public abstract class SpricanjeSredstvoMapper implements EntityMapper<SpricanjeHasZastitnoSredstvo,SpricanjeSredstvoDto> {
 
-    public abstract SpricanjeHasZastitnoSredstvo toDomain(SpricanjeSredstvoDto sredstvoDto);
-
-    @Mapping(source = "shs.id",target = "id")
-    @Mapping(target = "spricanjeId",expression = "java(shs.getSpricanje().getId())")
-    @Mapping(target = "karenca",expression = "java(shs.getZastitnoSredstvo().getWaiting())")
-    @Mapping(target = "preporuceno",expression = "java(shs.getZastitnoSredstvo().getDosageOn100().toString())")
-    @Mapping(target = "base64",expression = "java(shs.getZastitnoSredstvo().getPicture())")
-    @Mapping(target = "tip",expression = "java(shs.getZastitnoSredstvo().getTipZastitnogSredstva().getName())")
-    @Mapping(target = "naziv",expression = "java(shs.getZastitnoSredstvo().getName())")
+    @Mapping(source = "spricanje.id",target = "spricanjeId")
+    @Mapping(source = "zastitnoSredstvo.waiting",target = "karenca")
+    @Mapping(source="zastitnoSredstvo.dosageOn100",target = "preporuceno")
+    @Mapping(source="zastitnoSredstvo.picture",target = "base64")
+    @Mapping(source = "zastitnoSredstvo.tipZastitnogSredstva.name",target = "tip")
+    @Mapping(source="zastitnoSredstvo.name",target = "naziv")
     @Mapping(source = "shs.remark",target = "napomena")
     @Mapping(source = "shs.dosage",target = "utrosak")
-    @Mapping(target = "sredstvo",expression = "java(shs.getZastitnoSredstvo().getId())")
+    @Mapping(source="zastitnoSredstvo.id",target = "sredstvo")
     public abstract SpricanjeSredstvoDto toDto(SpricanjeHasZastitnoSredstvo shs);
 }
