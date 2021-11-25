@@ -1,14 +1,75 @@
-import  {  FunctionComponent } from "react";
+import  {  FunctionComponent, useState } from "react";
 import 'antd/dist/antd.css';
 import "./LoginCSS.css"
-import { Form, Input, Button} from 'antd';
+import { Form, Input, Button,Modal} from 'antd';
 import constant from "../../../constantsUI/constantsUI";
 
 import { useAppDispatch } from '../../../hooks';
 import { logUser } from "../../../feature/userLogin/userLogin";
+import IUserRegisterData from "../../../types/userTypes";
+import UserService from "../../../services/userService";
+import { IloginState } from "../../../types/ILoginState";
+import {useHistory } from "react-router-dom";
 
 
 const Login: FunctionComponent = () => {
+
+    const [username,setUsername] = useState("");
+    const [password,setPassword] = useState("");
+    const userService = new UserService();
+
+    const history = useHistory();
+
+
+    function successModal() {
+        Modal.success({
+            title: constant.LOGIN_MODAL_USPJEH_TITLE,
+            content: constant.LOGIN_MODAL_USPJEH
+        });
+    }
+    function errorModal() {
+        Modal.error({
+            title: constant.LOGIN_MODAL_FAIL_TITLE,
+            content: constant.LOGIN_MODAL_FAIL,
+        });
+    }
+
+
+    const userLogin = () =>{
+        var data:IUserRegisterData={
+            email:"",
+            name:"",
+            password:password,
+            surname:"",
+            username:username,
+        }
+        userService.loginUser(data)
+        .then(response =>{
+            if(response.status === 200){
+                console.log(response.data)
+                var data:IloginState={
+                    error:false,
+                    isAuthentificated:true,
+                    myAccessToken:response.data.token,
+                    myRefreshToken:response.data.refreshToken,
+                    myUserRole:[],
+                    myUserServerRole:response.data.role,
+                    user:response.data.username
+                }
+                dispatch(logUser(data))
+                successModal();
+                history.push('/MojVinograd');
+            }else{
+                errorModal();
+            }
+        })
+        .catch((reason:any) =>{
+            console.log(reason)
+            errorModal();
+        })
+    }
+
+
     const dispatch = useAppDispatch();
     return (
         <Form
@@ -25,7 +86,10 @@ const Login: FunctionComponent = () => {
                     },
                 ]}
             >
-                <Input className="input-login" />
+                <Input className="input-login"
+                value={username}
+                onChange = {e => setUsername(e.target.value)}
+                />
             </Form.Item>
 
             <Form.Item
@@ -38,7 +102,10 @@ const Login: FunctionComponent = () => {
                     },
                 ]}
             >
-                <Input.Password className="input-login" />
+                <Input.Password className="input-login"
+                value={password}
+                onChange = {e => setPassword(e.target.value)}
+                />
             </Form.Item>
 
             <Form.Item
@@ -46,7 +113,7 @@ const Login: FunctionComponent = () => {
                 <Button 
                 type="primary" 
                 htmlType="submit"
-                onClick={() => dispatch(logUser())}
+                onClick={() => userLogin()}
                 className="prijava-button"
                 >
                     {constant.BUTTON_LOGIN}

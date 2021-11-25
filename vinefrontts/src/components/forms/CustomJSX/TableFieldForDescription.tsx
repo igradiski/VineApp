@@ -120,11 +120,12 @@ const TableFieldForDescription = (text: any, record: any,forma:string) => {
                     <Card
                         hoverable
                         style={{ width: "100%" }}
-                        cover={<img style={{ width: "100%",height:"10%",borderRadius: "10%",backgroundColor:"#7cb305"}} alt="" src={imgUrl} />}
+                        cover={<img style={{ width: "250px",height:"200px",borderRadius: "10%",backgroundColor:"#7cb305",textAlign:"center"}} alt="" src={imgUrl} />}
                     >
                         {forma === "bolest" ? bolestdata() : ""}
                         {forma === "loza" ? lozaData() : ""}
                         {forma === "sredstvo" ? sredstvoData() :""}
+
                     </Card>
                 </Spin>
 

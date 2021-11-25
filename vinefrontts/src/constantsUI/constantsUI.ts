@@ -15,6 +15,10 @@
     MESSAGE_PASSWORD: "Molimo Vas unesite lozinku",
     BUTTON_LOGIN : "Prijava",
     BUTTON_REGISTER: "Registracija",
+    LOGIN_MODAL_USPJEH_TITLE:"Prijava uspjesna",
+    LOGIN_MODAL_USPJEH:"Uspjesno ste prijavljeni u sustav",
+    LOGIN_MODAL_FAIL_TITLE:"Greška kod prijave",
+    LOGIN_MODAL_FAIL:"Prijava nije uspjela!",
 
     //register from 
     LBL_REGISTRATION: "Registracija",

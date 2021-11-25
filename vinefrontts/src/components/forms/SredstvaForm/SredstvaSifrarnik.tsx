@@ -10,6 +10,8 @@ import DateConverter from "../../../feature/dateConverter";
 import SearchByName from "../CustomJSX/SearchBy";
 import TableUpdateDelete from "../CustomJSX/TableUpdateDelete";
 import TableFieldForDescription from "../CustomJSX/TableFieldForDescription";
+import roleFetcher from "../../../feature/roleFetcher";
+import { useAppSelector } from "../../../hooks";
 
 type Props = {
     onUpdate: (step: number, data: ISredstvoData) => void
@@ -23,6 +25,8 @@ const SredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
     const [tableData, setTableData] = useState([])
     const sredstvaService = new SredstvaService();
     const datumClass = new DateConverter();
+    const roleFetch = new roleFetcher();
+    var highestRole = roleFetch.getHighestOrderRole(useAppSelector(state => state.login.myUserRole));
 
 
     const promijeniStranicu = (page: number, pageSize: number | undefined) => {
@@ -148,11 +152,12 @@ const SredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
             dataIndex: 'date',
             render:(text:any) => datumClass.convertDateForTable(text)
         },
+        highestRole > 1 ?
         {
             title: "",
             dataIndex: 'name',
             render: (text: any, record: any) => TableUpdateDelete(() => editClick(text, record), () => deleteClick(record), constant.BOLEST_BRISANJE_PITANJE)
-        },
+        } : {}
     ]
 
     return (

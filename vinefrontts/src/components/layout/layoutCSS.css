@@ -64,8 +64,11 @@
     width: 50% !important;
 }
 
-ant-menu-sub {
-    background-color:#7cb305;
+.ant-card-bordered .ant-card-cover {
+    margin-top: -1px;
+    margin-right: -1px;
+    margin-left: -1px;
+    padding-left: 36%;
 }
 
 @media only screen and (max-width: 650px) {

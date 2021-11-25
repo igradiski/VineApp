@@ -12,7 +12,7 @@ const { Step } = Steps;
 
 const TipSredstvaSteps: FunctionComponent = () => {
 
-    const [currentStep, setCurrentStep] = useState(0);
+    const [currentStep, setCurrentStep] = useState(1);
     const [isUpdate,setIsUpdate] = useState(false);
     const [updateData,setUpdateData]= useState<ITipSredstvaData>({name:"",date:"",id:""});
     

@@ -9,6 +9,8 @@ import ITipSredstvaData from "../../../types/ITipSredstvaData";
 import DateConverter from "../../../feature/dateConverter";
 import TableUpdateDelete from "../CustomJSX/TableUpdateDelete";
 import SearchByName from "../CustomJSX/SearchBy";
+import roleFetcher from "../../../feature/roleFetcher";
+import { useAppSelector } from "../../../hooks";
 
 
 type Props = {
@@ -24,6 +26,9 @@ const TipSredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
     const [tableData, setTableData] = useState([])
     const tipSredstvaSrc = new TipSredstvaService();
     const datumClass = new DateConverter();
+    const roleFetch = new roleFetcher();
+    var highestRole = roleFetch.getHighestOrderRole(useAppSelector(state => state.login.myUserRole));
+
 
 
     const promijeniStranicu = (page: number, pageSize: number | undefined) => {
@@ -96,11 +101,12 @@ const TipSredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
             key: 'date',
             render:(text:any) => datumClass.convertDateForTable(text)
         },
+        highestRole > 1 ?
         {
             title: "",
             dataIndex: 'name',
             render: (text: any, record: any) => TableUpdateDelete(() => editClick(text, record), () => deleteClick(record), constant.BOLEST_BRISANJE_PITANJE)
-        },
+        } : {}
     ]
     return (
         <div>

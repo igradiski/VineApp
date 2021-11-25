@@ -7,12 +7,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:3000")
+
 @RestController
 @RequestMapping("/vinogradi")
 @Slf4j
@@ -28,6 +29,7 @@ public class VinogradController {
         return vinogradService.insertVinograd(vinogradDto);
     }
 
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_ADMIN')")
     @GetMapping(value ="/vinogradi")
     @Operation(summary = "Dohvacanje korisnikovih vinograda")
     public Page<VinogradDto> getVinogradi(

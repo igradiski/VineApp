@@ -56,6 +56,7 @@ public class RefreshTokenServiceImpl implements refreshTokenService {
 		if(token != null) {
 			if (token.getExpire().compareTo(Instant.now()) < 0) {
 				refreshTokenRepository.delete(token);
+				return null;
 			}
 			return token;
 		}else {

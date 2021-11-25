@@ -11,6 +11,11 @@ class UserService{
         });
     }
 
+    async loginUser(data: IUserRegisterData){
+        var promise = await axiosInstance.post("vineApp/auth/signin",data)
+        return promise;
+    }
+
 }
 
 export default UserService;

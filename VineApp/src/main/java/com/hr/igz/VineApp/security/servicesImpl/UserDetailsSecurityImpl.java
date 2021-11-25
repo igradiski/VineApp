@@ -3,8 +3,10 @@ package com.hr.igz.VineApp.security.servicesImpl;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.hr.igz.VineApp.enums.ERole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,16 +16,11 @@ import com.hr.igz.VineApp.domain.User;
 import com.hr.igz.VineApp.repository.UserRepository;
 
 public class UserDetailsSecurityImpl implements UserDetails {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	UserRepository userRepository;
-	
 
 	private Long id;
 
@@ -35,6 +32,7 @@ public class UserDetailsSecurityImpl implements UserDetails {
 
 	private Collection<? extends GrantedAuthority> authorities;
 
+
 	public UserDetailsSecurityImpl(Long id, String username, String email, String password,
 			Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
@@ -45,9 +43,13 @@ public class UserDetailsSecurityImpl implements UserDetails {
 	}
 
 	public static UserDetailsSecurityImpl build(User user) {
+
 		List<GrantedAuthority> authorities = user.getUserRoles().stream()
-				.map(role -> new SimpleGrantedAuthority(role.getRole().toString()))
+				.map(role -> new SimpleGrantedAuthority(role.getRole().getName().name()))
 				.collect(Collectors.toList());
+		Set<ERole> roles = user.getUserRoles().stream()
+				.map(role -> role.getRole().getName())
+				.collect(Collectors.toSet());
 
 		return new UserDetailsSecurityImpl(
 				user.getId(), 

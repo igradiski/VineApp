@@ -6,6 +6,7 @@ import "./FenofazaCSS.css"
 import IFenofazaData from "../../../types/IFenofazaData";
 import FenofazaService from "../../../services/FenofazaService";
 
+
 type Props = {
     isUpdate: boolean,
     updateData: IFenofazaData
@@ -18,6 +19,7 @@ const FenofazaForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
     const [form] = Form.useForm();
     const { TextArea } = Input;
     const service = new FenofazaService();
+    
 
     function successModal() {
         Modal.success({

@@ -1,6 +1,12 @@
 package com.hr.igz.VineApp.security;
 
+import com.hr.igz.VineApp.security.jwt.AuthEntryPointJwt;
+import com.hr.igz.VineApp.security.jwt.AuthTokenFilter;
+import com.hr.igz.VineApp.security.servicesImpl.UserDetailsSecurityService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,10 +19,18 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import com.hr.igz.VineApp.security.jwt.AuthEntryPointJwt;
-import com.hr.igz.VineApp.security.jwt.AuthTokenFilter;
-import com.hr.igz.VineApp.security.servicesImpl.UserDetailsSecurityService;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -24,12 +38,10 @@ import com.hr.igz.VineApp.security.servicesImpl.UserDetailsSecurityService;
  * @author Ivor
  *
  */
-@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
-		// securedEnabled = true,
-		// jsr250Enabled = true,
-		prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
+@Slf4j
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
@@ -76,35 +88,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			// other public endpoints of your API may be appended to this array
 	};
 
-	/*@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable()
-			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			.authorizeRequests()
-			.antMatchers("/auth/**").authenticated()
-			.antMatchers("/swagger-ui").permitAll()
-				.antMatchers(AUTH_WHITELIST).permitAll()
-			.antMatchers("/bolest/**").permitAll()
-				.antMatchers("/spricanje-sredstvo/**").permitAll()
-			.antMatchers("/fenofaza/**").permitAll()
-				.antMatchers("/vinova-loza/**").permitAll()
-				.antMatchers("/vinograd-loza/**").permitAll()
-				.antMatchers("/spricanja/**").permitAll()
-			.antMatchers("/tip_sredstva/**").permitAll()
-				.antMatchers("/vinogradi/**").permitAll()
-				.antMatchers("/bolest-sredstvo/**").permitAll()
-			.antMatchers("/zastitno-sredstvo/**").permitAll()
-				.antMatchers("/bolest-faza/**").permitAll()
-			.anyRequest().authenticated();
-		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-	}*/
+
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource(){
+		UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+		CorsConfiguration corsConfiguration = new CorsConfiguration();
+				corsConfiguration.setAllowedOrigins(List.of("*"));
+		corsConfiguration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type","Access-Control-Allow-Origin"));
+		corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PUT","OPTIONS","PATCH", "DELETE"));
+		urlBasedCorsConfigurationSource.registerCorsConfiguration("/**",corsConfiguration);
+		return urlBasedCorsConfigurationSource;
+	}
+
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable()
-				.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+		http.csrf().disable()
+				.cors().configurationSource(corsConfigurationSource())
+				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
 				.authorizeRequests().antMatchers("/auth/**").permitAll()
 				.antMatchers("/api/test/**").permitAll()
 				.anyRequest().authenticated();

@@ -6,6 +6,7 @@ import "./TipSredstvaCSS.css"
 import TipSredstvaService from "../../../services/TipSredstvaService";
 import ITipSredstvaData from "../../../types/ITipSredstvaData";
 
+
 type Props = {
     isUpdate: boolean,
     updateData: ITipSredstvaData
@@ -16,8 +17,7 @@ const TipSredstva: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
     const [name, setName] = useState("");
     const [form] = Form.useForm();
     const tipSredstvaSrc =  new TipSredstvaService();
-
-
+    
     function successModal() {
         Modal.success({
             title: constant.UNOS_TIP_SREDSTVA_SUCCESS_TITLE,

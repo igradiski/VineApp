@@ -1,11 +1,14 @@
 package com.hr.igz.VineApp.services.impl;
 
+import com.hr.igz.VineApp.domain.Role;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +29,10 @@ import com.hr.igz.VineApp.security.services.refreshTokenService;
 import com.hr.igz.VineApp.security.servicesImpl.UserDetailsSecurityImpl;
 import com.hr.igz.VineApp.services.UserService;
 
+import java.util.Collection;
+
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
 	@Autowired
@@ -62,10 +68,10 @@ public class UserServiceImpl implements UserService {
 		UserDetailsSecurityImpl userDetails = (UserDetailsSecurityImpl) authentication.getPrincipal();
 		String jwt = jwtUtils.generateJwtToken(userDetails);
 		RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
-		
 		return ResponseEntity.ok(new JwtResponseToken(jwt,refreshToken.getToken(), 
 				 userDetails.getUsername(), 
-				 userDetails.getEmail()));
+				 userDetails.getEmail(),
+				userDetails.getAuthorities()));
 	}
 	
 	

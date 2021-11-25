@@ -9,14 +9,16 @@ import BolestSifrarnik from "./BolestSifrarnik";
 import IBolestdata from "../../../types/IBolestData";
 
 
+
 const { Step } = Steps;
 
 const BolestSteps: FunctionComponent = () => {
 
-    const [currentStep,setCurrentStep] = useState(0);
+    const [currentStep,setCurrentStep] = useState(1);
     const [isUpdate,setIsUpdate] = useState(false);
     const [updateData,setUpdateData]= useState<IBolestdata>({name:"",date:"",description:"",id:"",base64:"",picture_name:""});
 
+   
     const changeStep =(step:number) =>{
         setCurrentStep(step);
         setIsUpdate(false);

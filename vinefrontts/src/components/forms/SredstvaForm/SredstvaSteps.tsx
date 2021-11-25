@@ -13,7 +13,7 @@ const { Step } = Steps;
 
 const SredstvaSteps: FunctionComponent = () => {
 
-    const [currentStep,setCurrentStep] = useState(0);
+    const [currentStep,setCurrentStep] = useState(1);
     const [isUpdate,setIsUpdate] = useState(false);
     const [updateData,setUpdateData]= useState<ISredstvoData>({
         name:"",

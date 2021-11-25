@@ -3,6 +3,7 @@ package com.hr.igz.VineApp.services.impl;
 import com.hr.igz.VineApp.domain.Bolest;
 import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
 import com.hr.igz.VineApp.domain.dto.BolestDto;
+import com.hr.igz.VineApp.enums.ERole;
 import com.hr.igz.VineApp.exception.DeleteFailureException;
 import com.hr.igz.VineApp.exception.ObjectAlreadyExists;
 import com.hr.igz.VineApp.exception.PostFailureException;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

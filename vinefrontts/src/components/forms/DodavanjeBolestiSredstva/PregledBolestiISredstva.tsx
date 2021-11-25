@@ -16,6 +16,7 @@ import SredstvoModal from "../../Modals/Sredstvomodal";
 
 
 
+
 const PregledBolestiISredstva: FunctionComponent = () => {
 
     const [sresdstvoSwitch, setSredstvoSwitch] = useState(true);
@@ -43,6 +44,7 @@ const PregledBolestiISredstva: FunctionComponent = () => {
     const sredstvoService = new SredstvaService();
     const datumClass = new DateConverter();
 
+    
     const handleTableChange = () => {
         sresdstvoSwitch ? setSredstvoSwitch(false) : setSredstvoSwitch(true);
         fazaSwitch ? setfazaSwitch(false) : setfazaSwitch(true);
@@ -53,21 +55,21 @@ const PregledBolestiISredstva: FunctionComponent = () => {
     }
 
     const openBolestiModal = (record:any) =>{
-        setBolestiModalName(record.bolest)
+        setBolestiModalName(record.bolestName)
         setBolestiModalVisible(true);
     }
     const closeBolestiModal = () =>{
         setBolestiModalVisible(false);
     }
     const openFazaModal = (record:any) =>{
-        setFazaModalName(record.faza)
+        setFazaModalName(record.fazaName)
         setFazaModalVisible(true);
     }
     const closeFazaModal = () =>{
         setFazaModalVisible(false);
     }
     const openSredstvoModal = (record:any) =>{
-        setSredstvoModalName(record.sredstvo)
+        setSredstvoModalName(record.sredstvoName)
         setSredstvoModalVisible(true);
     }
     const closeSredstvoModal = () =>{
@@ -88,6 +90,7 @@ const PregledBolestiISredstva: FunctionComponent = () => {
                  sresdstvoSwitch ? () => openSredstvoModal(record) :
                   () =>openFazaModal(record))
         },
+        //TODO update brisanje
         {
             title: "Zadnje azuriranje",
             dataIndex: 'lastUpdate',

@@ -9,6 +9,8 @@ import SearchByName from "../CustomJSX/SearchBy";
 import FenofazaService from "../../../services/FenofazaService";
 import IFenofazaData from "../../../types/IFenofazaData";
 import DateConverter from "../../../feature/dateConverter";
+import roleFetcher from "../../../feature/roleFetcher";
+import { useAppSelector } from "../../../hooks";
 
 type Props = {
     onUpdate : (step: number,data:IFenofazaData) =>void
@@ -23,6 +25,8 @@ const FenofazaSifrarnik: FunctionComponent<Props> = ({onUpdate}) => {
     const [tableData, setTableData] = useState();
     const fenofazaService = new FenofazaService();
     const datumClass = new DateConverter();
+    const roleFetch = new roleFetcher();
+    var highestRole = roleFetch.getHighestOrderRole(useAppSelector(state => state.login.myUserRole));
 
     const promijeniStranicu = (page: number, pageSize: number | undefined) => {
         setPageNo(page - 1);
@@ -98,11 +102,12 @@ const FenofazaSifrarnik: FunctionComponent<Props> = ({onUpdate}) => {
             dataIndex: 'date',
             render:(text:any) => datumClass.convertDateForTable(text)
         },
+        highestRole > 1 ? 
         {
             title: "",
             dataIndex: 'name',
             render: (text: any, record: any) => TableUpdateDelete(() => editClick(text, record), () => deleteClick(record), constant.BOLEST_BRISANJE_PITANJE)
-        },
+        } : {}
     ]
 
     return (

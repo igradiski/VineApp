@@ -16,7 +16,6 @@ import javax.validation.Valid;
 import java.util.Optional;
 import java.util.Set;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/vinova-loza")
 @Slf4j

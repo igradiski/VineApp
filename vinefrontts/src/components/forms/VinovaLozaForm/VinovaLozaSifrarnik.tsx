@@ -10,6 +10,8 @@ import SearchByName from "../CustomJSX/SearchBy";
 import TableUpdateDelete from "../CustomJSX/TableUpdateDelete";
 import TableFieldForDescription from "../CustomJSX/TableFieldForDescription";
 import IVinovaLozaData from "../../../types/IVinovaLozaData";
+import roleFetcher from "../../../feature/roleFetcher";
+import { useAppSelector } from "../../../hooks";
 
 type Props = {
     onUpdate : (step: number,data:IVinovaLozaData) =>void
@@ -24,6 +26,8 @@ const VinovaLozaSifrarnik:FunctionComponent<Props> = ({onUpdate}) =>{
     
     const datumClass = new DateConverter();
     const lozaService = new VinovaLozaService();
+    const roleFetch = new roleFetcher();
+    var highestRole = roleFetch.getHighestOrderRole(useAppSelector(state => state.login.myUserRole));
 
 
     const promijeniStranicu = (page: number, pageSize: number | undefined) => {
@@ -95,11 +99,14 @@ const VinovaLozaSifrarnik:FunctionComponent<Props> = ({onUpdate}) =>{
             dataIndex: 'date',
             render:(text:any) => datumClass.convertDateForTable(text)
         },
-        {
+        
+        highestRole > 1 ? {
             title: "",
             dataIndex: 'name',
             render: (text: any, record: any) => TableUpdateDelete(() => editClick(text, record), () => deleteClick(record), constant.BOLEST_BRISANJE_PITANJE)
+        } : {
         },
+        
     ]
 
 

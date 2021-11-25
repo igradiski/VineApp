@@ -14,6 +14,7 @@ import { ArrowDownOutlined, ArrowUpOutlined ,EyeInvisibleOutlined, BoldOutlined}
 const UserDropDown: FunctionComponent = () => {
     var dispatch = useAppDispatch();
     var userLogged = useAppSelector(state => state.login.isAuthentificated)
+    var userName = useAppSelector( state => state.login.user)
     const menuData = (
         <Menu>
              {userLogged ? 
@@ -24,7 +25,7 @@ const UserDropDown: FunctionComponent = () => {
             <Button type="primary" >Font<ArrowUpOutlined></ArrowUpOutlined><ArrowDownOutlined></ArrowDownOutlined></Button>
             </Menu.Item>
             <Menu.Item key="3" className="visible-FullWidth">
-            <Button type="primary" ><EyeInvisibleOutlined /></Button>
+            <Button type="primary"><EyeInvisibleOutlined /></Button>
             </Menu.Item>
             <Menu.Item key="4" className="visible-FullWidth">
             <Button type="primary" ><BoldOutlined /></Button>
@@ -34,7 +35,7 @@ const UserDropDown: FunctionComponent = () => {
     );
     return (
         <Dropdown.Button overlay={menuData} placement="bottomCenter" icon={<UserOutlined />}>
-            {userLogged ? "Prijavljeni korinsik":"-"}
+            {userLogged ? userName :"-"}
         </Dropdown.Button>
     );
 
