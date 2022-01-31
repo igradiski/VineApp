@@ -28,6 +28,10 @@
     MESSAGE_SURNAME: "Molimo Vas unesite prezime",
     LBL_MAIL: "Email:",
     MESSAGE_MAIL: "Molimo Vas unesite email",
+    REGISTER_MODAL_USPJEH_TITLE:"Registracija uspjesna!",
+    REGISTER_MODAL_USPJEH:"Uspjesno ste registrirani!",
+    REGISTER_MODAL_FAIL_TITLE:"Greška kod registracije",
+    REGISTER_MODAL_FAIL:"Registracija nije uspjela!",
 
 
     //left menu

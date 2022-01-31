@@ -4,11 +4,9 @@ import IUserRegisterData from "../types/userTypes";
 
 
 class UserService{
-    registerUser(data: IUserRegisterData){
-        axiosInstance.post("vineApp/auth/signup",data)
-        .then(response =>{
-            console.log(response)
-        });
+    async registerUser(data: IUserRegisterData){
+        var promise = await  axiosInstance.post("vineApp/auth/signup",data)
+        return promise;
     }
 
     async loginUser(data: IUserRegisterData){
