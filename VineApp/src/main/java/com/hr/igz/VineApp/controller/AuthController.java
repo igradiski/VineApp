@@ -1,12 +1,10 @@
 package com.hr.igz.VineApp.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.hr.igz.VineApp.domain.dto.UserDto;
 import com.hr.igz.VineApp.security.jwt.payload.request.TokenRefreshRequest;
@@ -17,12 +15,18 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/auth")
 @Slf4j
+@RequiredArgsConstructor
 public class AuthController {
-	
-	@Autowired
-	UserService userService;
 
-	
+	private final UserService userService;
+
+	@GetMapping("/echo")
+	public ResponseEntity<?> echo() {
+
+		log.info("Echo test request");
+		return ResponseEntity.status(HttpStatus.OK).body("API radi!");
+	}
+
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@RequestBody UserDto loginRequest) {
 

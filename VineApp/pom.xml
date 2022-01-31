@@ -15,7 +15,6 @@
 	<name>VineApp</name>
 	<description>VineAppREST</description>
 	<properties>
-		<java.version>11</java.version>
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<version.mapstruct-lombok>0.2.0</version.mapstruct-lombok>
 	</properties>
@@ -76,6 +75,11 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
 			<version>3.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.4.1208</version>
 		</dependency>
 	</dependencies>
 
