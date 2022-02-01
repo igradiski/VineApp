@@ -1,23 +1,177 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# production
-/build
-
-# misc
+# OSX
+#
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Xcode
+#
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+project.xcworkspace
+
+# Android/IntelliJ
+#
+build/
+.idea
+.gradle
+local.properties
+*.iml
+
+# node.js
+#
+node_modules/
+package-lock.json # include if you are using npm - don't use both yarn and npm
+npm-debug.log
+yarn-error.log
+yarn.lock # include if you are using yarn - don't use both npm and yarn
+
+# BUCK
+buck-out/
+\.buckd/
+*.keystore
+
+# Fastlane
+#
+# It is recommended to not store the screenshots in the git repo. Instead, use Fastlane to re-generate the
+# screenshots whenever they are needed.
+# For more information about the recommended setup visit:
+# https://docs.fastlane.tools/best-practices/source-control/
+
+*/fastlane/report.xml
+*/fastlane/Preview.html
+*/fastlane/screenshots
+
+# Bundle artifact
+*.jsbundle
+Share
+Improve this answer
+Follow
+edited Jun 5 '20 at 14:19
+
+pbad
+4566 bronze badges
+answered Mar 4 '18 at 19:00
+
+bennygenel
+21.6k66 gold badges5656 silver badges7474 bronze badges
+2
+package-lock.json or yarn.lock should be commited – 
+Joseph Garrone
+ Sep 10 '19 at 15:44
+1
+You should definitely commit one of the lock files. If you are using npm it should be package-lock.json and if you are using yarn it should be yarn.lock. – 
+Filip Ilievski
+ Sep 25 '19 at 8:12
+does this add the pod files as well? – 
+fannolo
+ May 16 '20 at 17:11
+Doesn't preserve for me all Xcode required project's settings... Not sure what is the cause of the problem. – 
+Yossi
+ May 17 '20 at 7:56
+1
+Does android/app/build get ignored by above git ignore ? – 
+Ankita
+ Jun 11 '20 at 13:07
+Show 3 more comments
+
+0
+
+This is what I am using.
+
+The content should be save in the .gitignore after ios and android envirment like (signature, config file) init,
+
+Then the auto generate file like (index.android.bundle,main.jsbundle) need to be removed using git rm -f ---cached (file path) ,then commit it,then create a new one.
+
+That's becasue the auto generate file don't need to be commited.
+
+node_modules/**/*
+.expo/*
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+package-lock.json
+# macOS
+.DS_Store
+ios/
+ios/*
+ios/main.jsbundle
+ios/**/*
+android/
+android/*
+android/**/*
+
+.vs/
+*.log
+
+# OSX
+#
+.DS_Store
+
+# Xcode
+#
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+project.xcworkspace
+
+# Android/IntelliJ
+#
+build/
+.idea
+.gradle
+local.properties
+*.iml
+*.hprof
+
+# node.js
+#
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# BUCK
+buck-out/
+\.buckd/
+*.keystore
+!debug.keystore
+
+# Bundle artifacts
+*.jsbundle
+
+# CocoaPods
+/ios/Pods/
+
+# Expo
+.expo/
+web-build/
