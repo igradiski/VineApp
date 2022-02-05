@@ -12,7 +12,7 @@ export const BottomNav: React.FC = () => {
       barStyle={{ backgroundColor: "#7cb305" }}
     >
       <Tab.Screen
-        name="Prijava"
+        name="Login"
         component={LoginScreen}
         options={{
           tabBarLabel: "Login",
@@ -22,7 +22,7 @@ export const BottomNav: React.FC = () => {
         }}
       />
       <Tab.Screen
-        name="Registracija"
+        name="Register"
         component={RegisterScreen}
         options={{
           tabBarLabel: "Register",
