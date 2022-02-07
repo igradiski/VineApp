@@ -5,7 +5,6 @@ import * as yup from "yup";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
 import { authenticate } from "../../store/slices/user";
-import { store } from "../../store/store";
 
 export const LoginScreen: React.FC = () => {
   const dispatch = useDispatch();
