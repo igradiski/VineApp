@@ -3,12 +3,7 @@ package com.hr.igz.VineApp.security;
 import com.hr.igz.VineApp.security.jwt.AuthEntryPointJwt;
 import com.hr.igz.VineApp.security.jwt.AuthTokenFilter;
 import com.hr.igz.VineApp.security.servicesImpl.UserDetailsSecurityService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -22,14 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -40,16 +28,18 @@ import java.util.List;
  */
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@RequiredArgsConstructor
-@Slf4j
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	@Autowired
-	UserDetailsSecurityService userServiceSecurity;
-	
-	@Autowired
-	private AuthEntryPointJwt unauthorizedHandler;
-	
+
+	private final UserDetailsSecurityService userServiceSecurity;
+
+	private final AuthEntryPointJwt unauthorizedHandler;
+
+	public WebSecurityConfig(UserDetailsSecurityService userServiceSecurity, AuthEntryPointJwt unauthorizedHandler) {
+		this.userServiceSecurity = userServiceSecurity;
+		this.unauthorizedHandler = unauthorizedHandler;
+	}
+
+
 	@Bean
 	public AuthTokenFilter authenticationJwtTokenFilter() {
 		return new AuthTokenFilter();
@@ -109,6 +99,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				.authorizeRequests().antMatchers("/auth/**").permitAll()
 				.antMatchers("/api/test/**").permitAll()
+				.antMatchers("/**").permitAll()
 				.anyRequest().authenticated();
 
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

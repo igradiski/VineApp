@@ -1,29 +1,25 @@
 package com.hr.igz.VineApp.security.jwt;
 
-import java.util.Date;
-
+import com.hr.igz.VineApp.controller.VinogradHasLozaController;
+import com.hr.igz.VineApp.security.servicesImpl.UserDetailsSecurityImpl;
+import io.jsonwebtoken.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.hr.igz.VineApp.security.servicesImpl.UserDetailsSecurityImpl;
-
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Date;
 
 @Component
-@Slf4j
 public class JwtUtils {
 	
-	@Value("${Vine.app.jwtSecret}")
+	@Value("${vineApp.jwtSecret}")
 	private String jwtSecret;
 
-	@Value("${Vine.app.jwtExpirationMs}")
+	@Value("${vineApp.jwtExpiration}")
 	private int jwtExpirationMs;
+
+	private Logger log = LoggerFactory.getLogger(JwtUtils.class);
 
 	public String generateJwtToken(UserDetailsSecurityImpl userPrincipal) {
 	    return generateTokenFromUsername(userPrincipal.getUsername());

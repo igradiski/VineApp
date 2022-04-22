@@ -1,15 +1,10 @@
 package com.hr.igz.VineApp.domain.dto;
 
+public record AntDCascaderDto(String value, String key, String label) {
 
-import lombok.Data;
-
-@Data
-public class AntDCascaderDto {
-	
-	private String value;
-	
-	private String key;
-	
-	private String label;
-	
+	public AntDCascaderDto(String value, String key, String label) {
+		this.value = value;
+		this.key = key;
+		this.label = label;
+	}
 }

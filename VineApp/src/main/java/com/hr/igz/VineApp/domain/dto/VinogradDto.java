@@ -1,29 +1,16 @@
 package com.hr.igz.VineApp.domain.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotBlank;
 import java.time.Instant;
 
-@Data
-@NoArgsConstructor
-public class VinogradDto {
 
-    private Long id;
+public record VinogradDto (Long id, String name,String adress,String description,Integer brojCokota,Instant date) {
 
-    @NotBlank(message = "Name is mandatory!")
-    private String name;
-
-    @NotBlank(message = "Adress is mandatory!")
-    private String adress;
-
-    @NotBlank(message = "Description is mandatory!")
-    private String description;
-
-
-    private Integer brojCokota;
-
-    private Instant date;
-
+    public VinogradDto(Long id, String name, String adress, String description, Integer brojCokota, Instant date) {
+        this.id = id;
+        this.name = name;
+        this.adress = adress;
+        this.description = description;
+        this.brojCokota = brojCokota;
+        this.date = date;
+    }
 }

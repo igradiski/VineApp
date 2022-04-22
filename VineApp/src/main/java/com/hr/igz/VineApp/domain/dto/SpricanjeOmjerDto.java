@@ -1,19 +1,12 @@
 package com.hr.igz.VineApp.domain.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public record SpricanjeOmjerDto (Double myDose,Double myDoseOn100, Double Dose,Double DoseOn100,Double percentage) {
 
-@Data
-@NoArgsConstructor
-public class SpricanjeOmjerDto {
-
-    private Double myDose;
-
-    private Double myDoseOn100;
-
-    private Double Dose;
-
-    private Double DoseOn100;
-
-    private Double percentage;
+    public SpricanjeOmjerDto(Double myDose, Double myDoseOn100, Double Dose, Double DoseOn100, Double percentage) {
+        this.myDose = myDose;
+        this.myDoseOn100 = myDoseOn100;
+        this.Dose = Dose;
+        this.DoseOn100 = DoseOn100;
+        this.percentage = percentage;
+    }
 }

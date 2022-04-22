@@ -1,39 +1,17 @@
 package com.hr.igz.VineApp.domain.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public record SpricanjeSredstvoDto (Long sredstvo, Long utrosak,String napomena,String naziv,String tip,String base64,String preporuceno,Integer karenca,Long spricanjeId, Long id) {
 
-import java.util.Base64;
-
-@Data
-@NoArgsConstructor
-public class SpricanjeSredstvoDto {
-
-    private Long sredstvo;
-
-    private Long utrosak;
-
-    private String napomena;
-
-    private String naziv;
-
-    private String tip;
-
-    private String base64;
-
-    private String preporuceno;
-
-    private Integer karenca;
-
-    private Long spricanjeId;
-
-    private Long id;
-
-    public void setBase64(byte[] content){
-        if(content != null){
-            this.base64 = Base64.getEncoder().encodeToString(content);
-        }
+    public SpricanjeSredstvoDto(Long sredstvo, Long utrosak, String napomena, String naziv, String tip, String base64, String preporuceno, Integer karenca, Long spricanjeId, Long id) {
+        this.sredstvo = sredstvo;
+        this.utrosak = utrosak;
+        this.napomena = napomena;
+        this.naziv = naziv;
+        this.tip = tip;
+        this.base64 = base64;
+        this.preporuceno = preporuceno;
+        this.karenca = karenca;
+        this.spricanjeId = spricanjeId;
+        this.id = id;
     }
-
-
 }

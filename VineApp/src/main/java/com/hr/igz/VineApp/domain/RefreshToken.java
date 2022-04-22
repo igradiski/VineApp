@@ -1,11 +1,7 @@
 package com.hr.igz.VineApp.domain;
 
-import java.time.Instant;
-
 import javax.persistence.*;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.time.Instant;
 
 /**
  * The persistent class for the user database table.
@@ -13,12 +9,14 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Table(name = "REFRESH_TOKEN")
-@Data
-@NoArgsConstructor
 public class RefreshToken {
 
+	public RefreshToken() {
+	}
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "SEQ_REFTOK")
+	@SequenceGenerator(name="SEQ_REFTOK",allocationSize = 1)
 	private Long id;
 
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -31,4 +29,35 @@ public class RefreshToken {
 	@Column(name="expire")
 	private Instant expire;
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public Instant getExpire() {
+		return expire;
+	}
+
+	public void setExpire(Instant expire) {
+		this.expire = expire;
+	}
 }

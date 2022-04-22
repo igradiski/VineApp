@@ -2,19 +2,11 @@ package com.hr.igz.VineApp.domain.dto;
 
 import java.time.Instant;
 
-import javax.validation.constraints.NotEmpty;
+public record TipSredstvaDto(String name, Instant date, Long id) {
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-public class TipSredstvaDto {
-
-	@NotEmpty
-	private String name;
-	
-	private Instant date;
-
-	private Long id;
+	public TipSredstvaDto(String name, Instant date, Long id) {
+		this.name = name;
+		this.date = date;
+		this.id = id;
+	}
 }

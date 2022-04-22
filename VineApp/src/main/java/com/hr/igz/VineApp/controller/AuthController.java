@@ -1,24 +1,24 @@
 package com.hr.igz.VineApp.controller;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.hr.igz.VineApp.domain.dto.UserDto;
+import com.hr.igz.VineApp.security.jwt.payload.request.TokenRefreshRequest;
+import com.hr.igz.VineApp.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.hr.igz.VineApp.domain.dto.UserDto;
-import com.hr.igz.VineApp.security.jwt.payload.request.TokenRefreshRequest;
-import com.hr.igz.VineApp.services.UserService;
-
-import lombok.extern.slf4j.Slf4j;
-
 @RestController
 @RequestMapping("/auth")
-@Slf4j
-@RequiredArgsConstructor
 public class AuthController {
 
 	private final UserService userService;
+	private Logger log = LoggerFactory.getLogger(AuthController.class);
+
+	public AuthController(UserService userService) {
+		this.userService = userService;
+	}
 
 	@GetMapping("/echo")
 	public ResponseEntity<?> echo() {

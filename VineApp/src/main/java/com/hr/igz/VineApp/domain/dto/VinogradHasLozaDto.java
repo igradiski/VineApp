@@ -1,32 +1,16 @@
 package com.hr.igz.VineApp.domain.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.Instant;
-import java.util.Base64;
 
-@Data
-@NoArgsConstructor
-public class VinogradHasLozaDto {
+public record VinogradHasLozaDto(Long id,Integer brojCokota,Long idLoza,Long  idVinograd,String nazivLoze,String slikaLoze,Instant date) {
 
-    private Long id;
-
-    private Integer brojCokota;
-
-    private Long idLoza;
-
-    private Long  idVinograd;
-
-    private String nazivLoze;
-
-    private String slikaLoze;
-
-    private Instant date;
-
-    public void setSlikaLoze(byte[] content){
-        if(content != null){
-            this.slikaLoze = Base64.getEncoder().encodeToString(content);
-        }
+    public VinogradHasLozaDto(Long id, Integer brojCokota, Long idLoza, Long idVinograd, String nazivLoze, String slikaLoze, Instant date) {
+        this.id = id;
+        this.brojCokota = brojCokota;
+        this.idLoza = idLoza;
+        this.idVinograd = idVinograd;
+        this.nazivLoze = nazivLoze;
+        this.slikaLoze = slikaLoze;
+        this.date = date;
     }
 }

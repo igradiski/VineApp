@@ -1,50 +1,50 @@
 package com.hr.igz.VineApp.controller;
 
 import com.hr.igz.VineApp.domain.dto.VinogradHasLozaDto;
-import com.hr.igz.VineApp.services.VinogradHasLozaService;
+import com.hr.igz.VineApp.service.VinogradHasLozaService;
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/vinograd-loza")
-@Slf4j
-@RequiredArgsConstructor
 public class VinogradHasLozaController {
 
     private final VinogradHasLozaService vinogradHasLozaService;
+    private Logger log = LoggerFactory.getLogger(VinogradHasLozaController.class);
 
-    @PostMapping(value = "/vingoradHasLoza")
+    public VinogradHasLozaController(VinogradHasLozaService vinogradHasLozaService) {
+        this.vinogradHasLozaService = vinogradHasLozaService;
+    }
+
+    @PostMapping
     @Operation(summary = "Dodavanje nove veze loze i vinograda")
-    public ResponseEntity<Object> dodajVinogradHasLoza(@Validated @RequestBody VinogradHasLozaDto vinogradHasLozaDto){
+    public ResponseEntity<Object> dodajVinogradHasLoza(@Validated @RequestBody VinogradHasLozaDto vinogradHasLozaDto) {
         return vinogradHasLozaService.dodajVinogradHasLoza(vinogradHasLozaDto);
     }
 
-    @GetMapping(value ="/loze")
+    @GetMapping(value = "/{id}")
     @Operation(description = "Dohvacanje loza za pripadajuci vinograd")
-    public Page<VinogradHasLozaDto> dohvatiVinogradHasLoza(
-    @RequestParam(defaultValue = "2") int pageSize,
-    @RequestParam(defaultValue = "0") int pageNo,
-    @RequestParam(defaultValue = "id,desc") String [] sort,
-    @RequestParam Long vinogradId){
-        return vinogradHasLozaService.dohvatiVinogradHasLoza(pageSize,pageNo,sort,vinogradId);
+    public Page<VinogradHasLozaDto> dohvatiVinogradHasLoza(Pageable pageable, @PathVariable Long id) {
+        return vinogradHasLozaService.dohvatiVinogradHasLoza(pageable, id);
     }
-    @DeleteMapping(value = "/loze")
+
+    @DeleteMapping(value = "/{id}")
     @Operation(description = "Operacija za brisanja zapisa iz tablice koja povezuje vingorad i loze")
-    public ResponseEntity<Object> deleteVinogradHasLozaById(@RequestParam Long id){
+    public ResponseEntity<Object> deleteVinogradHasLozaById(@PathVariable Long id) {
         return vinogradHasLozaService.deleteVinogradHasLozaById(id);
     }
 
-    @PatchMapping(value ="/loze")
+    @PutMapping
     @Operation(description = "Azuriranje podatka o broju cokota")
-    public ResponseEntity<Object> updateVinogradHasLoza (
-            @Validated @RequestBody VinogradHasLozaDto vinogradHasLozaDto,
-            @RequestParam Long id){
-        return vinogradHasLozaService.updateVinogradHasLoza(vinogradHasLozaDto,id);
+    public ResponseEntity<Object> updateVinogradHasLoza(
+            @Validated @RequestBody VinogradHasLozaDto vinogradHasLozaDto) {
+        return vinogradHasLozaService.updateVinogradHasLoza(vinogradHasLozaDto);
     }
 
 }

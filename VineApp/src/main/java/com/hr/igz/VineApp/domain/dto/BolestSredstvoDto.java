@@ -1,22 +1,14 @@
 package com.hr.igz.VineApp.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.hr.igz.VineApp.domain.Bolest;
-import com.hr.igz.VineApp.domain.FenozafaRazvoja;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.Instant;
 
-@Data
-@NoArgsConstructor
-public class BolestSredstvoDto {
 
-    private String bolestName;
+public record BolestSredstvoDto (String bolestName,String sredstvoName,Long id,Instant lastUpdate){
 
-    private String sredstvoName;
-
-    private Long id;
-
-    private Instant lastUpdate;
+    public BolestSredstvoDto(String bolestName, String sredstvoName, Long id, Instant lastUpdate) {
+        this.bolestName = bolestName;
+        this.sredstvoName = sredstvoName;
+        this.id = id;
+        this.lastUpdate = lastUpdate;
+    }
 }

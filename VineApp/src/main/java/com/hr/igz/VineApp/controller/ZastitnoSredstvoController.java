@@ -2,11 +2,12 @@ package com.hr.igz.VineApp.controller;
 
 import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
 import com.hr.igz.VineApp.domain.dto.SredstvoDto;
-import com.hr.igz.VineApp.services.SredstvoService;
+import com.hr.igz.VineApp.service.SredstvoService;
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,46 +17,41 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/zastitno-sredstvo")
-@Slf4j
-@RequiredArgsConstructor
 public class ZastitnoSredstvoController {
 
 	private final SredstvoService sredstvoService;
+	private Logger log = LoggerFactory.getLogger(ZastitnoSredstvoController.class);
+
+	public ZastitnoSredstvoController(SredstvoService sredstvoService) {
+		this.sredstvoService = sredstvoService;
+	}
 
 	@GetMapping(value = "/sredstva")
 	@Operation(summary= "Dohvaca zastitna sredstva po stranicama")
-	public Page<SredstvoDto> getAllSredstvaPage(
-			@RequestParam(defaultValue = "0") int pageNo,
-			@RequestParam(defaultValue = "3") int pageSize, 
-			@RequestParam(defaultValue = "id,desc") String[] sort) {
-
-		return sredstvoService.getAllSredstvaPagable(pageNo,pageSize,sort);
+	public Page<SredstvoDto> getAllSredstvaPage(Pageable pageable) {
+		return sredstvoService.getAllSredstvaPagable(pageable);
 	}
 
-	@GetMapping(value= "/sredstva-by-name")
+	@GetMapping(value= "/sredstva-by-name/{name}")
 	@Operation(summary= "Dohvaca zastitna sredstva po upitu koji sadrzava ime")
-	public Page<SredstvoDto> getSredstvaByNamePaged(
-			@RequestParam String name,
-			@RequestParam(defaultValue = "2") int pageSize,
-			@RequestParam(defaultValue = "0") int pageNo,
-			@RequestParam(defaultValue = "id,desc") String [] sort){
-		return sredstvoService.findSredstvoByNamePaged(pageSize,pageNo,sort,name);
+	public Page<SredstvoDto> getSredstvaByNamePaged(Pageable pageable, @PathVariable String name){
+		return sredstvoService.findSredstvoByNamePaged(pageable,name);
 	}
 
-	@GetMapping(value= "/sredstva-name")
+	@GetMapping(value= "/sredstva-name/{name}")
 	@Operation(summary= "Dohvaca zastitno sredstvo prema imenu")
-	public Optional<SredstvoDto> getSredstvoByName(@RequestParam String name){
+	public Optional<SredstvoDto> getSredstvoByName(@PathVariable String name){
 		return sredstvoService.findSredstvoByName(name);
 	}
 
-	@GetMapping(value = "/sredstva-card")
-	public Optional<SredstvoDto> getSredstvoForCard(@RequestParam Long id){
+	@GetMapping(value = "/sredstva-card/{id}")
+	public Optional<SredstvoDto> getSredstvoForCard(@PathVariable Long id){
 		return sredstvoService.getSredstvoForCard(id);
 	}
 
-	@GetMapping(value = "/utrosak")
+	@GetMapping(value = "/utrosak/{water}/{id}")
 	@Operation(description = "Dohvacanje preporucene kolicine sredstva ")
-	public Optional<Object> getUtrosak(@RequestParam Integer water, @RequestParam Long id){
+	public Optional<Object> getUtrosak(@PathVariable Integer water, @PathVariable Long id){
 		return sredstvoService.getUtrosak(water,id);
 	}
 
@@ -65,23 +61,21 @@ public class ZastitnoSredstvoController {
 		return sredstvoService.getSredstvaForCascader();
 	}
 
-	@PostMapping(value = "/sredstva")
+	@PostMapping
 	@Operation(summary= "Operacija za dodavanje novog sredstva")
 	public ResponseEntity<Object> dodajSredstvo(@Validated @RequestBody SredstvoDto sredstvo) {
 		return sredstvoService.addSredstvo(sredstvo);
 	}
 
-	@PatchMapping(value = "/sredstva")
+	@PutMapping
 	@Operation(summary= "Operacija za update novog sredstva")
-	public ResponseEntity<Object> updateSredstvo(
-			@Validated @RequestBody SredstvoDto sredstvoDto,
-			@RequestParam Long id){
-		return sredstvoService.updateSredstvo(sredstvoDto,id);
+	public ResponseEntity<Object> updateSredstvo(@Validated @RequestBody SredstvoDto sredstvoDto){
+		return sredstvoService.updateSredstvo(sredstvoDto);
 	}
 
-	@DeleteMapping(value = "/sredstva")
+	@DeleteMapping("/{id}")
 	@Operation(summary= "Operacija za brisanje zastitnog sredstva")
-	public ResponseEntity<Object> deleteSredstvo(@RequestParam Long id){
+	public ResponseEntity<Object> deleteSredstvo(@PathVariable Long id){
 		return sredstvoService.deleteSredstvoById(id);
 	}
 }

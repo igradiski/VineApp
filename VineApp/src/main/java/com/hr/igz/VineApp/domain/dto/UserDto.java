@@ -2,25 +2,15 @@ package com.hr.igz.VineApp.domain.dto;
 
 import java.util.Date;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public record UserDto(String name,String surname,String username,String email,String password,int aktivan,Date lastLogin ) {
 
-@Data
-@NoArgsConstructor
-public class UserDto {
-	
-	private String name;
-	
-	private String surname;
-	
-	private String username;
-	
-	private String email;
-	
-	private String password;
-	
-	private int aktivan;
-	
-	private Date lastLogin;
-
+	public UserDto(String name, String surname, String username, String email, String password, int aktivan, Date lastLogin) {
+		this.name = name;
+		this.surname = surname;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.aktivan = aktivan;
+		this.lastLogin = lastLogin;
+	}
 }

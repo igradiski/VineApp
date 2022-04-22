@@ -1,21 +1,14 @@
 package com.hr.igz.VineApp.domain.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.Instant;
 
-@Data
-@NoArgsConstructor
-public class SpricanjeDto {
+public record SpricanjeDto(Long id, Long userId, Instant date, Integer water, String description) {
 
-    private Long id;
-
-    private Long userId;
-
-    private Instant date;
-
-    private Integer water;
-
-    private String description;
+    public SpricanjeDto(Long id, Long userId, Instant date, Integer water, String description) {
+        this.id = id;
+        this.userId = userId;
+        this.date = date;
+        this.water = water;
+        this.description = description;
+    }
 }

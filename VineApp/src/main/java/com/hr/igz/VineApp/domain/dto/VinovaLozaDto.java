@@ -1,27 +1,16 @@
 package com.hr.igz.VineApp.domain.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotBlank;
 import java.time.Instant;
 
 
-@Data
-@NoArgsConstructor
-public class VinovaLozaDto {
+public record VinovaLozaDto(Long id,String name,String description,Instant date,String base64,String picture_name) {
 
-    private Long id;
-
-    @NotBlank(message = "Name is mandatory!")
-    private String name;
-
-    @NotBlank(message = "Description is mandatory!")
-    private String description;
-
-    private Instant date;
-
-    private String base64;
-
-    private String picture_name;
+    public VinovaLozaDto(Long id, String name, String description, Instant date, String base64, String picture_name) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.date = date;
+        this.base64 = base64;
+        this.picture_name = picture_name;
+    }
 }

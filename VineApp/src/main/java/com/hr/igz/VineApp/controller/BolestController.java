@@ -2,13 +2,14 @@ package com.hr.igz.VineApp.controller;
 
 import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
 import com.hr.igz.VineApp.domain.dto.BolestDto;
-import com.hr.igz.VineApp.services.BolestService;
+import com.hr.igz.VineApp.service.BolestService;
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,41 +19,39 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/bolest")
-@Slf4j
-@RequiredArgsConstructor
 public class BolestController {
-	
+
 	private final BolestService bolestService;
+	private Logger log = LoggerFactory.getLogger(BolestController.class);
+
+	public BolestController(BolestService bolestService) {
+		this.bolestService = bolestService;
+	}
 
 	@GetMapping(value = "/bolest-by-name")
 	@Operation(summary= "Operacija za dohvacanje bolesti prema imenu sa stranicenjem")
 	public Page<BolestDto> findBolestiByNamePaged(
 			@RequestParam String name,
-			@RequestParam(defaultValue = "2") int pageSize,
-			@RequestParam(defaultValue = "0") int pageNo,
-			@RequestParam(defaultValue = "id,desc") String [] sort){
-		return bolestService.findBolestByNamePaged(pageSize,pageNo,sort,name);
+			Pageable pageable){
+		return bolestService.findBolestByNamePaged(pageable,name);
 	}
 
-	@GetMapping(value = "bolest-name")
+	@GetMapping(value = "bolest-name/{name}")
 	@Operation(summary= "Operacija za dohvacanje bolesti prema imenu")
-	public Optional<BolestDto> findBolestByName(@RequestParam String name){
+	public Optional<BolestDto> findBolestByName(@PathVariable String name){
 		return bolestService.findBolestByName(name);
 	}
 
-	@GetMapping(value = "/bolest-card")
+	@GetMapping(value = "/bolest-card/{id}")
 	@Operation(summary = "Dohvaca bolest za prikaz u kartici")
-	public Optional<BolestDto> getBolestForCard(@RequestParam Long id){
+	public Optional<BolestDto> getBolestForCard(@PathVariable Long id){
 		return bolestService.getBolestForCard(id);
 	}
 
 	@GetMapping(value="/sve-bolesti")
 	@Operation(summary= "Operacija za dohvacanje bolesti sa stranicenjem")
-	public Page<BolestDto> dohvatiBolestiPaged(
-			@RequestParam(defaultValue = "2") int pageSize,
-			@RequestParam(defaultValue = "0") int pageNo,
-			@RequestParam(defaultValue = "id,desc") String [] sort){
-		return bolestService.getBolestiPaged(pageSize,pageNo,sort);	
+	public Page<BolestDto> dohvatiBolestiPaged(Pageable pageable){
+		return bolestService.getBolestiPaged(pageable);
 	}
 	@GetMapping(value="/sve-bolesti-cascader")
 	@Operation(summary= "Operacija za dohvacanje bolesti za cascader u antd")
@@ -60,23 +59,21 @@ public class BolestController {
 		return bolestService.getBolestiZaCascader();
 	}
 	
-	@PostMapping(value="/nova-bolest")
+	@PostMapping
 	@Operation(summary= "Operacija za unos nove bolesti")
-	public ResponseEntity<Object> dodajBolest(@Validated @RequestBody BolestDto bolest){
-		return bolestService.addBolest(bolest);
+	public ResponseEntity<BolestDto> dodajBolest(@Validated @RequestBody BolestDto bolest){
+		return ResponseEntity.status(HttpStatus.CREATED).body(bolestService.addBolest(bolest));
 	}
 	
-	@PatchMapping(value="/bolest")
+	@PutMapping
 	@Operation(summary= "Operacija za azuriranje bolesti")
-	public ResponseEntity<Object> updateBolest(
-			@Validated @RequestBody BolestDto bolestDto,
-			@RequestParam Long id){
-		return bolestService.updateBolest(bolestDto,id);
+	public ResponseEntity<Object> updateBolest(@Validated @RequestBody BolestDto bolestDto){
+		return bolestService.updateBolest(bolestDto);
 	}
 	
-	@DeleteMapping(value = "/")
+	@DeleteMapping(value = "/{id}")
 	@Operation(summary= "Operacija za brisanje bolesti")
-	public ResponseEntity<Object> obrisiBolest(@RequestParam Long id){
+	public ResponseEntity<Object> obrisiBolest(@PathVariable("id") Long id){
 		return bolestService.deleteBolestByName(id);
 	}
 }

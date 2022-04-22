@@ -17,9 +17,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.hr.igz.VineApp.security.servicesImpl.UserDetailsSecurityService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public class AuthTokenFilter extends OncePerRequestFilter {
 
 	@Autowired

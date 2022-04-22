@@ -2,48 +2,46 @@ package com.hr.igz.VineApp.controller;
 
 
 import com.hr.igz.VineApp.domain.dto.BolestSredstvoDto;
-import com.hr.igz.VineApp.services.SredstvoBolestService;
+import com.hr.igz.VineApp.service.SredstvoBolestService;
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/bolest-sredstvo")
-@Slf4j
-@RequiredArgsConstructor
 public class SredstvoBolestController {
 
     private final SredstvoBolestService sredstvoBolestService;
+    private Logger log = LoggerFactory.getLogger(SredstvoBolestController.class);
 
-    @PutMapping(value="/bolesti-sredstva")
+    public SredstvoBolestController(SredstvoBolestService sredstvoBolestService) {
+        this.sredstvoBolestService = sredstvoBolestService;
+    }
+
+    @PostMapping(value="/{bolest}/{sredstvo}")
     @Operation(summary = "Unos veze sredstva i bolesti")
     public ResponseEntity<Object> insertBolestSredstvo(
-            @RequestParam Long bolestId,
-            @RequestParam Long sredstvoId){
-        return sredstvoBolestService.insertBolestSredstvo(bolestId,sredstvoId);
+            @PathVariable Long bolest,
+            @PathVariable Long sredstvo){
+        return sredstvoBolestService.insertBolestSredstvo(bolest,sredstvo);
     }
 
     @GetMapping(value ="/sve-bolesti-sredstva")
     @Operation(summary = "Dohvacanje page za bolest i sredstva")
-    public Page<BolestSredstvoDto> getSredstvoBolestPage(
-            @RequestParam(defaultValue = "2") int pageSize,
-            @RequestParam(defaultValue = "0") int pageNo,
-            @RequestParam(defaultValue = "id,desc") String [] sort){
-        return sredstvoBolestService.getSredstvoBolestPage(pageSize,pageNo,sort);
+    public Page<BolestSredstvoDto> getSredstvoBolestPage(Pageable pageable){
+        return sredstvoBolestService.getSredstvoBolestPage(pageable);
     }
 
-    @GetMapping(value ="/sve-bolesti-sredstva-filter")
+    @GetMapping(value ="/sve-bolesti-sredstva-filter/{bolest}/{sredstvo}")
     @Operation(summary = "Dohvacanje page za bolest i sredstva sa filterom")
-    public Page<BolestSredstvoDto> getSredstvoBolestPage(
-            @RequestParam(defaultValue = "2") int pageSize,
-            @RequestParam(defaultValue = "0") int pageNo,
-            @RequestParam(defaultValue = "id,desc") String [] sort,
-            @RequestParam(required = false) Long bolestId,
-            @RequestParam(name ="sredstvoFaza",required = false ) Long sredstvoId){
-        return sredstvoBolestService.getSredstvoBolestPageFiltered(pageSize,pageNo,sort,bolestId,sredstvoId);
+    public Page<BolestSredstvoDto> getSredstvoBolestPage(Pageable pageable,
+            @PathVariable Long bolest,
+            @PathVariable Long sredstvo){
+        return sredstvoBolestService.getSredstvoBolestPageFiltered(pageable,bolest,sredstvo);
     }
 
 }

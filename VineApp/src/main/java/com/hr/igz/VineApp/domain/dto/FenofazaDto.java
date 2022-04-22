@@ -1,25 +1,26 @@
 package com.hr.igz.VineApp.domain.dto;
 
+import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
 
-import javax.validation.constraints.NotBlank;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public record FenofazaDto(
+		Long id,
+		String name,
+		String message,
+		String timeOfUsage,
+		Instant date) {
 
-@Data
-@NoArgsConstructor
-public class FenofazaDto {
-	
-	private Long id;
-	
-	@NotBlank(message = "Name is mandatory!")
-	private String name;
-
-	@NotBlank(message = "Time of usage is mandatory!")
-	private String timeOfUsage;
-	
-	
-	private Instant date;
-
+	public FenofazaDto(
+			Long id,
+			@NotEmpty(message = "Name is mandatory") String name,
+			@NotEmpty(message = "Name is mandatory") String message,
+			String timeOfUsage,
+			Instant date) {
+		this.id = id;
+		this.name=name;
+		this.message = message;
+		this.timeOfUsage = timeOfUsage;
+		this.date = date;
+	}
 }

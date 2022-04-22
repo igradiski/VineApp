@@ -3,11 +3,12 @@ package com.hr.igz.VineApp.controller;
 
 import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
 import com.hr.igz.VineApp.domain.dto.VinovaLozaDto;
-import com.hr.igz.VineApp.services.VinovaLozaService;
+import com.hr.igz.VineApp.service.VinovaLozaService;
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +19,16 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/vinova-loza")
-@Slf4j
-@RequiredArgsConstructor
 public class VinovaLozaController {
 
     private final VinovaLozaService vinovaLozaService;
+    private Logger log = LoggerFactory.getLogger(VinovaLozaController.class);
 
-    @PostMapping(value = "/loza")
+    public VinovaLozaController(VinovaLozaService vinovaLozaService) {
+        this.vinovaLozaService = vinovaLozaService;
+    }
+
+    @PostMapping
     @Operation(summary = "Operacija za unos vinove loze")
     public ResponseEntity<Object> dodajLozu(@Validated @RequestBody VinovaLozaDto vinovaLozaDto){
         return vinovaLozaService.dodajLozu(vinovaLozaDto);
@@ -32,11 +36,8 @@ public class VinovaLozaController {
 
     @GetMapping(value = "/loze")
     @Operation(summary = "Operacija koja dohvaca vinove loze")
-    public Page<VinovaLozaDto> getVinovaLozaPaged(
-            @RequestParam(defaultValue = "2") int pageSize,
-            @RequestParam(defaultValue = "0") int pageNo,
-            @RequestParam(defaultValue = "id,desc") String [] sort){
-        return vinovaLozaService.getVinovaLozaPaged(pageSize,pageNo,sort);
+    public Page<VinovaLozaDto> getVinovaLozaPaged(Pageable pageable){
+        return vinovaLozaService.getVinovaLozaPaged(pageable);
     }
 
     @GetMapping(value = "/loze-cascader")
@@ -45,24 +46,23 @@ public class VinovaLozaController {
         return vinovaLozaService.getVinovaLozaCascader();
     }
 
-    @GetMapping(value = "/loze-card")
+    @GetMapping(value = "/loze-card/{id}")
     @Operation(summary = "Operacija koja dohvaca podatke o vinovoj lozi za karticni prikaz")
-    public Optional<VinovaLozaDto> getLozaForCard(@RequestParam Long id){
+    public Optional<VinovaLozaDto> getLozaForCard(@PathVariable Long id){
         return vinovaLozaService.getLozaForCard(id);
     }
 
-    @DeleteMapping(value ="/loza")
+    @DeleteMapping(value ="/{id}")
     @Operation(description = "Operacija za brisanje vinove loze")
-    public ResponseEntity<Object> deleteLozaById(@RequestParam Long id){
+    public ResponseEntity<Object> deleteLozaById(@PathVariable Long id){
         return vinovaLozaService.deleteLozaById(id);
     }
 
-    @PatchMapping(value = "/loza")
+    @PutMapping
     @Operation(summary = "Ažuriranje vinove loze")
     public ResponseEntity<Object> updateLoza(
-            @Valid @RequestBody VinovaLozaDto vinovaLozaDto,
-            @RequestParam Long id){
-        return vinovaLozaService.updateLoza(vinovaLozaDto,id);
+            @Valid @RequestBody VinovaLozaDto vinovaLozaDto){
+        return vinovaLozaService.updateLoza(vinovaLozaDto);
     }
 
 }

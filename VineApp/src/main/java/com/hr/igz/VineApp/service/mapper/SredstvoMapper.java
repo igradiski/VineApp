@@ -1,0 +1,42 @@
+package com.hr.igz.VineApp.service.mapper;
+
+import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+import com.hr.igz.VineApp.domain.ZastitnoSredstvo;
+import com.hr.igz.VineApp.domain.dto.SredstvoDto;
+import com.hr.igz.VineApp.repository.TipSredstvaRepository;
+import com.hr.igz.VineApp.service.TipSredstvaService;
+import org.mapstruct.MappingTarget;
+
+
+@Mapper(componentModel="spring", uses= {TipSredstvaService.class,TipSredstvaMapper.class})
+public interface SredstvoMapper {
+
+	@Mapping(source = "tipZastitnogSredstva.name",target = "nameOfTipSredstva")
+	SredstvoDto toDto(ZastitnoSredstvo sredstvo);
+
+	ZastitnoSredstvo toEntity (SredstvoDto sredstvoDto);
+
+	@Mapping(target="sredstvo.id",ignore = true)
+	@Mapping(target="sredstvo.date",ignore = true)
+	@Mapping(source = "sredstvoDto.name",target = "sredstvo.name")
+	@Mapping(source = "sredstvoDto.description",target = "sredstvo.description")
+	@Mapping(source = "sredstvoDto.composition",target = "sredstvo.composition")
+	@Mapping(source = "sredstvoDto.group",target = "sredstvo.group")
+	@Mapping(source = "sredstvoDto.formulation",target = "sredstvo.formulation")
+	@Mapping(source = "sredstvoDto.typeOfAction",target = "sredstvo.typeOfAction")
+	@Mapping(source = "sredstvoDto.usage",target = "sredstvo.usage")
+	@Mapping(source = "sredstvoDto.concentration",target = "sredstvo.concentration")
+	@Mapping(source = "sredstvoDto.dosageOn100",target = "sredstvo.dosageOn100")
+	@Mapping(source = "sredstvoDto.waiting",target = "sredstvo.waiting")
+	@Mapping(target = "sredstvo.tipZastitnogSredstva",expression = "java(tipSredstvaRepositoryRepos.findById(sredstvoDto.typeOfMedium()).get())")
+	ZastitnoSredstvo UpdateSredstvoFromDto(@MappingTarget ZastitnoSredstvo sredstvo, SredstvoDto sredstvoDto,TipSredstvaRepository tipSredstvaRepositoryRepos);
+
+	@Mapping(source="id",target="key")
+	@Mapping(source="id",target="value")
+	@Mapping(source="name",target="label")
+	AntDCascaderDto SredstvoToCascaderDto(ZastitnoSredstvo sredstvo);
+
+}

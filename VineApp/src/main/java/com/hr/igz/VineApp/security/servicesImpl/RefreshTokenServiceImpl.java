@@ -1,7 +1,7 @@
 package com.hr.igz.VineApp.security.servicesImpl;
 
 import com.hr.igz.VineApp.domain.RefreshToken;
-import com.hr.igz.VineApp.exception.TokenRefreshException;
+import com.hr.igz.VineApp.service.exception.TokenRefreshException;
 import com.hr.igz.VineApp.repository.RefreshTokenRepository;
 import com.hr.igz.VineApp.repository.UserRepository;
 import com.hr.igz.VineApp.security.services.refreshTokenService;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 public class RefreshTokenServiceImpl implements refreshTokenService {
 
-	@Value("${Vine.app.jwt.jwtRefreshExpirationMs}")
+	@Value("${vineApp.refTokDuration}")
 	private Long refreshTokenDurationMs;
 
 	@Autowired
