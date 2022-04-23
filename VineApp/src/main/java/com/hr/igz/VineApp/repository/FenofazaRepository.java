@@ -13,9 +13,8 @@ public interface FenofazaRepository extends JpaRepository<FenofazaRazvoja, Long>
 
 	boolean existsByName(String name);
 
-
 	Optional<FenofazaRazvoja> findByName(String name);
 
-	Page<FenofazaRazvoja> findByNameContaining(String name, Pageable paging);
+	Page<FenofazaRazvoja> findByNameContainingIgnoreCase(String name,Pageable paging);
 
 }

@@ -33,21 +33,19 @@ public class FenofazaController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(fenofazaService.addFenofaza(fenofaza));
 	}
 
-	@GetMapping(value = "/fenofaze-by-name/{name}")
+	@GetMapping(value = "/by-name/{name}")
 	@Operation(summary= "Operacija za dohvacanje fenofaza prema imenu sa stranicenjem")
-	public Page<FenofazaDto> findFenofazaByNamePaged(
-			@PathVariable String name,
-			Pageable pageable){
+	public Page<FenofazaDto> findFenofazaByNamePaged(@PathVariable String name, Pageable pageable){
 		return fenofazaService.findFenofazaByNamePaged(pageable,name);
 	}
 
-	@GetMapping(value= "/fenofaze-name/{name}")
+	@GetMapping(value= "/name/{name}")
 	@Operation(summary = "Operacija za dohvacanje odredene fenofaze")
 	public Optional<FenofazaDto> findFenofazaByname(@PathVariable String name){
 		return fenofazaService.findFenofazaByName(name);
 	}
 	
-	@GetMapping(value="/fenofaze")
+	@GetMapping
 	@Operation(summary= "Operacija za dohvacanje fenofaza sa stranicenjem")
 	public Page<FenofazaDto> getFenofazePaged(Pageable pageable){
 		return fenofazaService.getFenofazePaged(pageable);
@@ -61,9 +59,8 @@ public class FenofazaController {
 
 	@PutMapping
 	@Operation(summary= "Operacija za azuriranje fenofaze")
-	public ResponseEntity<Object> updateFenofaza(
-			@Validated @RequestBody FenofazaDto fenofaza){
-		return fenofazaService.updateFenofaza(fenofaza);
+	public ResponseEntity<Object> updateFenofaza(@Validated @RequestBody FenofazaDto fenofaza){
+		return ResponseEntity.status(HttpStatus.OK).body(fenofazaService.updateFenofaza(fenofaza));
 	}
 	
 	@DeleteMapping(value = "/{id}")

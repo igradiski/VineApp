@@ -61,6 +61,7 @@ public class FenofazaServiceImpl  implements FenofazaService{
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<FenofazaDto> findFenofazaByName(String name) {
+		log.info("Fetching faza with name "+name);
 		return fenofazaRepository.findByName(name).map(mapper::toDto);
 	}
 
@@ -68,8 +69,8 @@ public class FenofazaServiceImpl  implements FenofazaService{
 	@Override
 	@Transactional(readOnly = true)
 	public Page<FenofazaDto> findFenofazaByNamePaged(Pageable pageable,String name) {
-
-		return fenofazaRepository.findByNameContaining(name,pageable).map(mapper::toDto);
+		log.info("Fetching faze with name "+name);
+		return fenofazaRepository.findByNameContainingIgnoreCase(name,pageable).map(mapper::toDto);
 	}
 
 	@Override
@@ -82,7 +83,7 @@ public class FenofazaServiceImpl  implements FenofazaService{
 
 	@Override
 	@Transactional
-	public ResponseEntity<Object> updateFenofaza(FenofazaDto fenofaza) {
+	public FenofazaDto updateFenofaza(FenofazaDto fenofaza) {
 
 		FenofazaRazvoja oldFenofaza = fenofazaRepository.findById(fenofaza.id())
 				.orElseThrow(()->{
@@ -91,12 +92,11 @@ public class FenofazaServiceImpl  implements FenofazaService{
 				});
 		oldFenofaza = mapper.UpdateFenofazaFromDto(oldFenofaza,fenofaza);
 		try {
-			fenofazaRepository.save(oldFenofaza);
+			return mapper.toDto(fenofazaRepository.save(oldFenofaza));
 		}catch (Exception e) {
 			log.error("Nije moguce ažurirati fenofazu{}",fenofaza.toString());
 			throw new PostFailureException("Nije moguce ažurirati zeljenu fenofazu!");
 		}
-		return ResponseEntity.status(HttpStatus.OK).body("Fenofaza je uspješno ažurirana");
 	}
 	
 	@Override

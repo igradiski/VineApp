@@ -15,7 +15,7 @@ public interface FenofazaService {
 
 	Page<FenofazaDto> getFenofazePaged(Pageable pageable);
 
-	ResponseEntity<Object> updateFenofaza(FenofazaDto fenofaza);
+	FenofazaDto updateFenofaza(FenofazaDto fenofaza);
 
 	Page<FenofazaDto> findFenofazaByNamePaged(Pageable pageable, String name);
 
