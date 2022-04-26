@@ -6,6 +6,7 @@ import com.hr.igz.VineApp.domain.dto.BolestDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValueMappingStrategy;
 
 import java.util.Base64;
 
@@ -13,19 +14,28 @@ import java.util.Base64;
 public interface BolestMapper{
 
 	default byte[] toByte(String base64){
-		return Base64.getDecoder().decode(base64);
+		if(base64 != null)
+			return Base64.getDecoder().decode(base64);
+		else {
+			return new byte[1];
+		}
 	}
 	default String toBase64(byte [] data){
-		return Base64.getEncoder().encodeToString(data);
+		if(data != null)
+			return Base64.getEncoder().encodeToString(data);
+		else
+			return "";
 	}
 
+	@Mapping(source = "picture",target = "base64")
 	BolestDto toDto(Bolest bolest);
+
+	@Mapping(source = "base64",target = "picture")
 	Bolest toEntity(BolestDto bolestDto);
 
 	@Mapping(target="bolest.id",ignore = true)
 	@Mapping(target="bolest.date",ignore = true)
-	@Mapping(source="bolestDto.name",target = "bolest.name")
-	@Mapping(source="bolestDto.description",target = "bolest.description")
+	@Mapping(source = "bolestDto.base64",target = "picture")
 	Bolest UpdateBolestFromDto (@MappingTarget Bolest bolest, BolestDto bolestDto);
 
 	@Mapping(source="id",target="key")

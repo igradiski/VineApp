@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,18 +24,23 @@ public class SpricanjaController {
         this.spricanjaService = spricanjaService;
     }
 
-    @PostMapping("/spricanje")
+    @PostMapping
     @Operation(description = "Unos novog spricanja za korisnika")
     public ResponseEntity<Object> insertSpricanje(@Validated @RequestBody SpricanjeDto spricanjeDto){
-        return spricanjaService.insertSpricanje(spricanjeDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(spricanjaService.insertSpricanje(spricanjeDto));
     }
 
-    @GetMapping("/spricanja")
+    @GetMapping
     @Operation(summary = "Operacija za dohvacanje spricanja sa stranicenjem")
     public Page<SpricanjeDto> getSpricanjaPaged(Pageable pageable){
         return spricanjaService.getSpricanjePaged(pageable);
     }
 
+    @PutMapping
+    @Operation(summary = "Operacija za azuriranje podataka o spricanju")
+    public ResponseEntity<Object> updateSpricanje (@Validated @RequestBody SpricanjeDto spricanjeDto){
+        return ResponseEntity.status(HttpStatus.OK).body(spricanjaService.updateSpricanje(spricanjeDto));
+    }
 
     @DeleteMapping("/{id}")
     @Operation(description = "Operacija za brisanje spricanja")
@@ -42,9 +48,4 @@ public class SpricanjaController {
         return spricanjaService.deleteSpricanjeById(id);
     }
 
-    @PutMapping
-    @Operation(summary = "Operacija za azuriranje podataka o spricanju")
-    public ResponseEntity<Object> updateSpricanje (@Validated @RequestBody SpricanjeDto spricanjeDto){
-        return spricanjaService.updateSpricanje(spricanjeDto);
-    }
 }

@@ -25,19 +25,17 @@ public class FazaBolestController {
 
     @PostMapping(value="/{bolest}/{faza}")
     @Operation(summary = "Unos veze faza i bolesti")
-    public ResponseEntity<Object> insertBolestFaza(
-            @PathVariable Long bolest,
-            @PathVariable Long faza){
+    public ResponseEntity<Object> insertBolestFaza(@PathVariable Long bolest, @PathVariable Long faza){
         return ResponseEntity.status(HttpStatus.CREATED).body(fazaBolestService.insertFazaBolest(bolest,faza));
     }
 
-    @GetMapping(value="/sve-bolesti-faze")
+    @GetMapping(value="/all")
     @Operation(summary = "Unos veze faza i bolesti")
     public Page<BolestFazaDto> getBolestFazePaged(Pageable pageable){
         return fazaBolestService.getBolestFazePaged(pageable);
     }
 
-    @GetMapping(value ="/sve-bolesti-faze-filter/{bolest}/{faza}")
+    @GetMapping(value ="/filter/{bolest}/{faza}")
     @Operation(summary = "Dohvacanje pagea za bolest i faze sa filterom")
     public Page<BolestFazaDto> getFazaBolestPage(
             Pageable pageable,

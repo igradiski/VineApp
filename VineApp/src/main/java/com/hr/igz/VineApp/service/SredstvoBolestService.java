@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface SredstvoBolestService {
 
-    ResponseEntity<Object> insertBolestSredstvo(Long bolestId, Long sredstvoId);
+    BolestSredstvoDto insertBolestSredstvo(Long bolestId, Long sredstvoId);
 
     Page<BolestSredstvoDto> getSredstvoBolestPage(Pageable pageable);
 

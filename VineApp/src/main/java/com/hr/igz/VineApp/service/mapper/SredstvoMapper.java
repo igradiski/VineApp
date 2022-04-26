@@ -9,30 +9,40 @@ import com.hr.igz.VineApp.domain.dto.SredstvoDto;
 import com.hr.igz.VineApp.repository.TipSredstvaRepository;
 import com.hr.igz.VineApp.service.TipSredstvaService;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+
+import java.util.Base64;
 
 
-@Mapper(componentModel="spring", uses= {TipSredstvaService.class,TipSredstvaMapper.class})
+@Mapper(componentModel="spring",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface SredstvoMapper {
 
+	default byte[] toByte(String base64){
+		if(base64 != null)
+			return Base64.getDecoder().decode(base64);
+		else {
+			return new byte[1];
+		}
+	}
+	default String toBase64(byte [] data){
+		if(data != null)
+			return Base64.getEncoder().encodeToString(data);
+		else
+			return "";
+	}
+
 	@Mapping(source = "tipZastitnogSredstva.name",target = "nameOfTipSredstva")
+	@Mapping(source = "tipZastitnogSredstva.id",target = "tipSredstvaId")
+	@Mapping(source = "picture",target = "base64")
 	SredstvoDto toDto(ZastitnoSredstvo sredstvo);
 
+	@Mapping(source = "base64",target = "picture")
 	ZastitnoSredstvo toEntity (SredstvoDto sredstvoDto);
 
 	@Mapping(target="sredstvo.id",ignore = true)
 	@Mapping(target="sredstvo.date",ignore = true)
-	@Mapping(source = "sredstvoDto.name",target = "sredstvo.name")
-	@Mapping(source = "sredstvoDto.description",target = "sredstvo.description")
-	@Mapping(source = "sredstvoDto.composition",target = "sredstvo.composition")
-	@Mapping(source = "sredstvoDto.group",target = "sredstvo.group")
-	@Mapping(source = "sredstvoDto.formulation",target = "sredstvo.formulation")
-	@Mapping(source = "sredstvoDto.typeOfAction",target = "sredstvo.typeOfAction")
-	@Mapping(source = "sredstvoDto.usage",target = "sredstvo.usage")
-	@Mapping(source = "sredstvoDto.concentration",target = "sredstvo.concentration")
-	@Mapping(source = "sredstvoDto.dosageOn100",target = "sredstvo.dosageOn100")
-	@Mapping(source = "sredstvoDto.waiting",target = "sredstvo.waiting")
-	@Mapping(target = "sredstvo.tipZastitnogSredstva",expression = "java(tipSredstvaRepositoryRepos.findById(sredstvoDto.typeOfMedium()).get())")
-	ZastitnoSredstvo UpdateSredstvoFromDto(@MappingTarget ZastitnoSredstvo sredstvo, SredstvoDto sredstvoDto,TipSredstvaRepository tipSredstvaRepositoryRepos);
+	@Mapping(source = "sredstvoDto.base64",target = "picture")
+	ZastitnoSredstvo UpdateSredstvoFromDto(@MappingTarget ZastitnoSredstvo sredstvo, SredstvoDto sredstvoDto);
 
 	@Mapping(source="id",target="key")
 	@Mapping(source="id",target="value")

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,21 +25,20 @@ public class SredstvoBolestController {
 
     @PostMapping(value="/{bolest}/{sredstvo}")
     @Operation(summary = "Unos veze sredstva i bolesti")
-    public ResponseEntity<Object> insertBolestSredstvo(
-            @PathVariable Long bolest,
-            @PathVariable Long sredstvo){
-        return sredstvoBolestService.insertBolestSredstvo(bolest,sredstvo);
+    public ResponseEntity<Object> insertBolestSredstvo(@PathVariable Long bolest, @PathVariable Long sredstvo){
+        return ResponseEntity.status(HttpStatus.CREATED).body(sredstvoBolestService.insertBolestSredstvo(bolest,sredstvo));
     }
 
-    @GetMapping(value ="/sve-bolesti-sredstva")
+    @GetMapping(value ="/all")
     @Operation(summary = "Dohvacanje page za bolest i sredstva")
     public Page<BolestSredstvoDto> getSredstvoBolestPage(Pageable pageable){
         return sredstvoBolestService.getSredstvoBolestPage(pageable);
     }
 
-    @GetMapping(value ="/sve-bolesti-sredstva-filter/{bolest}/{sredstvo}")
+    @GetMapping(value ="/filter/{bolest}/{sredstvo}")
     @Operation(summary = "Dohvacanje page za bolest i sredstva sa filterom")
-    public Page<BolestSredstvoDto> getSredstvoBolestPage(Pageable pageable,
+    public Page<BolestSredstvoDto> getSredstvoBolestPage(
+            Pageable pageable,
             @PathVariable Long bolest,
             @PathVariable Long sredstvo){
         return sredstvoBolestService.getSredstvoBolestPageFiltered(pageable,bolest,sredstvo);

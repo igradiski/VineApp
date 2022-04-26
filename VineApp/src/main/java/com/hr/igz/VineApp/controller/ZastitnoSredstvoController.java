@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,13 @@ public class ZastitnoSredstvoController {
 		this.sredstvoService = sredstvoService;
 	}
 
-	@GetMapping(value = "/sredstva")
+	@PostMapping
+	@Operation(summary= "Operacija za dodavanje novog sredstva")
+	public ResponseEntity<Object> dodajSredstvo(@Validated @RequestBody SredstvoDto sredstvo) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(sredstvoService.addSredstvo(sredstvo));
+	}
+
+	@GetMapping(value = "/all")
 	@Operation(summary= "Dohvaca zastitna sredstva po stranicama")
 	public Page<SredstvoDto> getAllSredstvaPage(Pageable pageable) {
 		return sredstvoService.getAllSredstvaPagable(pageable);
@@ -40,13 +47,13 @@ public class ZastitnoSredstvoController {
 
 	@GetMapping(value= "/sredstva-name/{name}")
 	@Operation(summary= "Dohvaca zastitno sredstvo prema imenu")
-	public Optional<SredstvoDto> getSredstvoByName(@PathVariable String name){
-		return sredstvoService.findSredstvoByName(name);
+	public ResponseEntity<SredstvoDto> getSredstvoByName(@PathVariable String name){
+		return ResponseEntity.status(HttpStatus.OK).body(sredstvoService.findSredstvoByName(name));
 	}
 
 	@GetMapping(value = "/sredstva-card/{id}")
-	public Optional<SredstvoDto> getSredstvoForCard(@PathVariable Long id){
-		return sredstvoService.getSredstvoForCard(id);
+	public ResponseEntity<SredstvoDto> getSredstvoForCard(@PathVariable Long id){
+		return ResponseEntity.status(HttpStatus.OK).body(sredstvoService.getSredstvoForCard(id));
 	}
 
 	@GetMapping(value = "/utrosak/{water}/{id}")
@@ -61,16 +68,10 @@ public class ZastitnoSredstvoController {
 		return sredstvoService.getSredstvaForCascader();
 	}
 
-	@PostMapping
-	@Operation(summary= "Operacija za dodavanje novog sredstva")
-	public ResponseEntity<Object> dodajSredstvo(@Validated @RequestBody SredstvoDto sredstvo) {
-		return sredstvoService.addSredstvo(sredstvo);
-	}
-
 	@PutMapping
 	@Operation(summary= "Operacija za update novog sredstva")
 	public ResponseEntity<Object> updateSredstvo(@Validated @RequestBody SredstvoDto sredstvoDto){
-		return sredstvoService.updateSredstvo(sredstvoDto);
+		return ResponseEntity.status(HttpStatus.OK).body(sredstvoService.updateSredstvo(sredstvoDto));
 	}
 
 	@DeleteMapping("/{id}")

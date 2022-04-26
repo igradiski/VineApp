@@ -35,13 +35,14 @@ public class SpricanjaServiceImpl implements SpricanjaService {
 
     @Override
     @Transactional
-    public ResponseEntity<Object> insertSpricanje(SpricanjeDto spricanjeDto) {
+    public SpricanjeDto insertSpricanje(SpricanjeDto spricanjeDto) {
 
+        log.debug(spricanjeDto.toString());
+        log.info("Started inserting spricanje: "+spricanjeDto);
         Spricanje spricanje = mapper.toEntity(spricanjeDto);
         spricanje.setUser(createFejkUser());
         try{
-            spricanjaRepository.save(spricanje);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Špricanje uspješno uneseno!");
+            return mapper.toDto(spricanjaRepository.save(spricanje));
         }catch (Exception e){
             log.error("Greška kod unosa spricanja: {}", spricanje);
             throw new PostFailureException("Nije moguce unijeti špricanje!");
@@ -58,34 +59,33 @@ public class SpricanjaServiceImpl implements SpricanjaService {
 
     @Override
     @Transactional
+    public SpricanjeDto updateSpricanje(SpricanjeDto spricanjeDto) {
+
+        Spricanje oldSpricanje = getSpricanje(spricanjeDto.id());
+        oldSpricanje = mapper.updateFromDto(oldSpricanje,spricanjeDto);
+        try{
+            return mapper.toDto(spricanjaRepository.save(oldSpricanje));
+        }
+        catch (Exception e){
+            log.error("Nije moguce ažurirati spricanje: {}",oldSpricanje.toString());
+            throw new PostFailureException("Nije moguce ažurirati zeljenu bolest!");
+        }
+    }
+
+    @Override
+    @Transactional
     public ResponseEntity<Object> deleteSpricanjeById(Long id) {
         Spricanje spricanje = getSpricanje(id);
         try{
             spricanjaRepository.delete(spricanje);
-            return ResponseEntity.status(HttpStatus.OK).body("Spricnjae uspjesno obrisana");
+            return ResponseEntity.status(HttpStatus.OK).body("Spricnje uspjesno obrisano");
         }catch (Exception e){
             log.error("Nije moguce obrisati spricanje: {}",spricanje.toString());
             throw new DeleteFailureException(e.getMessage());
         }
     }
 
-    @Override
-    @Transactional
-    public ResponseEntity<Object> updateSpricanje(SpricanjeDto spricanjeDto) {
-
-        Spricanje oldSpricanje = getSpricanje(spricanjeDto.id());
-        oldSpricanje = mapper.updateFromDto(oldSpricanje,spricanjeDto);
-        try{
-            spricanjaRepository.save(oldSpricanje);
-            return ResponseEntity.status(HttpStatus.OK).body("Bolest je uspješno ažurirana");
-        }
-        catch (Exception e){
-            log.error("Nije moguce ažurirati spricanje: {}",oldSpricanje.toString());
-            //TODO PATCH exception
-            throw new PostFailureException("Nije moguce ažurirati zeljenu bolest!");
-        }
-    }
-
+    @Transactional(readOnly = true)
     private Spricanje getSpricanje(Long id){
         return spricanjaRepository.findById(id)
                 .orElseThrow(()->{
@@ -94,6 +94,7 @@ public class SpricanjaServiceImpl implements SpricanjaService {
                 });
     }
 
+    @Transactional(readOnly = true)
     private User createFejkUser(){
         return userRepository.getById(2L);
     }

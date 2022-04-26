@@ -17,6 +17,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
+import java.util.Optional;
+
 @Service
 public class FazaBolestServiceImpl implements FazaBolestService {
 
@@ -38,6 +41,7 @@ public class FazaBolestServiceImpl implements FazaBolestService {
     @Transactional
     public BolestFazaDto insertFazaBolest(Long bolestId, Long fazaId) {
 
+        log.debug("Bolest id: "+bolestId+", faza id: "+fazaId);
         log.info("Pokrenuto dodavanje bolesti: {} i faze: {}",bolestId,fazaId);
         Bolest bolest = dohvatiBolestPremaId(bolestId);
         FenofazaRazvoja faza = dohvatiFazuPremaId(fazaId);
@@ -64,29 +68,34 @@ public class FazaBolestServiceImpl implements FazaBolestService {
     @Transactional(readOnly = true)
     public Page<BolestFazaDto> getSredstvoBolestPageFiltered(Pageable pageable, Long bolestId, Long fazaId) {
 
-        if(bolestId != null && fazaId != null){
-            Bolest bolest = dohvatiBolestPremaId(bolestId);
-            FenofazaRazvoja faza = dohvatiFazuPremaId(fazaId);
-            return fazaBolestRepository.findByBolestAndFenofazaRazvoja(bolest,faza,pageable).map(bolestFazaMapper::toDto);
-        }else if(bolestId != null ){
-            Bolest bolest = dohvatiBolestPremaId(bolestId);
-            return fazaBolestRepository.findByBolest(bolest,pageable).map(bolestFazaMapper::toDto);
-        }else if( fazaId != null){
-            FenofazaRazvoja faza = dohvatiFazuPremaId(fazaId);
-            return fazaBolestRepository.findByFenofazaRazvoja(faza,pageable).map(bolestFazaMapper::toDto);
-        }else{
+
+        log.debug("bolest id: "+bolestId+" faza id:"+fazaId);
+        Optional<Bolest> bolest = bolestRepository.findById(bolestId);
+        Optional<FenofazaRazvoja> faza = fenofazaRepository.findById(fazaId);
+        if( !bolest.isEmpty() && faza.isEmpty())
+            return fazaBolestRepository.findByBolest(bolest.get(),pageable).map(bolestFazaMapper::toDto);
+        else if(bolest.isEmpty() && !faza.isEmpty())
+            return fazaBolestRepository.findByFenofazaRazvoja(faza.get(),pageable).map(bolestFazaMapper::toDto);
+        else if(!bolest.isEmpty() && !faza.isEmpty())
+            return fazaBolestRepository.findByBolestAndFenofazaRazvoja(bolest.get(),faza.get(),pageable).map(bolestFazaMapper::toDto);
+        else
             throw new IllegalArgumentException("Nije moguce pronaci zapise s danim filterom!");
-        }
     }
 
     @Transactional(readOnly = true)
     private FenofazaRazvoja dohvatiFazuPremaId(Long fazaId){
+
+        log.debug("id: "+fazaId);
+        log.info("Getting faza with id: "+fazaId);
         return  fenofazaRepository.findById(fazaId)
                 .orElseThrow(()-> new IllegalArgumentException("Nije moguce pronaci fazu s id: "+fazaId));
     }
 
     @Transactional(readOnly = true)
     private Bolest dohvatiBolestPremaId(Long bolestId){
+
+        log.debug("id: "+bolestId);
+        log.info("Getting bolest with id: "+bolestId);
         return bolestRepository.findById(bolestId)
                 .orElseThrow(()-> new IllegalArgumentException("Nije moguce pronaci bolest s id: "+bolestId));
     }

@@ -4,6 +4,7 @@ import com.hr.igz.VineApp.domain.Bolest;
 import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
 import com.hr.igz.VineApp.domain.dto.BolestDto;
 import com.hr.igz.VineApp.service.exception.DeleteFailureException;
+import com.hr.igz.VineApp.service.exception.NoSuchElementException;
 import com.hr.igz.VineApp.service.exception.ObjectAlreadyExists;
 import com.hr.igz.VineApp.service.exception.PostFailureException;
 import com.hr.igz.VineApp.service.mapper.BolestMapper;
@@ -40,6 +41,9 @@ public class BolestServiceImpl implements BolestService {
 	@Transactional
 	public BolestDto addBolest(BolestDto bolestDto) {
 
+		log.debug(bolestDto.toString());
+		log.info("Inserting bolest :"+ bolestDto.toString());
+
 		if (bolestRepository.existsByName(bolestDto.name())) {
 			log.error("Postoji bolest s imenom: {}", bolestDto.name());
 			throw new ObjectAlreadyExists("Bolest toga imena vec postoji!");
@@ -52,12 +56,17 @@ public class BolestServiceImpl implements BolestService {
 	@Override
 	@Transactional(readOnly = true)
 	public Page<BolestDto> getBolestiPaged(Pageable pageable) {
+
+		log.info("Getting all bolesti");
 		return bolestRepository.findAll(pageable).map(mapper::toDto);
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
 	public Page<BolestDto> findBolestByNamePaged(Pageable pageable, String name) {
+
+		log.debug(name);
+		log.info("Fetching bolest by name containing: "+name);
 		return bolestRepository.findByNameContaining(name,pageable).map(mapper::toDto);
 	}
 
@@ -65,9 +74,12 @@ public class BolestServiceImpl implements BolestService {
 	@Transactional(readOnly = true)
 	public Optional<BolestDto> getBolestForCard(Long id) {
 
-		Bolest bolest = bolestRepository.findById(id).get();
-		String base64 = Base64.getEncoder().encodeToString(bolest.getPicture());
-		BolestDto dto = mapper.toDto(bolest);
+		log.debug("Id: "+id.toString());
+		log.info("Fetching bolest for card with id: "+id);
+		Optional<Bolest> bolest = bolestRepository.findById(id);
+		if(bolest.isEmpty())
+			throw new NoSuchElementException("Element with id : "+id +"doest not exists");
+		BolestDto dto = mapper.toDto(bolest.get());
 		return Optional.of(dto);
 	}
 
@@ -83,26 +95,29 @@ public class BolestServiceImpl implements BolestService {
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<BolestDto> findBolestByName(String name) {
+
+		log.debug(name);
+		log.info("Fetching bolest with name: "+name);
 		return bolestRepository.findByName(name).map(mapper::toDto);
 	}
 
 	@Override
 	@Transactional
-	public ResponseEntity<Object> updateBolest(BolestDto bolestDto) {
+	public BolestDto updateBolest(BolestDto bolestDto) {
+
+		log.debug(bolestDto.toString());
+		if (bolestRepository.existsByName(bolestDto.name())) {
+			log.error("Postoji bolest s imenom: {}", bolestDto.name());
+			throw new ObjectAlreadyExists("Bolest toga imena vec postoji!");
+		}
 		Bolest oldBolest = bolestRepository.findById(bolestDto.id())
 				.orElseThrow(()->{
 					log.error("Ne postoji bolest za azuriranje s ID: {}",bolestDto.id());
 					throw new PostFailureException("Ne postoji bolest za azuriranje!");
 				});
-		if(bolestDto.base64() != ""){
-			byte[] decodedBytes = Base64.getDecoder().decode(bolestDto.base64());
-			oldBolest.setPicture(decodedBytes);
-			oldBolest.setPicture_name(bolestDto.picture_name());
-		}
 		oldBolest = mapper.UpdateBolestFromDto(oldBolest, bolestDto);
 		try {
-			bolestRepository.save(oldBolest);
-			return ResponseEntity.status(HttpStatus.OK).body("Bolest je uspješno ažurirana");
+			return mapper.toDto(bolestRepository.save(oldBolest));
 		}catch (Exception e) {
 			log.error("Nije moguce ažurirati bolest: {}",oldBolest.toString());
 			throw new PostFailureException("Nije moguce ažurirati zeljenu bolest!");
@@ -111,8 +126,9 @@ public class BolestServiceImpl implements BolestService {
 
 	@Override
 	@Transactional
-	public ResponseEntity<Object> deleteBolestByName(Long id) {
+	public ResponseEntity<Object> deleteBolestById(Long id) {
 
+		log.debug("deleting bolest with ID: "+id);
 		Bolest bolest = bolestRepository.findById(id)
 				.orElseThrow(()->{
 					log.error("Ne postoji bolest s id: {}",id);

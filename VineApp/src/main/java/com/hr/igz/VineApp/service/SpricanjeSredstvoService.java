@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface SpricanjeSredstvoService {
 
-    ResponseEntity<Object> addSredstvoHasSpricanje(SpricanjeSredstvoDto spricanjeSredstvoDto);
+    SpricanjeSredstvoDto addSredstvoHasSpricanje(SpricanjeSredstvoDto spricanjeSredstvoDto);
 
     Page<SpricanjeSredstvoDto> getSredstvaPaged(Pageable pageable, Long id);
 
@@ -18,5 +18,5 @@ public interface SpricanjeSredstvoService {
 
     ResponseEntity<Object> deleteById(Long id);
 
-    ResponseEntity<Object> updateSredstvoById(SpricanjeSredstvoDto spricanjeSredstvoDto);
+    SpricanjeSredstvoDto updateSredstvoById(SpricanjeSredstvoDto spricanjeSredstvoDto);
 }

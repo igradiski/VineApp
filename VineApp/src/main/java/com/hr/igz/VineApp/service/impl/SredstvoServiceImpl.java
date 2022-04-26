@@ -7,6 +7,7 @@ import com.hr.igz.VineApp.repository.SredstvoRepository;
 import com.hr.igz.VineApp.repository.TipSredstvaRepository;
 import com.hr.igz.VineApp.service.SredstvoService;
 import com.hr.igz.VineApp.service.exception.DeleteFailureException;
+import com.hr.igz.VineApp.service.exception.NoSuchElementException;
 import com.hr.igz.VineApp.service.exception.ObjectAlreadyExists;
 import com.hr.igz.VineApp.service.exception.PostFailureException;
 import com.hr.igz.VineApp.service.mapper.SredstvoMapper;
@@ -42,48 +43,67 @@ public class SredstvoServiceImpl implements SredstvoService {
 
 	@Override
 	@Transactional
-	public ResponseEntity<Object> addSredstvo(SredstvoDto sredstvo) {
-		
+	public SredstvoDto addSredstvo(SredstvoDto sredstvo) {
+
+		log.debug(sredstvo.toString());
+		log.info("Adding new sredstvo: "+sredstvo.toString());
 		if(sredstvoRepository.existsByName(sredstvo.name())){
-			log.info("Sredstvo s imenom {} postoji u bazi",sredstvo.name());
+			log.error("Sredstvo s imenom {} postoji u bazi",sredstvo.name());
 			throw new ObjectAlreadyExists("Zastitno sredstvo vec postoji u bazi!");
 		}
+		var tipSredstva = tipSredstvaRepository.findById(sredstvo.tipSredstvaId()).orElseThrow( () -> {
+			log.error("Tip sredstva s id: {} postoji u bazi",sredstvo.tipSredstvaId());
+			throw new PostFailureException("Tip sredstva s id: "+ sredstvo.tipSredstvaId()+" ne postoji !");
+		});
 		ZastitnoSredstvo zastitnoSredstvo = mapper.toEntity(sredstvo);
+		zastitnoSredstvo.setTipZastitnogSredstva(tipSredstva);
 		zastitnoSredstvo.setApproved(0);
 		try {
-			sredstvoRepository.save(zastitnoSredstvo);
+			return mapper.toDto(sredstvoRepository.save(zastitnoSredstvo));
 		}catch (Exception e) {
 			log.info("Greska kod unosa zastitnog sredstva {}",sredstvo);
 			throw new PostFailureException(e.getMessage());
 		}
-		return ResponseEntity.status(HttpStatus.CREATED).body("Sredstvo uspješno dodano!");
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Page<SredstvoDto> getAllSredstvaPagable(Pageable pageable) {
+
+		log.debug(pageable.toString());
+		log.info("Fetching all sredstava with paging");
 		return sredstvoRepository.findAll(pageable).map(mapper::toDto);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Optional<SredstvoDto> findSredstvoByName(String name) {
-		return sredstvoRepository.findByName(name).map(mapper::toDto);
+	public SredstvoDto findSredstvoByName(String name) {
+
+		log.debug(name);
+		log.info("Finding sredstvo with name : "+name);
+		ZastitnoSredstvo sredstvo = sredstvoRepository.findByName(name).orElseThrow(() -> {
+			log.error("Sredstvo ne postoji!");
+			throw new NoSuchElementException("Sredstvo ne postoji!");
+		});
+		return mapper.toDto(sredstvo);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Optional<SredstvoDto> getSredstvoForCard(Long id) {
+	public SredstvoDto getSredstvoForCard(Long id) {
 
+		log.debug("ID: "+id);
+		log.info("Fetching sredstvo with id: "+id);
 		ZastitnoSredstvo sredstvo = getSredstvo(id);
-		String base64 = Base64.getEncoder().encodeToString(sredstvo.getPicture());
-		SredstvoDto sredstvoDto = mapper.toDto(sredstvo);
-		return Optional.of(sredstvoDto);
+		return mapper.toDto(sredstvo);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<Object> getUtrosak(Integer voda, Long id) {
+
+		log.debug("Voda: "+voda+" Sredstvo: "+id);
+		log.info("Voda: "+voda+" Sredstvo: "+id);
 
 		ZastitnoSredstvo sredstvo = getSredstvo(id);
 		if(voda != null  && voda > 0){
@@ -98,6 +118,9 @@ public class SredstvoServiceImpl implements SredstvoService {
 	@Override
 	@Transactional(readOnly = true)
 	public Page<SredstvoDto> findSredstvoByNamePaged(Pageable pageable, String name) {
+
+		log.debug("name "+name);
+		log.info("Fetching sredstvo with name containing: "+name);
 		return sredstvoRepository.findByNameContaining(name,pageable).map(mapper::toDto);
 	}
 
@@ -105,6 +128,7 @@ public class SredstvoServiceImpl implements SredstvoService {
 	@Transactional(readOnly = true)
 	public ResponseEntity<Set<AntDCascaderDto>> getSredstvaForCascader() {
 
+		log.info("Fetching sredstva for cascader");
 		Set<AntDCascaderDto> set = sredstvoRepository.findAll().stream()
 				.map(mapper::SredstvoToCascaderDto).collect(Collectors.toSet());
 		return new ResponseEntity<>(set,HttpStatus.OK);
@@ -112,23 +136,31 @@ public class SredstvoServiceImpl implements SredstvoService {
 
 	@Override
 	@Transactional
-	public ResponseEntity<Object> updateSredstvo(SredstvoDto sredstvoDto) {
+	public SredstvoDto updateSredstvo(SredstvoDto sredstvoDto) {
 
+		log.debug(sredstvoDto.toString());
+		log.info("updating sredstvo : "+sredstvoDto.toString());
 		ZastitnoSredstvo oldSredstvo = getSredstvo(sredstvoDto.id());
-		oldSredstvo = mapper.UpdateSredstvoFromDto(oldSredstvo,sredstvoDto,tipSredstvaRepository);
+
+		var tipSredstva = tipSredstvaRepository.findById(sredstvoDto.tipSredstvaId()).orElseThrow( () -> {
+			log.error("Tip sredstva s id: {} postoji u bazi",sredstvoDto.tipSredstvaId());
+			throw new PostFailureException("Tip sredstva s id: "+ sredstvoDto.tipSredstvaId()+" ne postoji !");
+		});
+		oldSredstvo = mapper.UpdateSredstvoFromDto(oldSredstvo,sredstvoDto);
+		oldSredstvo.setTipZastitnogSredstva(tipSredstva);
 		try{
-			sredstvoRepository.save(oldSredstvo);
+			return mapper.toDto(sredstvoRepository.save(oldSredstvo));
 		}catch (Exception e){
 			log.error("Azuriranje sredstva {} nije uspjelo!",sredstvoDto.toString());
 			throw new PostFailureException("Nije moguce ažurirati zeljeno sredstvo!");
 		}
-		return ResponseEntity.status(HttpStatus.OK).body("Sredstvo je uspješno ažurirano");
 	}
 
 	@Override
 	@Transactional
 	public ResponseEntity<Object> deleteSredstvoById(Long id) {
 
+		log.debug("Deleting id: "+id);
 		ZastitnoSredstvo sredstvo = getSredstvo(id);
 		try{
 			sredstvoRepository.delete(sredstvo);
@@ -139,6 +171,7 @@ public class SredstvoServiceImpl implements SredstvoService {
 		}
 	}
 
+	 @Transactional(readOnly = true)
 	private ZastitnoSredstvo getSredstvo(Long id){
 		return sredstvoRepository.findById(id)
 				.orElseThrow(()->{

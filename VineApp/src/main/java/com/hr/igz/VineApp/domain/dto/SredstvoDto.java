@@ -4,12 +4,42 @@ import javax.validation.constraints.NotBlank;
 import java.time.Instant;
 
 
-public record SredstvoDto(@NotBlank(message = "Name is mandatory!") String name,
-                          @NotBlank(message = "Description is mandatory!") String description, String composition,
-                          String group, String formulation, String typeOfAction, String usage, Float concentration,
-                          Float dosageOn100, Integer waiting, Long typeOfMedium, Instant date, String nameOfTipSredstva,
-                          Long tipSredstvaId, String base64, String picture_name, Long id) {
-    public SredstvoDto(@NotBlank(message = "Name is mandatory!") String name, @NotBlank(message = "Description is mandatory!") String description, String composition, String group, String formulation, String typeOfAction, String usage, Float concentration, Float dosageOn100, Integer waiting, Long typeOfMedium, Instant date, String nameOfTipSredstva, Long tipSredstvaId, String base64, String picture_name,Long id) {
+public record SredstvoDto(
+        @NotBlank(message = "Name is mandatory!") String name,
+        @NotBlank(message = "Description is mandatory!") String description,
+        String composition,
+        String group,
+        String formulation,
+        String typeOfAction,
+        String usage,
+        Float concentration,
+        Float dosageOn100,
+        Integer waiting,
+        Long typeOfMedium,
+        Instant date,
+        String nameOfTipSredstva,
+        Long tipSredstvaId,
+        String base64,
+        String picture_name,
+        Long id) {
+    public SredstvoDto(
+            @NotBlank(message = "Name is mandatory!") String name,
+            @NotBlank(message = "Description is mandatory!") String description,
+            String composition,
+            String group,
+            String formulation,
+            String typeOfAction,
+            String usage,
+            Float concentration,
+            Float dosageOn100,
+            Integer waiting,
+            Long typeOfMedium,
+            Instant date,
+            String nameOfTipSredstva,
+            Long tipSredstvaId,
+            String base64,
+            String picture_name,
+            Long id) {
         this.name = name;
         this.description = description;
         this.composition = composition;

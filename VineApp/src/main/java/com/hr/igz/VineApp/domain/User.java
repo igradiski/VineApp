@@ -14,7 +14,7 @@ import java.util.Set;
  * 
  */
 @Entity
-@Table(name="USER")
+@Table(name="USER_ACC")
 @EntityListeners(AuditingEntityListener.class)
 public class User implements Serializable {
 	

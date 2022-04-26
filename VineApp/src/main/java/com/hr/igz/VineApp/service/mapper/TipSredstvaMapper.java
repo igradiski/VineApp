@@ -18,7 +18,7 @@ public interface TipSredstvaMapper {
 	@Mapping(source="id",target="key")
 	@Mapping(source="id",target="value")
 	@Mapping(source="name",target="label")
-	AntDCascaderDto AntTipSredstvaToAntDCascaderDto(TipZastitnogSredstva sredstvo);
+	AntDCascaderDto ToAntDCascaderDto(TipZastitnogSredstva sredstvo);
 
 	@Mapping(target="oldTip.id",ignore = true)
 	@Mapping(target="oldTip.date",ignore = true)

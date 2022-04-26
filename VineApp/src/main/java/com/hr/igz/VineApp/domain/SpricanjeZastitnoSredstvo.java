@@ -1,9 +1,12 @@
 package com.hr.igz.VineApp.domain;
 
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.Instant;
 
 @Entity
 @Table(name="spricanje_has_zastitno_sredstvo")
@@ -33,6 +36,29 @@ public class SpricanjeZastitnoSredstvo {
 
     @Column(name = "user_dosage")
     private Double user_dosage;
+
+    @CreatedDate
+    private Instant date;
+
+    @LastModifiedDate
+    @Column(name = "updated_date")
+    private Instant updatedDate;
+
+    public Instant getDate() {
+        return date;
+    }
+
+    public void setDate(Instant date) {
+        this.date = date;
+    }
+
+    public Instant getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Instant updatedDate) {
+        this.updatedDate = updatedDate;
+    }
 
     public Long getId() {
         return id;

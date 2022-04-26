@@ -10,8 +10,11 @@ import com.hr.igz.VineApp.repository.SpricanjeSredstvoRepository;
 import com.hr.igz.VineApp.repository.SredstvoRepository;
 import com.hr.igz.VineApp.service.SpricanjeSredstvoService;
 import com.hr.igz.VineApp.service.exception.DeleteFailureException;
+import com.hr.igz.VineApp.service.exception.NoSuchElementException;
+import com.hr.igz.VineApp.service.exception.ObjectAlreadyExists;
 import com.hr.igz.VineApp.service.exception.PostFailureException;
 import com.hr.igz.VineApp.service.mapper.SpricanjeSredstvoMapper;
+import javassist.tools.rmi.ObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -21,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -42,13 +46,14 @@ public class SpricanjeSredstvoServiceImpl implements SpricanjeSredstvoService {
 
     @Override
     @Transactional
-    public ResponseEntity<Object> addSredstvoHasSpricanje(SpricanjeSredstvoDto spricanjeSredstvoDto) {
+    public SpricanjeSredstvoDto addSredstvoHasSpricanje(SpricanjeSredstvoDto spricanjeSredstvoDto) {
 
+        log.debug(spricanjeSredstvoDto.toString());
         Spricanje spricanje = getSpricanje(spricanjeSredstvoDto.spricanjeId());
         ZastitnoSredstvo sredstvo =getSredstvo(spricanjeSredstvoDto.sredstvo());
         if(spricanjeSredstvoRepository.findAllBySpricanjeAndZastitnoSredstvo(spricanje,sredstvo) != null){
-            log.info("Vec postoji!");
-            throw new PostFailureException("Greška kod unosa zapisa");
+            log.error("Zapis vec postoji");
+            throw new ObjectAlreadyExists("Zapis vec postoji!");
         }
         SpricanjeZastitnoSredstvo shzs = new SpricanjeZastitnoSredstvo();
         shzs.setSpricanje(spricanje);
@@ -56,8 +61,7 @@ public class SpricanjeSredstvoServiceImpl implements SpricanjeSredstvoService {
         shzs.setDosage(spricanjeSredstvoDto.utrosak().doubleValue());
         shzs.setRemark(spricanjeSredstvoDto.napomena());
         try{
-            spricanjeSredstvoRepository.save(shzs);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Spricanje i sredstvo uspojesno uneseni!");
+            return mapper.toDto(spricanjeSredstvoRepository.save(shzs));
         }catch (Exception e){
             log.error("Greska kod unosa sredstva u spricanje!");
             throw new PostFailureException("Greška kod unosa zapisa");
@@ -68,6 +72,7 @@ public class SpricanjeSredstvoServiceImpl implements SpricanjeSredstvoService {
     @Transactional(readOnly = true)
     public Page<SpricanjeSredstvoDto> getSredstvaPaged(Pageable pageable,Long id) {
 
+        log.debug("Id: "+id);
         Spricanje spricanje = getSpricanje(id);
         Page <SpricanjeZastitnoSredstvo> list = spricanjeSredstvoRepository.findBySpricanje(spricanje,pageable);
         return spricanjeSredstvoRepository.findBySpricanje(spricanje,pageable).map(mapper::toDto);
@@ -77,36 +82,26 @@ public class SpricanjeSredstvoServiceImpl implements SpricanjeSredstvoService {
     @Transactional(readOnly = true)
     public Optional<SpricanjeOmjerDto> getOmjeri(Long sredstvoId, Long spricanjeId) {
 
-        //SpricanjeOmjerDto dto = new SpricanjeOmjerDto();
+        log.debug("Sredstvo :"+sredstvoId+" spricanje: "+spricanjeId);
+
         Spricanje spricanje = getSpricanje(spricanjeId);
         ZastitnoSredstvo sredstvo =getSredstvo(sredstvoId);
         SpricanjeZastitnoSredstvo shz = spricanjeSredstvoRepository.findAllBySpricanjeAndZastitnoSredstvo(spricanje,sredstvo);
-        //dto.setMyDose(shz.getDosage().doubleValue());
-        //dto.setMyDoseOn100((shz.getDosage().doubleValue() / Double.valueOf(spricanje.getWater()))*100);
-        //dto.setDoseOn100(sredstvo.getDosageOn100().doubleValue());
-        //dto.setDose((sredstvo.getDosageOn100().doubleValue() / 100)* Double.valueOf(spricanje.getWater()));
-        //dto.setPercentage(getPercentage(dto.getMyDose(),dto.getDose()));
-        //SpricanjeOmjerDto dto = new SpricanjeOmjerDto();
-        //return Optional.of(dto);
-        return null;
+
+        Double myDose = shz.getDosage().doubleValue();
+        Double myDoseOn100 = (shz.getDosage().doubleValue() / Double.valueOf(spricanje.getWater()))*100;
+        Double doseOn100 = sredstvo.getDosageOn100().doubleValue();
+        Double dose = (sredstvo.getDosageOn100().doubleValue() / 100)* Double.valueOf(spricanje.getWater());
+        Double percentage =getPercentage(myDose,dose);
+        SpricanjeOmjerDto spricanjeOmjerDto = new SpricanjeOmjerDto(myDose,myDoseOn100,dose,doseOn100,percentage);
+        return Optional.of(spricanjeOmjerDto);
     }
 
     @Override
     @Transactional
-    public ResponseEntity<Object> deleteById(Long id) {
+    public SpricanjeSredstvoDto updateSredstvoById(SpricanjeSredstvoDto spricanjeSredstvoDto) {
 
-        try{
-            spricanjeSredstvoRepository.deleteById(id);
-            return ResponseEntity.status(HttpStatus.OK).body("Brisanje sredstva u spricanju uspjesno obavljeno!");
-        }catch (Exception e){
-            throw new DeleteFailureException(e.getMessage());
-        }
-    }
-
-    @Override
-    @Transactional
-    public ResponseEntity<Object> updateSredstvoById(SpricanjeSredstvoDto spricanjeSredstvoDto) {
-
+        log.debug(spricanjeSredstvoDto.toString());
         SpricanjeZastitnoSredstvo shzs = spricanjeSredstvoRepository.findById(spricanjeSredstvoDto.id())
                 .orElseThrow(() ->{
                     log.error("Ne postoji zapis s id: {}", spricanjeSredstvoDto.id());
@@ -115,11 +110,23 @@ public class SpricanjeSredstvoServiceImpl implements SpricanjeSredstvoService {
         shzs.setRemark(spricanjeSredstvoDto.napomena());
         shzs.setDosage(spricanjeSredstvoDto.utrosak().doubleValue());
         try{
-            spricanjeSredstvoRepository.save(shzs);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Spricanje i sredstvo uspojesno azurirani!");
+            return mapper.toDto(spricanjeSredstvoRepository.save(shzs));
         }catch (Exception e){
             log.error("Greska kod azuriranja sredstva u spricanje!");
             throw new PostFailureException("Greška kod azuriranja zapisa");
+        }
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<Object> deleteById(Long id) {
+
+        log.debug("ID: "+id);
+        try{
+            spricanjeSredstvoRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Brisanje sredstva u spricanju uspjesno obavljeno!");
+        }catch (Exception e){
+            throw new DeleteFailureException(e.getMessage());
         }
     }
 
@@ -134,7 +141,7 @@ public class SpricanjeSredstvoServiceImpl implements SpricanjeSredstvoService {
         return spricanjaRepository.findById(id)
                 .orElseThrow(() ->{
                     log.error("Ne postoji spricanje s id: {}", id);
-                    throw new PostFailureException("Nije moguce dohvatiti!");
+                    throw new NoSuchElementException("Nije moguce dohvatiti spricanje!");
                 });
     }
 
@@ -143,7 +150,7 @@ public class SpricanjeSredstvoServiceImpl implements SpricanjeSredstvoService {
         return sredstvoRepository.findById(id)
                 .orElseThrow(()->{
                     log.error("Ne postoji sredstvo s ID: {}",id);
-                    throw new PostFailureException("Ne postoji sredstvo za unos!");
+                    throw new NoSuchElementException("Ne postoji sredstvo!!");
                 });
     }
 

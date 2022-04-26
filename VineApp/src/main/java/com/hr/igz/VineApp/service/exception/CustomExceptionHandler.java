@@ -33,7 +33,14 @@ public class CustomExceptionHandler extends  ResponseEntityExceptionHandler {
 		var error = new JsonResponseError(HttpStatus.CONFLICT,ex.getLocalizedMessage());
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
-	
+
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public final ResponseEntity<JsonResponseError> handleDeleteFailureException(NoSuchElementException ex, WebRequest request) {
+        var error = new JsonResponseError(HttpStatus.NOT_FOUND,ex.getLocalizedMessage());
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
 	@ExceptionHandler(DeleteFailureException.class)
     public final ResponseEntity<JsonResponseError> handleDeleteFailureException(DeleteFailureException ex, WebRequest request) {
 		

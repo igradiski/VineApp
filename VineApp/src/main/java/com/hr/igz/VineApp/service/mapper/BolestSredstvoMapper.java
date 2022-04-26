@@ -12,6 +12,7 @@ public interface BolestSredstvoMapper {
 
     @Mapping(source="bolest.name",target="bolestName")
     @Mapping(source="zastitnoSredstvo.name",target="sredstvoName")
+    @Mapping(source="updatedDate",target = "lastUpdate")
     BolestSredstvoDto toDto(SredstvoBolest shb);
 
     SredstvoBolest toEntity(BolestSredstvoDto bolestSredstvoDto);

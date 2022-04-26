@@ -15,9 +15,9 @@ public interface BolestService {
 
 	Page<BolestDto> getBolestiPaged(Pageable pageable);
 
-	ResponseEntity<Object> deleteBolestByName(Long id);
+	ResponseEntity<Object> deleteBolestById(Long id);
 
-	ResponseEntity<Object> updateBolest(BolestDto bolestDto);
+	BolestDto updateBolest(BolestDto bolestDto);
 
 	Page<BolestDto> findBolestByNamePaged(Pageable pageable, String name);
 

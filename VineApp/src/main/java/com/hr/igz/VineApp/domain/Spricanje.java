@@ -1,5 +1,6 @@
 package com.hr.igz.VineApp.domain;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -22,6 +23,7 @@ public class Spricanje {
     @SequenceGenerator(name="SEQ_SPRICANJE",allocationSize = 1)
     private Long id;
 
+    @CreatedDate
     private Instant date;
 
     @LastModifiedDate

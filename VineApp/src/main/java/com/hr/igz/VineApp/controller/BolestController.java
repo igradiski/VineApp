@@ -28,15 +28,25 @@ public class BolestController {
 		this.bolestService = bolestService;
 	}
 
-	@GetMapping(value = "/bolest-by-name")
+	@PostMapping
+	@Operation(summary= "Operacija za unos nove bolesti")
+	public ResponseEntity<BolestDto> dodajBolest(@Validated @RequestBody BolestDto bolest){
+		return ResponseEntity.status(HttpStatus.CREATED).body(bolestService.addBolest(bolest));
+	}
+
+	@GetMapping
+	@Operation(summary= "Operacija za dohvacanje bolesti sa stranicenjem")
+	public Page<BolestDto> dohvatiBolestiPaged(Pageable pageable){
+		return bolestService.getBolestiPaged(pageable);
+	}
+
+	@GetMapping(value = "/by-name/{name}")
 	@Operation(summary= "Operacija za dohvacanje bolesti prema imenu sa stranicenjem")
-	public Page<BolestDto> findBolestiByNamePaged(
-			@RequestParam String name,
-			Pageable pageable){
+	public Page<BolestDto> findBolestiByNamePaged(@PathVariable String name, Pageable pageable){
 		return bolestService.findBolestByNamePaged(pageable,name);
 	}
 
-	@GetMapping(value = "bolest-name/{name}")
+	@GetMapping(value = "/bolest-name/{name}")
 	@Operation(summary= "Operacija za dohvacanje bolesti prema imenu")
 	public Optional<BolestDto> findBolestByName(@PathVariable String name){
 		return bolestService.findBolestByName(name);
@@ -48,32 +58,21 @@ public class BolestController {
 		return bolestService.getBolestForCard(id);
 	}
 
-	@GetMapping(value="/sve-bolesti")
-	@Operation(summary= "Operacija za dohvacanje bolesti sa stranicenjem")
-	public Page<BolestDto> dohvatiBolestiPaged(Pageable pageable){
-		return bolestService.getBolestiPaged(pageable);
-	}
-	@GetMapping(value="/sve-bolesti-cascader")
+	@GetMapping(value="/cascader")
 	@Operation(summary= "Operacija za dohvacanje bolesti za cascader u antd")
 	public ResponseEntity<Set<AntDCascaderDto>> dohvatiBolestiZaCascader(){
 		return bolestService.getBolestiZaCascader();
 	}
-	
-	@PostMapping
-	@Operation(summary= "Operacija za unos nove bolesti")
-	public ResponseEntity<BolestDto> dodajBolest(@Validated @RequestBody BolestDto bolest){
-		return ResponseEntity.status(HttpStatus.CREATED).body(bolestService.addBolest(bolest));
-	}
-	
+
 	@PutMapping
 	@Operation(summary= "Operacija za azuriranje bolesti")
 	public ResponseEntity<Object> updateBolest(@Validated @RequestBody BolestDto bolestDto){
-		return bolestService.updateBolest(bolestDto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(bolestService.updateBolest(bolestDto));
 	}
 	
 	@DeleteMapping(value = "/{id}")
 	@Operation(summary= "Operacija za brisanje bolesti")
 	public ResponseEntity<Object> obrisiBolest(@PathVariable("id") Long id){
-		return bolestService.deleteBolestByName(id);
+		return bolestService.deleteBolestById(id);
 	}
 }

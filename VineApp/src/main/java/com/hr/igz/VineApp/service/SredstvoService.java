@@ -11,21 +11,21 @@ import java.util.Set;
 
 public interface SredstvoService {
 
-	ResponseEntity<Object> addSredstvo(SredstvoDto sredstvo);
+	SredstvoDto addSredstvo(SredstvoDto sredstvo);
 
 	Page<SredstvoDto> getAllSredstvaPagable(Pageable pageable);
 
 	Page<SredstvoDto> findSredstvoByNamePaged(Pageable pageable, String name);
 
-	ResponseEntity<Object> updateSredstvo(SredstvoDto sredstvoDto);
+	SredstvoDto updateSredstvo(SredstvoDto sredstvoDto);
 
 	ResponseEntity<Object> deleteSredstvoById(Long id);
 
     ResponseEntity<Set<AntDCascaderDto>> getSredstvaForCascader();
 
-    Optional<SredstvoDto> findSredstvoByName(String name);
+    SredstvoDto findSredstvoByName(String name);
 
-    Optional<SredstvoDto> getSredstvoForCard(Long id);
+	SredstvoDto getSredstvoForCard(Long id);
 
     Optional<Object> getUtrosak(Integer voda, Long id);
 }

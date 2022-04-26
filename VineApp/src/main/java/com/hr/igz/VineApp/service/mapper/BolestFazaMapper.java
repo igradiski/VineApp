@@ -12,9 +12,10 @@ public interface BolestFazaMapper{
 
     @Mapping(source ="bolest.name" ,target = "bolestName")
     @Mapping(source ="fenofazaRazvoja.name",target = "fazaName")
+    @Mapping(source ="fenofazaRazvoja.updatedDate",target = "lastUpdate")
     BolestFazaDto toDto(BolestFaza bhf);
 
-    @BeanMapping(ignoreByDefault = true)
+    //@BeanMapping(ignoreByDefault = true)
     Bolest toEntity(BolestFazaDto fazaDto);
 
 }

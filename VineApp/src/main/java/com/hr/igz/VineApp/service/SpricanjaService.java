@@ -6,12 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 public interface SpricanjaService {
-    ResponseEntity<Object> insertSpricanje(SpricanjeDto spricanjeDto);
+    SpricanjeDto insertSpricanje(SpricanjeDto spricanjeDto);
 
     Page<SpricanjeDto> getSpricanjePaged(Pageable pageable);
 
     ResponseEntity<Object> deleteSpricanjeById(Long id);
 
-    ResponseEntity<Object> updateSpricanje(SpricanjeDto spricanjeDto);
+    SpricanjeDto updateSpricanje(SpricanjeDto spricanjeDto);
 
 }

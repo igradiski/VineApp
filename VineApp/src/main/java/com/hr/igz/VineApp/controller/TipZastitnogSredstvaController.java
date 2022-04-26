@@ -1,5 +1,6 @@
 package com.hr.igz.VineApp.controller;
 
+import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
 import com.hr.igz.VineApp.domain.dto.TipSredstvaDto;
 import com.hr.igz.VineApp.service.TipSredstvaService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -7,10 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -24,36 +27,36 @@ public class TipZastitnogSredstvaController {
 		this.tipSredstvaService = tipSredstvaService;
 	}
 
-	@GetMapping("/svi-tipovi-paged")
+	@PostMapping
+	@Operation(summary= "Operacija za unos tipa sredstva")
+	public ResponseEntity<Object> dodajTipSredstva(@Validated @RequestBody TipSredstvaDto tipSredstva){
+		return ResponseEntity.status(HttpStatus.CREATED).body(tipSredstvaService.dodajTipSredstva(tipSredstva));
+	}
+
+	@GetMapping("/paged")
 	@Operation(summary= "Operacija dohvacanje svih tipova sredstava sa stranicenjem")
 	public Page<TipSredstvaDto> getAllTipoviSredstavaPage(Pageable pageable){
 		return tipSredstvaService.findAllPagable(pageable);
 	}
 	
-	@GetMapping("/svi-tipovi")
+	@GetMapping("/all")
 	@Operation(summary= "Operacija za dohvacanje svih tipova sredstava")
-	public ResponseEntity<Set<Object>> getAllTipoviSredstava (){
-		return tipSredstvaService.findAll();
+	public ResponseEntity<List<AntDCascaderDto>> getAllTipoviSredstava (){
+		return ResponseEntity.status(HttpStatus.OK).body(tipSredstvaService.findAll());
 	}
 	
-	@GetMapping(value = "/tip-by-name/{name}")
+	@GetMapping(value = "/by-name/{name}")
 	@Operation(summary= "Operacija za dohvacanje svih tipova sredstava prema imenu")
 	public Page<TipSredstvaDto> findTipSredstvaByNamePaged(Pageable pageable,
 			@PathVariable String name){
 		return tipSredstvaService.findTipSredstvaByName(pageable,name);
 	}
-	
-	@PostMapping
-	@Operation(summary= "Operacija za unos tipa sredstva")
-	public ResponseEntity<Object> dodajTipSredstva(@Validated @RequestBody TipSredstvaDto tipSredstva){
-		return tipSredstvaService.dodajTipSredstva(tipSredstva);
-	}
-	
-	@PutMapping(value="azurirani-tip")
+
+	@PutMapping(value="/azurirani-tip")
 	@Operation(summary= "Operacija za azuriranje tipa sredstva")
 	public ResponseEntity<Object> updateTipSredstva(
 			@Validated @RequestBody TipSredstvaDto tipSredstva){
-		return tipSredstvaService.updateTipSredstva(tipSredstva);
+		return ResponseEntity.status(HttpStatus.OK).body(tipSredstvaService.updateTipSredstva(tipSredstva));
 	}
 
 	@DeleteMapping(value = "/{id}")

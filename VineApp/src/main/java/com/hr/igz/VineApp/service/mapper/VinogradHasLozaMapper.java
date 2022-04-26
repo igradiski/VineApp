@@ -12,10 +12,17 @@ import java.util.Base64;
 public interface VinogradHasLozaMapper {
 
     default byte[] toByte(String base64){
-        return Base64.getDecoder().decode(base64);
+        if(base64 != null)
+            return Base64.getDecoder().decode(base64);
+        else {
+            return new byte[1];
+        }
     }
     default String toBase64(byte [] data){
-        return Base64.getEncoder().encodeToString(data);
+        if(data != null)
+            return Base64.getEncoder().encodeToString(data);
+        else
+            return "";
     }
 
     VinogradVinovaloza toEntity(VinogradHasLozaDto vinogradHasLozaDto);
