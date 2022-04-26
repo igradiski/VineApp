@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @Service
 public class SpricanjaServiceImpl implements SpricanjaService {
 
@@ -61,6 +63,8 @@ public class SpricanjaServiceImpl implements SpricanjaService {
     @Transactional
     public SpricanjeDto updateSpricanje(SpricanjeDto spricanjeDto) {
 
+        log.debug(spricanjeDto.toString());
+        Objects.requireNonNull(spricanjeDto.id(),"Id cant be null!");
         Spricanje oldSpricanje = getSpricanje(spricanjeDto.id());
         oldSpricanje = mapper.updateFromDto(oldSpricanje,spricanjeDto);
         try{

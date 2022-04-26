@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.html.Option;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -102,6 +103,7 @@ public class SpricanjeSredstvoServiceImpl implements SpricanjeSredstvoService {
     public SpricanjeSredstvoDto updateSredstvoById(SpricanjeSredstvoDto spricanjeSredstvoDto) {
 
         log.debug(spricanjeSredstvoDto.toString());
+        Objects.requireNonNull(spricanjeSredstvoDto.id(),"Id cant be null!");
         SpricanjeZastitnoSredstvo shzs = spricanjeSredstvoRepository.findById(spricanjeSredstvoDto.id())
                 .orElseThrow(() ->{
                     log.error("Ne postoji zapis s id: {}", spricanjeSredstvoDto.id());

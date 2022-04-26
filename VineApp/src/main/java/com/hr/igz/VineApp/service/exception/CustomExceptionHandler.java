@@ -48,4 +48,11 @@ public class CustomExceptionHandler extends  ResponseEntityExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    public final ResponseEntity<JsonResponseError> handleNullPointer(NullPointerException ex, WebRequest request) {
+
+        var error = new JsonResponseError(HttpStatus.INTERNAL_SERVER_ERROR,ex.getLocalizedMessage());
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

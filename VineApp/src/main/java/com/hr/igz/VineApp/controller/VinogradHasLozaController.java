@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,8 @@ public class VinogradHasLozaController {
     @PostMapping
     @Operation(summary = "Dodavanje nove veze loze i vinograda")
     public ResponseEntity<Object> dodajVinogradHasLoza(@Validated @RequestBody VinogradHasLozaDto vinogradHasLozaDto) {
-        return vinogradHasLozaService.dodajVinogradHasLoza(vinogradHasLozaDto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(vinogradHasLozaService.dodajVinogradHasLoza(vinogradHasLozaDto));
     }
 
     @GetMapping(value = "/{id}")
@@ -34,17 +36,17 @@ public class VinogradHasLozaController {
         return vinogradHasLozaService.dohvatiVinogradHasLoza(pageable, id);
     }
 
+    @PutMapping
+    @Operation(description = "Azuriranje podatka o broju cokota")
+    public ResponseEntity<Object> updateVinogradHasLoza(@Validated @RequestBody VinogradHasLozaDto vinogradHasLozaDto) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(vinogradHasLozaService.updateVinogradHasLoza(vinogradHasLozaDto));
+    }
+
     @DeleteMapping(value = "/{id}")
     @Operation(description = "Operacija za brisanja zapisa iz tablice koja povezuje vingorad i loze")
     public ResponseEntity<Object> deleteVinogradHasLozaById(@PathVariable Long id) {
         return vinogradHasLozaService.deleteVinogradHasLozaById(id);
-    }
-
-    @PutMapping
-    @Operation(description = "Azuriranje podatka o broju cokota")
-    public ResponseEntity<Object> updateVinogradHasLoza(
-            @Validated @RequestBody VinogradHasLozaDto vinogradHasLozaDto) {
-        return vinogradHasLozaService.updateVinogradHasLoza(vinogradHasLozaDto);
     }
 
 }

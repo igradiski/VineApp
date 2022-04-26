@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface VinogradService {
 
-    ResponseEntity<Object> insertVinograd(VinogradDto vinogradDto);
+    VinogradDto insertVinograd(VinogradDto vinogradDto);
 
     Page<VinogradDto> getVinogradi(Pageable pageable);
 

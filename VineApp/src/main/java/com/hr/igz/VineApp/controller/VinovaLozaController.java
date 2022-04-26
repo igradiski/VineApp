@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,10 +32,10 @@ public class VinovaLozaController {
     @PostMapping
     @Operation(summary = "Operacija za unos vinove loze")
     public ResponseEntity<Object> dodajLozu(@Validated @RequestBody VinovaLozaDto vinovaLozaDto){
-        return vinovaLozaService.dodajLozu(vinovaLozaDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(vinovaLozaService.dodajLozu(vinovaLozaDto));
     }
 
-    @GetMapping(value = "/loze")
+    @GetMapping
     @Operation(summary = "Operacija koja dohvaca vinove loze")
     public Page<VinovaLozaDto> getVinovaLozaPaged(Pageable pageable){
         return vinovaLozaService.getVinovaLozaPaged(pageable);
@@ -52,17 +53,16 @@ public class VinovaLozaController {
         return vinovaLozaService.getLozaForCard(id);
     }
 
+    @PutMapping
+    @Operation(summary = "Ažuriranje vinove loze")
+    public ResponseEntity<Object> updateLoza(@Valid @RequestBody VinovaLozaDto vinovaLozaDto){
+        return ResponseEntity.status(HttpStatus.OK).body(vinovaLozaService.updateLoza(vinovaLozaDto));
+    }
+
     @DeleteMapping(value ="/{id}")
     @Operation(description = "Operacija za brisanje vinove loze")
     public ResponseEntity<Object> deleteLozaById(@PathVariable Long id){
         return vinovaLozaService.deleteLozaById(id);
-    }
-
-    @PutMapping
-    @Operation(summary = "Ažuriranje vinove loze")
-    public ResponseEntity<Object> updateLoza(
-            @Valid @RequestBody VinovaLozaDto vinovaLozaDto){
-        return vinovaLozaService.updateLoza(vinovaLozaDto);
     }
 
 }

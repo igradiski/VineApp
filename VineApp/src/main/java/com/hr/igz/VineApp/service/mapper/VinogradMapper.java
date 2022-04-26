@@ -8,8 +8,10 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel="spring")
 public interface VinogradMapper{
 
+    VinogradDto toDto(Vinograd vinograd);
+
     @Mapping(target = "brojCokota",source = "brojCokota")
-    VinogradDto toDto(Vinograd vinograd,int brojCokota);
+    VinogradDto toDtoWithCount(Vinograd vinograd,int brojCokota);
 
     Vinograd toEntity (VinogradDto vinogradDto);
 }

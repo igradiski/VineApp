@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Base64;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -140,6 +141,7 @@ public class SredstvoServiceImpl implements SredstvoService {
 
 		log.debug(sredstvoDto.toString());
 		log.info("updating sredstvo : "+sredstvoDto.toString());
+		Objects.requireNonNull(sredstvoDto.id(),"Id cant be null!");
 		ZastitnoSredstvo oldSredstvo = getSredstvo(sredstvoDto.id());
 
 		var tipSredstva = tipSredstvaRepository.findById(sredstvoDto.tipSredstvaId()).orElseThrow( () -> {

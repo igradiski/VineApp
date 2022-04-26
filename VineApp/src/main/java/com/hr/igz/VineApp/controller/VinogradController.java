@@ -7,13 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/vinogradi")
+@RequestMapping("/vinograd")
 public class VinogradController {
 
     private final VinogradService vinogradService;
@@ -26,11 +27,10 @@ public class VinogradController {
     @PostMapping
     @Operation(summary = "Unos novog vinograda")
     public ResponseEntity<Object> insertVinograd (@Validated @RequestBody VinogradDto vinogradDto){
-        return vinogradService.insertVinograd(vinogradDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(vinogradService.insertVinograd(vinogradDto));
     }
 
-    //@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_ADMIN')")
-    @GetMapping(value ="/vinogradi")
+    @GetMapping
     @Operation(summary = "Dohvacanje korisnikovih vinograda")
     public Page<VinogradDto> getVinogradi(Pageable pageable){
         return vinogradService.getVinogradi(pageable);

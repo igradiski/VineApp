@@ -6,6 +6,7 @@ import com.hr.igz.VineApp.domain.dto.VinovaLozaDto;
 import com.hr.igz.VineApp.repository.VinovaLozaRepository;
 import com.hr.igz.VineApp.service.VinovaLozaService;
 import com.hr.igz.VineApp.service.exception.DeleteFailureException;
+import com.hr.igz.VineApp.service.exception.NoSuchElementException;
 import com.hr.igz.VineApp.service.exception.ObjectAlreadyExists;
 import com.hr.igz.VineApp.service.exception.PostFailureException;
 import com.hr.igz.VineApp.service.mapper.VinovaLozaMapper;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Base64;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,8 +40,9 @@ public class VinovaLozaServiceImpl  implements VinovaLozaService {
 
     @Override
     @Transactional
-    public ResponseEntity<Object> dodajLozu(VinovaLozaDto vinovaLozaDto) {
+    public VinovaLozaDto dodajLozu(VinovaLozaDto vinovaLozaDto) {
 
+        log.debug(vinovaLozaDto.toString());
         if (vinovaLozaRepository.existsByName(vinovaLozaDto.name())) {
             log.error("Postoji loza s imenom: {}", vinovaLozaDto.name());
             throw new ObjectAlreadyExists("Vinova loza toga imena vec postoji!");
@@ -47,12 +50,11 @@ public class VinovaLozaServiceImpl  implements VinovaLozaService {
         Vinovaloza loza = mapper.toEntity(vinovaLozaDto);
         loza.setApproved(0);
         try{
-            vinovaLozaRepository.save(loza);
+            return mapper.toDto(vinovaLozaRepository.save(loza));
         }catch (Exception e){
             log.error("Greška kod unosa loze: {}", loza);
             throw new PostFailureException("Nije moguce unijeti zeljenu vinovu lozu!");
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body("Loza je uspjesno unesena!");
     }
 
     @Override
@@ -65,10 +67,39 @@ public class VinovaLozaServiceImpl  implements VinovaLozaService {
     @Transactional(readOnly = true)
     public Optional<VinovaLozaDto> getLozaForCard(Long id) {
 
-        Vinovaloza loza = vinovaLozaRepository.findById(id).get();
-        String base64 = Base64.getEncoder().encodeToString(loza.getPicture());
+        log.debug("ID:" +id);
+        Vinovaloza loza = vinovaLozaRepository.findById(id).orElseThrow(() -> {
+            log.error("Ne postoji vinova loza s danim id: "+id);
+            throw new NoSuchElementException("Ne postoji vinova loza s danim id: "+id);
+        });
         VinovaLozaDto dto = mapper.toDto(loza);
         return Optional.of(dto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Set<AntDCascaderDto> getVinovaLozaCascader() {
+        return vinovaLozaRepository.findAll().stream().map(mapper::toCascaderDto).collect(Collectors.toSet());
+    }
+
+    @Override
+    @Transactional
+    public VinovaLozaDto updateLoza(VinovaLozaDto vinovaLozaDto) {
+
+        log.debug(vinovaLozaDto.toString());
+        Objects.requireNonNull(vinovaLozaDto.id(),"Id cant be null!");
+        Vinovaloza oldLoza = vinovaLozaRepository.findById(vinovaLozaDto.id()).orElseThrow(() ->{
+            log.error("Ne postoji loza s id: {}",vinovaLozaDto.id());
+            throw new DeleteFailureException("Ne postoji objekt za brisanje!");
+        });
+        oldLoza = mapper.updateFromDto(oldLoza,vinovaLozaDto);
+        try{
+            return mapper.toDto(vinovaLozaRepository.save(oldLoza));
+        }
+        catch (Exception e){
+            log.error("Nije moguce ažurirati bolest: {}",vinovaLozaDto.toString());
+            throw new PostFailureException("Nije moguce ažurirati zeljenu lozu!");
+        }
     }
 
     @Override
@@ -86,30 +117,5 @@ public class VinovaLozaServiceImpl  implements VinovaLozaService {
            log.error("Nije moguce obrisati bolest: {}",loza.toString());
            throw new DeleteFailureException(e.getMessage());
        }
-    }
-
-    @Override
-    @Transactional
-    public ResponseEntity<Object> updateLoza(VinovaLozaDto vinovaLozaDto) {
-
-        Vinovaloza oldLoza = vinovaLozaRepository.findById(vinovaLozaDto.id()).orElseThrow(() ->{
-            log.error("Ne postoji loza s id: {}",vinovaLozaDto.id());
-            throw new DeleteFailureException("Ne postoji objekt za brisanje!");
-        });
-        oldLoza = mapper.updateFromDto(oldLoza,vinovaLozaDto);
-        try{
-            vinovaLozaRepository.save(oldLoza);
-            return ResponseEntity.status(HttpStatus.OK).body("Loza je uspješno ažurirana");
-        }
-        catch (Exception e){
-            log.error("Nije moguce ažurirati bolest: {}",vinovaLozaDto.toString());
-            throw new PostFailureException("Nije moguce ažurirati zeljenu lozu!");
-        }
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Set<AntDCascaderDto> getVinovaLozaCascader() {
-        return vinovaLozaRepository.findAll().stream().map(mapper::toCascaderDto).collect(Collectors.toSet());
     }
 }

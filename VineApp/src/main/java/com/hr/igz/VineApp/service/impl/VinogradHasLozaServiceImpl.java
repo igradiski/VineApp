@@ -11,6 +11,7 @@ import com.hr.igz.VineApp.repository.VinogradRepository;
 import com.hr.igz.VineApp.repository.VinovaLozaRepository;
 import com.hr.igz.VineApp.service.VinogradHasLozaService;
 import com.hr.igz.VineApp.service.exception.DeleteFailureException;
+import com.hr.igz.VineApp.service.exception.ObjectAlreadyExists;
 import com.hr.igz.VineApp.service.exception.PostFailureException;
 import com.hr.igz.VineApp.service.mapper.VinogradHasLozaMapper;
 import org.slf4j.Logger;
@@ -21,6 +22,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @Service
 public class VinogradHasLozaServiceImpl implements VinogradHasLozaService {
@@ -43,20 +46,22 @@ public class VinogradHasLozaServiceImpl implements VinogradHasLozaService {
 
     @Override
     @Transactional
-    public ResponseEntity<Object> dodajVinogradHasLoza(VinogradHasLozaDto vinogradHasLozaDto) {
+    public VinogradHasLozaDto dodajVinogradHasLoza(VinogradHasLozaDto vinogradHasLozaDto) {
 
+        log.debug(vinogradHasLozaDto.toString());
         Vinograd vinograd = vinogradRepository.findById(vinogradHasLozaDto.idVinograd())
                 .orElseThrow(() ->{
                     log.error("Ne postoji vinograd s id: {}", vinogradHasLozaDto.idVinograd());
-                    throw new PostFailureException("Nije moguce unijeti zeljenu vezu!");
+                    throw new PostFailureException("Nije moguce unijeti zeljeni vinograd!");
                 });
         Vinovaloza loza = vinovaLozaRepository.findById(vinogradHasLozaDto.idLoza())
                 .orElseThrow(() ->{
                     log.error("Ne postoji loza s id: {}", vinogradHasLozaDto.idVinograd());
-                    throw new PostFailureException("Nije moguce unijeti zeljenu vezu!");
+                    throw new PostFailureException("Nije moguce unijeti zeljenu lozu!");
                 });
         if( vinogradHasLozaRepository.findByUserAndVinogradAndVinovaloza(getUser(),vinograd,loza) != null){
-            throw new PostFailureException("Zapis već postoji!!");
+            log.error("Zapis vec postoji u bazi!");
+            throw new ObjectAlreadyExists("Zapis već postoji!!");
         }
         VinogradVinovaloza vinogradVinovaloza = new VinogradVinovaloza();
         vinogradVinovaloza.setVinograd(vinograd);
@@ -64,8 +69,7 @@ public class VinogradHasLozaServiceImpl implements VinogradHasLozaService {
         vinogradVinovaloza.setQuantity(vinogradHasLozaDto.brojCokota());
         vinogradVinovaloza.setUser(getUser());
         try{
-            vinogradHasLozaRepository.save(vinogradVinovaloza);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Vinograd i loza uspojesno uneseni!");
+            return mapper.toDto(vinogradHasLozaRepository.save(vinogradVinovaloza));
         }catch (Exception e){
             log.error("Greska kod unosa loze u vinograd!");
             throw new PostFailureException("Greška kod unosa zapisa");
@@ -76,13 +80,30 @@ public class VinogradHasLozaServiceImpl implements VinogradHasLozaService {
     @Transactional(readOnly = true)
     public Page<VinogradHasLozaDto> dohvatiVinogradHasLoza(Pageable pageable, Long vinogradId) {
 
+        log.debug("Vinograd id:" +vinogradId);
+        Objects.requireNonNull(vinogradId,"Id cant be null!");
         Vinograd vinograd = vinogradRepository.findById(vinogradId)
                 .orElseThrow(() ->{
                     log.error("Ne postoji vinograd s id: {}", vinogradId);
-                    throw new PostFailureException("Nije moguce unijeti zeljenu vezu!");
+                    throw new PostFailureException("Nije moguce pronaci vinograd!");
                 });
         return vinogradHasLozaRepository.findByVinograd(vinograd,pageable)
-                .map(mapper::ToDto);
+                .map(mapper::toDto);
+    }
+
+    @Override
+    @Transactional
+    public VinogradHasLozaDto updateVinogradHasLoza(VinogradHasLozaDto vinogradHasLozaDto) {
+
+        log.debug(vinogradHasLozaDto.toString());
+        Objects.requireNonNull(vinogradHasLozaDto.id(),"Id cant be null!");
+        VinogradVinovaloza vhv = vinogradHasLozaRepository.findById(vinogradHasLozaDto.id()).get();
+        if(vhv != null){
+            vhv.setQuantity(vinogradHasLozaDto.brojCokota());
+            return mapper.toDto(vinogradHasLozaRepository.save(vhv));
+        }else{
+            throw new PostFailureException("Greska kod azuriranja!");
+        }
     }
 
     @Override
@@ -96,21 +117,6 @@ public class VinogradHasLozaServiceImpl implements VinogradHasLozaService {
             throw new DeleteFailureException("Brisanje nije uspjelo!");
         }
     }
-
-    @Override
-    @Transactional
-    public ResponseEntity<Object> updateVinogradHasLoza(VinogradHasLozaDto vinogradHasLozaDto) {
-
-        VinogradVinovaloza vhv = vinogradHasLozaRepository.findById(vinogradHasLozaDto.id()).get();
-        if(vhv != null){
-            vhv.setQuantity(vinogradHasLozaDto.brojCokota());
-            vinogradHasLozaRepository.save(vhv);
-            return ResponseEntity.status(HttpStatus.OK).body("Kolicina uspjesno azurirana!");
-        }else{
-            throw new PostFailureException("Greska kod azuriranja!");
-        }
-    }
-
     private User getUser(){
         return  userRepository.getById(1L);
     }

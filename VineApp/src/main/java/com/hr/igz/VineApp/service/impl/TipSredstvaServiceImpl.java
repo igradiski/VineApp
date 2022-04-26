@@ -96,7 +96,9 @@ public class TipSredstvaServiceImpl implements TipSredstvaService {
 	@Override
 	@Transactional
 	public TipSredstvaDto updateTipSredstva(TipSredstvaDto tipSredstva) {
-		
+
+		log.debug(tipSredstva.toString());
+		Objects.requireNonNull(tipSredstva.id(),"Id cant be null!");
 		TipZastitnogSredstva oldTip = tipSredstvaRepository.findById(tipSredstva.id())
 				.orElseThrow(()->{
 					log.error("Nije moguce pronaći tip sredstva: {}",tipSredstva.id());

@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -87,7 +88,9 @@ public class FenofazaServiceImpl  implements FenofazaService{
 	@Override
 	@Transactional
 	public FenofazaDto updateFenofaza(FenofazaDto fenofaza) {
+
 		log.debug(fenofaza.toString());
+		Objects.requireNonNull(fenofaza.id(),"Id cant be null!");
 		FenofazaRazvoja oldFenofaza = fenofazaRepository.findById(fenofaza.id())
 				.orElseThrow(()->{
 					log.error("Nije moguce pronaći fenofazu: {}",fenofaza.id());

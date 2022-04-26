@@ -12,7 +12,7 @@ import java.util.Set;
 public interface VinovaLozaService {
 
 
-    ResponseEntity<Object> dodajLozu(VinovaLozaDto vinovaLozaDto);
+    VinovaLozaDto dodajLozu(VinovaLozaDto vinovaLozaDto);
 
     Page<VinovaLozaDto> getVinovaLozaPaged(Pageable pageable);
 
@@ -20,7 +20,7 @@ public interface VinovaLozaService {
 
     ResponseEntity<Object> deleteLozaById(Long id);
 
-    ResponseEntity<Object> updateLoza(VinovaLozaDto vinovaLozaDto);
+    VinovaLozaDto updateLoza(VinovaLozaDto vinovaLozaDto);
 
     Set<AntDCascaderDto> getVinovaLozaCascader();
 }

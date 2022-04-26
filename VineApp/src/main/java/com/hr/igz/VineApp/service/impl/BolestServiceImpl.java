@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Base64;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -106,6 +107,7 @@ public class BolestServiceImpl implements BolestService {
 	public BolestDto updateBolest(BolestDto bolestDto) {
 
 		log.debug(bolestDto.toString());
+		Objects.requireNonNull(bolestDto.id(),"Id cant be null!");
 		if (bolestRepository.existsByName(bolestDto.name())) {
 			log.error("Postoji bolest s imenom: {}", bolestDto.name());
 			throw new ObjectAlreadyExists("Bolest toga imena vec postoji!");

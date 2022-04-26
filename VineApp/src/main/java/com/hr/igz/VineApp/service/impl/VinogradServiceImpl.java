@@ -20,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @Service
 public class VinogradServiceImpl  implements VinogradService {
 
@@ -39,27 +41,30 @@ public class VinogradServiceImpl  implements VinogradService {
 
     @Override
     @Transactional
-    public ResponseEntity<Object> insertVinograd(VinogradDto vinogradDto) {
+    public VinogradDto insertVinograd(VinogradDto vinogradDto) {
 
+        log.debug(vinogradDto.toString());
         if(vinogradRepository.existsByName(vinogradDto.name())){
             log.error("Postoji vinograd s danim imenom!");
             throw new ObjectAlreadyExists("Vinograd postoji s imenom : "+vinogradDto.name());
         }
         Vinograd vinograd = mapper.toEntity(vinogradDto);
         vinograd.setUser(createFejkUser());
-        vinogradRepository.save(vinograd);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Vinograd  je uspješno kreiran");
+        return mapper.toDto(vinogradRepository.save(vinograd));
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<VinogradDto> getVinogradi(Pageable pageable) {
         return vinogradRepository.findAllByUser(createFejkUser(),pageable)
-                .map(vinograd -> mapper.toDto(vinograd,cokotiCount(vinograd.getId())));
+                .map(vinograd -> mapper.toDtoWithCount(vinograd,cokotiCount(vinograd.getId())));
     }
 
     @Override
     public ResponseEntity<Object> deleteVinogradById(Long id) {
+
+        log.debug("ID:"+id);
+        Objects.requireNonNull(id,"Id cant be null");
         Vinograd vinograd = vinogradRepository.findById(id).get();
         if(vinograd != null){
             vinogradRepository.delete(vinograd);

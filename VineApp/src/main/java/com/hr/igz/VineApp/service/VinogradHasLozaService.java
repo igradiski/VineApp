@@ -7,11 +7,11 @@ import org.springframework.http.ResponseEntity;
 
 public interface VinogradHasLozaService {
 
-    ResponseEntity<Object> dodajVinogradHasLoza(VinogradHasLozaDto vinogradHasLozaDto);
+    VinogradHasLozaDto dodajVinogradHasLoza(VinogradHasLozaDto vinogradHasLozaDto);
 
     Page<VinogradHasLozaDto> dohvatiVinogradHasLoza(Pageable pageable, Long vinogradId);
 
     ResponseEntity<Object> deleteVinogradHasLozaById(Long id);
 
-    ResponseEntity<Object> updateVinogradHasLoza(VinogradHasLozaDto vinogradHasLozaDto);
+    VinogradHasLozaDto updateVinogradHasLoza(VinogradHasLozaDto vinogradHasLozaDto);
 }

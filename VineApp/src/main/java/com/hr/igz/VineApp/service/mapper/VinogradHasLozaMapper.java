@@ -27,11 +27,11 @@ public interface VinogradHasLozaMapper {
 
     VinogradVinovaloza toEntity(VinogradHasLozaDto vinogradHasLozaDto);
 
+    @Mapping(source = "quantity",target = "brojCokota")
+    @Mapping(source = "vinograd.id",target = "idVinograd")
+    @Mapping(source = "vinovaloza.id",target = "idLoza")
+    @Mapping(source = "vinovaloza.name",target = "nazivLoze")
+    @Mapping(source = "vinovaloza.picture",target = "slikaLoze")
     VinogradHasLozaDto toDto(VinogradVinovaloza vinogradVinovaloza);
 
-    @Mapping(source = "quantity",target = "brojCokota")
-    @Mapping(source="vinovaloza.name",target = "nazivLoze")
-    @Mapping(source ="vinovaloza.picture",target ="slikaLoze")
-    @Mapping(source ="updatedDate",target =  "date")
-    VinogradHasLozaDto ToDto(VinogradVinovaloza vinovaloza);
 }
