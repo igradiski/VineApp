@@ -4,15 +4,14 @@ import TokenService from "../feature/userLogin/TokenService";
 const tokenService = new TokenService();
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8080/",
+  baseURL: "http://localhost:8081/",
   //baseURL: "https://vineapp-spring.herokuapp.com/",
   headers: {
-    'Access-Control-Allow-Origin' : '/**',
+    "Access-Control-Allow-Origin": "/**",
   },
-
 });
 
-axiosInstance.interceptors.request.use(
+/* axiosInstance.interceptors.request.use(
   (config) => {
     var token = tokenService.getLocalAccessToken();
     if (token) {
@@ -57,5 +56,5 @@ axiosInstance.interceptors.response.use(
 
     return Promise.reject(err);
   }
-);
+); */
 export default axiosInstance;

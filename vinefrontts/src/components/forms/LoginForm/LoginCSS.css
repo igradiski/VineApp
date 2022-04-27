@@ -12,6 +12,7 @@
 .form-title{
     font-size: 24px;
     font-weight: bold;
+    text-shadow: #a0d911 1px 0 10px;
 }
 .input-login{
     margin-right: 10%;
@@ -26,6 +27,30 @@
 .prijava-button{
     width: 20vh;
 }
+
+.main-button {
+    width: 20vh;
+    font-family: 'Roboto', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #000;
+    background-color: #a0d911;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+    }
+  
+  .main-button:hover {
+    background-color: #7cb305;
+    box-shadow: 0px 15px 20px #f4ffb8 ;
+    color: #fff;
+    transform: translateY(-7px);
+  }
 @media only screen and (max-width: 600px) {
 
     .login-div{

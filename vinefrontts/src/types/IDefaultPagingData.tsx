@@ -1,5 +1,5 @@
 export default interface IDefaultPagingData {
-    pageSize: number | undefined,
-    pageNo: number,
-    sort: any | string[]
-  }
+  size: number;
+  page: number;
+  sort: any | string[];
+}
