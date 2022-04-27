@@ -7,4 +7,5 @@ Aplikacija nudi slijedeće funkcionalnosti:
   - unos i pregled vinograda i vinove loze
   - unos i pregled špricanja i sredstava
   - kalkulator količine potrebnog sredstva u trenutnim uvjetima
+  
 Tehnologije: Spring Boot, React TS, PostreSQL,Docker
