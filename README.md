@@ -1,2 +1,2 @@
 # VineApp
-Desc
+#Tehnologije: Spring Boot, React TS, PostreSQL,Docker
