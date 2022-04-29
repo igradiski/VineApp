@@ -10,6 +10,14 @@ import DateConverter from "../../../feature/dateConverter";
 import TableUpdateDelete from "../CustomJSX/TableUpdateDelete";
 import SearchByName from "../CustomJSX/SearchBy";
 import roleFetcher from "../../../feature/roleFetcher";
+import { useAppDispatch } from "../../../store/store";
+import {
+  deleteTipSredstvaById,
+  fetchDataForTipSredstvaTablePaged,
+  tipSredstvaByName,
+} from "../../../store/slices/tipSredstvaSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/reducer";
 
 type Props = {
   onUpdate: (step: number, data: ITipSredstvaData) => void;
@@ -18,13 +26,19 @@ type Props = {
 const TipSredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
   const size = 4;
   const [pageNo, setPageNo] = useState(0);
-  const [totalItems, setTotalItems] = useState(0);
-  const [tableData, setTableData] = useState([]);
+  const totalItems = useSelector(
+    (state: RootState) => state.tipSredstva.totalItems
+  );
+  const tableData = useSelector(
+    (state: RootState) => state.tipSredstva.tableData
+  );
   const tipSredstvaSrc = new TipSredstvaService();
   const datumClass = new DateConverter();
   const roleFetch = new roleFetcher();
   //var highestRole = roleFetch.getHighestOrderRole(useAppSelector(state => state.login.myUserRole));
   var highestRole = 3;
+
+  const dispatch = useAppDispatch();
 
   const promijeniStranicu = (page: number, size: number | undefined) => {
     setPageNo(page - 1);
@@ -40,14 +54,19 @@ const TipSredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
   };
 
   const deleteClick = (record: any) => {
-    tipSredstvaSrc
-      .deleteItemById(record.id)
+    dispatch(deleteTipSredstvaById(record.id))
+      .unwrap()
       .then(() => {
         Modal.success({
           title: constant.BOLEST_BRISANJE_USPJELO_NASLOV,
           content: constant.BOLEST_BRISANJE_USPJELO,
         });
-        getInitialData();
+        const data: IDefaultPagingData = {
+          page: 0,
+          size: size,
+          sort: [],
+        };
+        dispatch(fetchDataForTipSredstvaTablePaged(data));
       })
       .catch(() => {
         Modal.error({
@@ -58,11 +77,12 @@ const TipSredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
   };
 
   const findByItemName = (name: string) => {
-    tipSredstvaSrc.findByItemName(name).then((response) => {
-      setTableData(response.data.content);
-      setTotalItems(response.data.totalElements);
-      setPageNo(response.data.pageable.pageNumber);
-    });
+    const data: IDefaultPagingData = {
+      page: 0,
+      size: size,
+      sort: [],
+    };
+    dispatch(tipSredstvaByName({ name, data }));
   };
 
   const getInitialData = async () => {
@@ -71,11 +91,7 @@ const TipSredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
       size: size,
       sort: [],
     };
-    tipSredstvaSrc.getAllTipSredstva(data).then((response) => {
-      setTableData(response.data.content);
-      setTotalItems(response.data.totalElements);
-      setPageNo(response.data.pageable.pageNumber);
-    });
+    dispatch(fetchDataForTipSredstvaTablePaged(data));
   };
 
   useEffect(() => {
@@ -121,6 +137,7 @@ const TipSredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
         dataSource={tableData}
         pagination={false}
         rowKey="name"
+        scroll={{ x: 150 }}
       />
       <Pagination
         pageSize={size}

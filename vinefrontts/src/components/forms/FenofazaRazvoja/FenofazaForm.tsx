@@ -4,13 +4,11 @@ import constant from "../../../constantsUI/constantsUI";
 import "antd/dist/antd.css";
 import "./FenofazaCSS.css";
 import IFenofazaData from "../../../types/IFenofazaData";
-import { useDispatch, useSelector } from "react-redux";
 import {
   insertNewFenofaza,
   updateExistingFenofaza,
 } from "../../../store/slices/fenofazaSlice";
-import { RootState } from "../../../store/reducer";
-import { useAppDispatch, useAppSelector } from "../../../store/store";
+import { useAppDispatch } from "../../../store/store";
 
 type Props = {
   isUpdate: boolean;
@@ -24,6 +22,20 @@ const FenofazaForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
   const { TextArea } = Input;
   const dispatch = useAppDispatch();
 
+  function successModal() {
+    Modal.success({
+      title: constant.FENOFAZA_SUCCESS_TITLE,
+      content: constant.FENOFAZA_SUCCESS,
+    });
+  }
+
+  function errorModal() {
+    Modal.error({
+      title: constant.FENOFAZA_ERROR_TITLE,
+      content: constant.FENOFAZA_ERROR,
+    });
+  }
+
   const unesiFenofazu = () => {
     const data: IFenofazaData = {
       id: "",
@@ -33,9 +45,23 @@ const FenofazaForm: FunctionComponent<Props> = ({ isUpdate, updateData }) => {
     };
     if (isUpdate) {
       data.id = updateData.id;
-      console.log(data);
-      dispatch(updateExistingFenofaza(data));
-    } else dispatch(insertNewFenofaza(data));
+      dispatch(updateExistingFenofaza(data))
+        .unwrap()
+        .then(() => {
+          successModal();
+        })
+        .catch(() => {
+          errorModal();
+        });
+    } else
+      dispatch(insertNewFenofaza(data))
+        .unwrap()
+        .then(() => {
+          successModal();
+        })
+        .catch(() => {
+          errorModal();
+        });
   };
 
   useEffect(() => {

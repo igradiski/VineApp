@@ -4,28 +4,34 @@ import constant from "../../../constantsUI/constantsUI";
 import "antd/dist/antd.css";
 import "./BolestCSS.css";
 import DefaultPagingData from "../../../types/IDefaultPagingData";
-import BolestService from "../../../services/BolestService";
 import IBolestdata from "../../../types/IBolestData";
 import TableUpdateDelete from "../CustomJSX/TableUpdateDelete";
 import DateConverter from "../../../feature/dateConverter";
 import SearchByName from "../CustomJSX/SearchBy";
 import TableFieldForDescription from "../CustomJSX/TableFieldForDescription";
-import roleFetcher from "../../../feature/roleFetcher";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/reducer";
+import {
+  deleteBolestById,
+  fetchBolestByName,
+  fetchDataForBolestiPaged,
+} from "../../../store/slices/bolestSlice";
+import { useAppDispatch } from "../../../store/store";
 
 type Props = {
   onUpdate: (step: number, data: IBolestdata) => void;
 };
 
 const BolestSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
-  const size = 5;
+  const size = 3;
   const [pageNo, setPageNo] = useState(0);
-  const [totalItems, setTotalItems] = useState(0);
-  const [tableData, setTableData] = useState([]);
-  const bolestService = new BolestService();
+  const totalItems = useSelector((state: RootState) => state.bolest.totalItems);
+  const tableData = useSelector((state: RootState) => state.bolest.tableData);
   const datumClass = new DateConverter();
-  const roleFetch = new roleFetcher();
   //var highestRole = roleFetch.getHighestOrderRole(useAppSelector(state => state.login.myUserRole));
   var highestRole = 3;
+  const dispatch = useAppDispatch();
+
   const promijeniStranicu = (page: number, size: number | undefined) => {
     setPageNo(page - 1);
   };
@@ -42,14 +48,20 @@ const BolestSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
   };
 
   const deleteClick = (record: any) => {
-    bolestService
-      .deleteBolestById(record.id)
+    var id: string = record.id;
+    dispatch(deleteBolestById(id))
+      .unwrap()
       .then(() => {
         Modal.success({
           title: constant.BOLEST_BRISANJE_USPJELO_NASLOV,
           content: constant.BOLEST_BRISANJE_USPJELO,
         });
-        getInitialData();
+        const data: DefaultPagingData = {
+          page: 0,
+          size: size,
+          sort: [],
+        };
+        dispatch(fetchDataForBolestiPaged(data));
       })
       .catch(() => {
         Modal.error({
@@ -60,11 +72,12 @@ const BolestSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
   };
 
   const findByItemName = (name: string) => {
-    bolestService.findByItemName(name).then((response) => {
-      setTableData(response.data.content);
-      setTotalItems(response.data.totalElements);
-      setPageNo(response.data.pageable.pageNumber);
-    });
+    const data: DefaultPagingData = {
+      page: 0,
+      size: size,
+      sort: [],
+    };
+    dispatch(fetchBolestByName({ name, data }));
   };
 
   const getInitialData = async () => {
@@ -73,13 +86,7 @@ const BolestSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
       size: size,
       sort: [],
     };
-    let bolestService = new BolestService();
-    bolestService.getAllBolesti(data).then((response) => {
-      console.log(response);
-      setTableData(response.data.content);
-      setTotalItems(response.data.totalElements);
-      setPageNo(response.data.pageable.pageNumber);
-    });
+    dispatch(fetchDataForBolestiPaged(data));
   };
 
   useEffect(() => {

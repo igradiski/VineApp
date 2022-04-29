@@ -45,13 +45,24 @@ public class BolestServiceImpl implements BolestService {
 		log.debug(bolestDto.toString());
 		log.info("Inserting bolest :"+ bolestDto.toString());
 
+		Objects.requireNonNull(bolestDto);
+		if(bolestDto.id() != null){
+			log.error("Nije moguce unijeti bolest jer ima ID "+bolestDto.id());
+			throw new PostFailureException("Nije moguce unijeti zeljenu bolest jer ima ID!");
+		}
 		if (bolestRepository.existsByName(bolestDto.name())) {
 			log.error("Postoji bolest s imenom: {}", bolestDto.name());
 			throw new ObjectAlreadyExists("Bolest toga imena vec postoji!");
 		}
 		Bolest bolest = mapper.toEntity(bolestDto);
 		bolest.setApproved(0);
-		return mapper.toDto(bolestRepository.save(bolest));
+		try{
+			return mapper.toDto(bolestRepository.save(bolest));
+		}catch (Exception e){
+			log.error("Nije moguce unijeti bolest "+bolestDto.toString());
+			throw new PostFailureException("Nije moguce unijeti zeljenu bolest!");
+		}
+
 	}
 
 	@Override
@@ -117,7 +128,11 @@ public class BolestServiceImpl implements BolestService {
 					log.error("Ne postoji bolest za azuriranje s ID: {}",bolestDto.id());
 					throw new PostFailureException("Ne postoji bolest za azuriranje!");
 				});
+		byte[] bytes = oldBolest.getPicture();
 		oldBolest = mapper.UpdateBolestFromDto(oldBolest, bolestDto);
+		if(bolestDto.base64().isEmpty()){
+			oldBolest.setPicture(bytes);
+		}
 		try {
 			return mapper.toDto(bolestRepository.save(oldBolest));
 		}catch (Exception e) {

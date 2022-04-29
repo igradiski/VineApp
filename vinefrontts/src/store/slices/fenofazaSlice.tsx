@@ -1,4 +1,3 @@
-import create from "@ant-design/icons/lib/components/IconFont";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   addFenofaza,
@@ -39,17 +38,14 @@ export const fetchFenofazeByName = createAsyncThunk(
 
 export const deleteFenofazaById = createAsyncThunk(
   "fenofaze/deleteById",
-  async ({ id, data }: any, { dispatch }) => {
-    deleteFenofazaId(id);
-    await dispatch(fetchDataForFenofazaTablePaged(data));
+  async (id: number) => {
+    await deleteFenofazaId(id);
   }
 );
 
 const initialState = {
   insertedFenofaza: [],
   tableData: [],
-  size: 0,
-  pageNo: 0,
   totalItems: 0,
   status: false,
 };
@@ -63,8 +59,6 @@ const fenofazaSlice = createSlice({
       return {
         ...state,
         tableData: action.payload.content,
-        size: action.payload.pageable.pageNumber,
-        pageNo: action.payload.pageable.pageNo,
         totalItems: action.payload.totalElements,
       };
     });
@@ -74,14 +68,12 @@ const fenofazaSlice = createSlice({
         return {
           ...state,
           tableData: action.payload.content,
-          size: action.payload.pageable.pageNumber,
-          pageNo: action.payload.pageable.pageNo,
           totalItems: action.payload.totalElements,
         };
       }
     );
   },
 });
-const { actions, reducer } = fenofazaSlice;
-export const {} = actions;
+const { reducer } = fenofazaSlice;
+//export const {} = actions;
 export { reducer as fenofazaReducer };

@@ -3,10 +3,7 @@ package com.hr.igz.VineApp.service.mapper;
 import com.hr.igz.VineApp.domain.Bolest;
 import com.hr.igz.VineApp.domain.dto.AntDCascaderDto;
 import com.hr.igz.VineApp.domain.dto.BolestDto;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValueMappingStrategy;
+import org.mapstruct.*;
 
 import java.util.Base64;
 

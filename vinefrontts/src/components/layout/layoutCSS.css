@@ -142,6 +142,10 @@
     border-radius: 10px;
 }
 
+
+.ant-steps-item-title{
+    text-shadow: #a0d911 1px 0 10px;
+}
 .ant-pagination-disabled .ant-pagination-item-link, .ant-pagination-disabled:hover .ant-pagination-item-link {
     color: rgba(0, 0, 0, 0.25);
     border-color: #7cb305;

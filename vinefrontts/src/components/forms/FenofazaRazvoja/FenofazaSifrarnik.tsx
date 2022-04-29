@@ -6,32 +6,29 @@ import "./FenofazaCSS.css";
 import DefaultPagingData from "../../../types/IDefaultPagingData";
 import TableUpdateDelete from "../CustomJSX/TableUpdateDelete";
 import SearchByName from "../CustomJSX/SearchBy";
-import FenofazaService from "../../../services/FenofazaService";
 import IFenofazaData from "../../../types/IFenofazaData";
 import DateConverter from "../../../feature/dateConverter";
-import roleFetcher from "../../../feature/roleFetcher";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../store/reducer";
 import {
   deleteFenofazaById,
   fetchDataForFenofazaTablePaged,
   fetchFenofazeByName,
 } from "../../../store/slices/fenofazaSlice";
+import { useAppDispatch } from "../../../store/store";
 
 type Props = {
   onUpdate: (step: number, data: IFenofazaData) => void;
 };
 
 const FenofazaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
-  const size = 2;
+  const size = 5;
   const [pageNo, setPageNo] = useState(0);
   const totalItems = useSelector(
     (state: RootState) => state.fenofaze.totalItems
   );
   const tableData = useSelector((state: RootState) => state.fenofaze.tableData);
-  const fenofazaService = new FenofazaService();
   const datumClass = new DateConverter();
-  const roleFetch = new roleFetcher();
   //var highestRole = roleFetch.getHighestOrderRole(useAppSelector(state => state.login.myUserRole));
 
   var highestRole = 3;
@@ -39,7 +36,20 @@ const FenofazaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
     setPageNo(page - 1);
   };
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
+  function successModal() {
+    Modal.success({
+      title: constant.BOLEST_BRISANJE_USPJELO_NASLOV,
+      content: constant.BOLEST_BRISANJE_USPJELO,
+    });
+  }
+  function errorModal() {
+    Modal.error({
+      title: constant.BOLEST_BRISANJE_FAIL_NASLOV,
+      content: constant.BOLEST_BRISANJE_FAIL,
+    });
+  }
 
   const editClick = (text: any, record: any) => {
     const data: IFenofazaData = {
@@ -53,19 +63,27 @@ const FenofazaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
 
   const deleteClick = (record: any) => {
     var id: number = record.id;
-    var data: DefaultPagingData = {
-      page: pageNo,
-      size: size,
-      sort: [],
-    };
-    console.log(id);
-    dispatch(deleteFenofazaById({ id, data }));
+    dispatch(deleteFenofazaById(id))
+      .unwrap()
+      .then(() => {
+        successModal();
+        const data: DefaultPagingData = {
+          page: 0,
+          size: size,
+          sort: [],
+        };
+        dispatch(fetchDataForFenofazaTablePaged(data));
+      })
+      .catch(() => {
+        errorModal();
+      });
+    getInitialData();
   };
 
   const findByItemName = (name: string) => {
     console.log(name);
     var data: DefaultPagingData = {
-      page: pageNo,
+      page: 0,
       size: size,
       sort: [],
     };

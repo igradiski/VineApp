@@ -33,7 +33,7 @@ public class TipZastitnogSredstvaController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(tipSredstvaService.dodajTipSredstva(tipSredstva));
 	}
 
-	@GetMapping("/paged")
+	@GetMapping
 	@Operation(summary= "Operacija dohvacanje svih tipova sredstava sa stranicenjem")
 	public Page<TipSredstvaDto> getAllTipoviSredstavaPage(Pageable pageable){
 		return tipSredstvaService.findAllPagable(pageable);
@@ -52,7 +52,7 @@ public class TipZastitnogSredstvaController {
 		return tipSredstvaService.findTipSredstvaByName(pageable,name);
 	}
 
-	@PutMapping(value="/azurirani-tip")
+	@PutMapping
 	@Operation(summary= "Operacija za azuriranje tipa sredstva")
 	public ResponseEntity<Object> updateTipSredstva(
 			@Validated @RequestBody TipSredstvaDto tipSredstva){

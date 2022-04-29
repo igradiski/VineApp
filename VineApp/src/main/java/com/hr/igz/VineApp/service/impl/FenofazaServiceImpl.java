@@ -38,7 +38,13 @@ public class FenofazaServiceImpl  implements FenofazaService{
 	@Override
 	@Transactional
 	public FenofazaDto addFenofaza(FenofazaDto fenofaza) {
-		log.debug(fenofaza.toString());
+		Objects.requireNonNull(fenofaza);
+		if(fenofaza.id() != null){
+			log.error("Nije moguce unijeti fenofazu jer postoji id: {}",fenofaza.id());
+			throw new PostFailureException("Nije moguce unijeti zeljenu fenofazu jer postoji ID");
+		}
+		log.info(fenofaza.toString());
+		log.debug("FENOFAZA: "+fenofaza.toString());
 		if(fenofazaRepository.existsByName(fenofaza.name())) {
 			log.error("Postoji fenofaza s imenom: {}",fenofaza.name());
 			throw new ObjectAlreadyExists("Fenofaza imena vec postoji!");
