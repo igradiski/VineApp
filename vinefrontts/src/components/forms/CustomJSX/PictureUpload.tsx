@@ -55,19 +55,23 @@ const PictureUpload: FunctionComponent<Props> = ({ setFileData }) => {
   }
   return (
     <div className="div-upload">
-      <input
-        className="upload-button"
-        type="file"
-        ref={(e) => imagePreview}
-        placeholder={"aa"}
-        name="avatar"
-        id="file"
-        accept=".jpef, .png, .jpg"
-        src={imagePreview}
-        onChange={(e: any) => {
-          success(e);
-        }}
-      />
+      <label className="lblUploadPicture">
+        <input
+          className="upload-button"
+          type="file"
+          hidden
+          ref={(e) => imagePreview}
+          placeholder={"aa"}
+          name="avatar"
+          id="file"
+          accept=".jpef, .png, .jpg"
+          src={imagePreview}
+          onChange={(e: any) => {
+            success(e);
+          }}
+        />
+        Učitaj sliku
+      </label>
       {imagePreview !== "" && (
         <div className="add-remove-btn">
           <Button className="main-button" type="primary" onClick={remove}>

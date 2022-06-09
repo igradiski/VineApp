@@ -27,7 +27,6 @@ const BolestSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
   const [pageNo, setPageNo] = useState(0);
   const totalItems = useSelector((state: RootState) => state.bolest.totalItems);
   const tableData = useSelector((state: RootState) => state.bolest.tableData);
-  const datumClass = new DateConverter();
   //var highestRole = roleFetch.getHighestOrderRole(useAppSelector(state => state.login.myUserRole));
   var highestRole = 3;
   const dispatch = useAppDispatch();
@@ -112,7 +111,7 @@ const BolestSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
     {
       title: constant.BOLEST_SIFRARNIK_DATUM,
       dataIndex: "date",
-      render: (text: any) => datumClass.convertDateForTable(text),
+      render: (text: any) => DateConverter(text),
     },
     highestRole > 1
       ? {

@@ -33,7 +33,6 @@ const TipSredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
     (state: RootState) => state.tipSredstva.tableData
   );
   const tipSredstvaSrc = new TipSredstvaService();
-  const datumClass = new DateConverter();
   const roleFetch = new roleFetcher();
   //var highestRole = roleFetch.getHighestOrderRole(useAppSelector(state => state.login.myUserRole));
   var highestRole = 3;
@@ -113,7 +112,7 @@ const TipSredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
       title: constant.TIP_SREDSTVA_TBL_DATUM,
       dataIndex: "date",
       key: "date",
-      render: (text: any) => datumClass.convertDateForTable(text),
+      render: (text: any) => DateConverter(text),
     },
     highestRole > 1
       ? {

@@ -33,7 +33,6 @@ const MojVinograd: FunctionComponent = () => {
 
   const vinogradService = new VinogradService();
   const vinogradLozaService = new VinogradLozaService();
-  const datumClass = new DateConverter();
   const converterB64 = new b64BlobConverter();
 
   const promijeniStranicu = (page: number, size: number | undefined) => {
@@ -114,7 +113,7 @@ const MojVinograd: FunctionComponent = () => {
     {
       title: constant.MOJ_VINOGRAD_TABLE_DATUM,
       dataIndex: "date",
-      render: (text: any) => datumClass.convertDateForTable(text),
+      render: (text: any) => DateConverter(text),
     },
     {
       title: "",
@@ -167,7 +166,7 @@ const MojVinograd: FunctionComponent = () => {
     {
       title: constant.MOJ_VINOGRAD_TABLE_DATUM,
       dataIndex: "date",
-      render: (text: any) => datumClass.convertDateForTable(text),
+      render: (text: any) => DateConverter(text),
     },
     {
       title: "",

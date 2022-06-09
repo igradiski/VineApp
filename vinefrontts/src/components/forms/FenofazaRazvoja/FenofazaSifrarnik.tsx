@@ -28,7 +28,6 @@ const FenofazaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
     (state: RootState) => state.fenofaze.totalItems
   );
   const tableData = useSelector((state: RootState) => state.fenofaze.tableData);
-  const datumClass = new DateConverter();
   //var highestRole = roleFetch.getHighestOrderRole(useAppSelector(state => state.login.myUserRole));
 
   var highestRole = 3;
@@ -120,7 +119,7 @@ const FenofazaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
     {
       title: constant.BOLEST_SIFRARNIK_DATUM,
       dataIndex: "date",
-      render: (text: any) => datumClass.convertDateForTable(text),
+      render: (text: any) => DateConverter(text),
     },
     highestRole > 1
       ? {

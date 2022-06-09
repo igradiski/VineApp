@@ -1,6 +1,5 @@
 .tip-sredstva-main-div{
-    height: 100%;
-    overflow: scroll;
+    height: 90%;
     display: inline-block;
     width: 100%;
 }

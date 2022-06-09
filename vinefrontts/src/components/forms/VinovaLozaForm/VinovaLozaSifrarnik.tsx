@@ -21,8 +21,6 @@ const VinovaLozaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
   const [pageNo, setPageNo] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
   const [tableData, setTableData] = useState([]);
-
-  const datumClass = new DateConverter();
   const lozaService = new VinovaLozaService();
   const roleFetch = new roleFetcher();
   var highestRole = 3;
@@ -95,7 +93,7 @@ const VinovaLozaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
     {
       title: constant.VINOVA_LOZA_TABLICA_DATUM,
       dataIndex: "date",
-      render: (text: any) => datumClass.convertDateForTable(text),
+      render: (text: any) => DateConverter(text),
     },
 
     highestRole > 1

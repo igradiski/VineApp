@@ -22,7 +22,6 @@ const SredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
   const [totalItems, setTotalItems] = useState(0);
   const [tableData, setTableData] = useState([]);
   const sredstvaService = new SredstvaService();
-  const datumClass = new DateConverter();
   const roleFetch = new roleFetcher();
   //var highestRole = roleFetch.getHighestOrderRole(useAppSelector(state => state.login.myUserRole));
   var highestRole = 3;
@@ -152,7 +151,7 @@ const SredstvaSifrarnik: FunctionComponent<Props> = ({ onUpdate }) => {
     {
       title: "Date",
       dataIndex: "date",
-      render: (text: any) => datumClass.convertDateForTable(text),
+      render: (text: any) => DateConverter(text),
     },
     highestRole > 1
       ? {

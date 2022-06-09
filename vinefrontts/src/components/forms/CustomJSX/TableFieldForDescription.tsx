@@ -7,6 +7,7 @@ import SredstvaService from "../../../services/SredstvaService";
 import VinovaLozaService from "../../../services/VinovaLozaService";
 import { useAppDispatch } from "../../../store/store";
 import { fetchBolestCardData } from "../../../store/slices/bolestSlice";
+import "./modalCSS.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/reducer";
 
@@ -68,7 +69,11 @@ const TableFieldForDescription = (text: any, record: any, forma: string) => {
   };
 
   const bolestdata = () => {
-    return <p style={{ backgroundColor: "white" }}>{content}</p>;
+    return (
+      <div className="bolestContentContainer">
+        <p>{content}</p>
+      </div>
+    );
   };
   const lozaData = () => {
     return <p style={{ backgroundColor: "white" }}>{content}</p>;
@@ -119,30 +124,27 @@ const TableFieldForDescription = (text: any, record: any, forma: string) => {
       />
       <Modal
         visible={popVisible}
-        title={title}
+        title={null}
         onCancel={() => setPopVisible(false)}
         footer={null}
         style={{ textAlign: "center" }}
       >
-        <Spin size="large" spinning={loading}>
-          <Card
-            hoverable
-            style={{ width: "100%" }}
-            cover={
-              <img
-                style={{
-                  width: "250px",
-                  height: "200px",
-                  borderRadius: "10%",
-                  backgroundColor: "#7cb305",
-                  textAlign: "center",
-                }}
-                alt=""
-                src={imgUrl}
-              />
-            }
-          ></Card>
-        </Spin>
+        <div className="modalTitleCustom">{title}</div>
+
+        <div className="imgContainer">
+          <img
+            style={{
+              width: "40vw",
+              height: "auto",
+              borderRadius: "10%",
+              backgroundColor: "#7cb305",
+              textAlign: "center",
+            }}
+            alt=""
+            src={imgUrl}
+          />
+        </div>
+
         {forma === "bolest" ? bolestdata() : ""}
         {forma === "loza" ? lozaData() : ""}
         {forma === "sredstvo" ? sredstvoData() : ""}

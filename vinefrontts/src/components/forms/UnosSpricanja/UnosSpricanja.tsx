@@ -44,7 +44,6 @@ const UnosSpricanja: FunctionComponent = () => {
   const [zapisId, setZapisId] = useState("");
   const spricanjeService = new SpricanjeService();
   const spricanjeSredstvoService = new SpricanjeSredstvoService();
-  const datumClass = new DateConverter();
   const converterB64 = new b64BlobConverter();
 
   const promijeniStranicu = (page: number, size: number | undefined) => {
@@ -127,7 +126,7 @@ const UnosSpricanja: FunctionComponent = () => {
     {
       title: constant.SPRICANJE_DATUM,
       dataIndex: "date",
-      render: (text: any) => datumClass.convertDateForSpricanje(text),
+      render: (text: any) => DateConverter(text),
     },
     {
       title: constant.SPRICANJE_KOLICINA_VODE,

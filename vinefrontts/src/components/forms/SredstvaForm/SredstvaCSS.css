@@ -4,17 +4,31 @@
     padding-left: 15%;
 }
 
-
 .forma-sredstva{
     width: 100%;
     text-align: center;
     display: inline-block;
     padding-top: 1%;
-    overflow: auto;
+    overflow-y: auto;
     height: 80%; 
+    
+}
+#style-2::-webkit-scrollbar {
+	width: 12px;
+	background-color: #F5F5F5;
 }
 
+#style-2::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #D62929;
+}
 
+#style-2::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
 .text-area-4row{
     width: 25%;
     left: -5%;
@@ -78,6 +92,7 @@
     padding-left: 0%;
     white-space: nowrap;
 }
+
 @media only screen and (max-width: 650px) {
     .ant-steps-item {
         padding: 1%;
@@ -138,5 +153,7 @@
     .ant-form-item-label{
         width: 50%;
     }
+
+   
 
 }

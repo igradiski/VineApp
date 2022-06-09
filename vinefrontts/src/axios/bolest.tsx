@@ -8,9 +8,7 @@ export const addBolest = async (data: IBolestdata) => {
 };
 
 export const getBolestiPaged = async (data: IDefaultPagingData) => {
-  var response = await axiosInstance.get("vineApp/api/bolest", {
-    params: data,
-  });
+  var response = await axiosInstance.get("vineApp/api/bolest");
   return response.data;
 };
 

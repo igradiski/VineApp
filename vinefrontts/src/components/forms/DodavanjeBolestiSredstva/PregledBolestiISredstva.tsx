@@ -38,7 +38,6 @@ const PregledBolestiISredstva: FunctionComponent = () => {
   const bolestService = new BolestService();
   const fazaService = new FenofazaService();
   const sredstvoService = new SredstvaService();
-  const datumClass = new DateConverter();
 
   const handleTableChange = () => {
     sresdstvoSwitch ? setSredstvoSwitch(false) : setSredstvoSwitch(true);
@@ -93,7 +92,7 @@ const PregledBolestiISredstva: FunctionComponent = () => {
     {
       title: "Zadnje azuriranje",
       dataIndex: "lastUpdate",
-      render: (text: any) => datumClass.convertDateForTable(text),
+      render: (text: any) => DateConverter(text),
     },
   ];
 
